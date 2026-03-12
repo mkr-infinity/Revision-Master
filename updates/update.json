@@ -1,0 +1,12 @@
+{
+  "versionCode": 1,
+  "versionName": "1.0.0",
+  "changelog": "- Initial Release\n- Flashcards & Formulas\n- Mock Tests\n- MKR Ai Assistant",
+  "apks": {
+    "arm64-v8a": "https://github.com/mkr_infinity/Revision-Master/releases/download/v1.0.2/app-arm64-v8a-release.apk",
+    "armeabi-v7a": "https://github.com/mkr_infinity/Revision-Master/releases/download/v1.0.2/app-armeabi-v7a-release.apk",
+    "x86": "https://github.com/mkr_infinity/Revision-Master/releases/download/v1.0.2/app-x86-release.apk",
+    "x86_64": "https://github.com/mkr_infinity/Revision-Master/releases/download/v1.0.2/app-x86_64-release.apk",
+    "universal": "https://github.com/mkr_infinity/Revision-Master/releases/download/v1.0.2/app-universal-release.apk"
+  }
+}
