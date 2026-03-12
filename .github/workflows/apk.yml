@@ -20,9 +20,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Create .env file
         run: |
@@ -41,6 +42,13 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      # FIX: regenerate Gradle wrapper if corrupted
+      - name: Regenerate Gradle Wrapper
+        run: |
+          cd android
+          rm -rf gradle/wrapper
+          gradle wrapper
+
       - name: Restore Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks
@@ -51,7 +59,7 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease
         env:
-          SIGNING_STORE_FILE: release-key.jks
+          SIGNING_STORE_FILE: app/release-key.jks
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
