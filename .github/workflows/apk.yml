@@ -5,64 +5,59 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
 
-      - name: Create .env file for AI Features
+      - name: Create .env file
         run: |
           echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
 
       - name: Build web assets
         run: npm run build
 
-      - name: Set up JDK 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
+          distribution: temurin
           java-version: '17'
-          distribution: 'temurin'
+          cache: gradle
 
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Build Release APKs
+      - name: Restore Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks
+
+      - name: Build Release APK
         run: |
           cd android
-          
-          # Check if the user provided a keystore in secrets
-          if [ -n "${{ secrets.SIGNING_STORE_FILE }}" ]; then
-            echo "Using provided keystore from secrets."
-            echo "${{ secrets.SIGNING_STORE_FILE }}" | base64 --decode > app/release-key.keystore
-          else
-            echo "No keystore provided in secrets. Generating a temporary one so the APKs are signed..."
-            keytool -genkey -v -keystore app/release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000 -storepass password -keypass password -dname "CN=MKR, OU=RevisionMaster, O=MKR, L=City, S=State, C=US"
-            export SIGNING_STORE_PASSWORD="password"
-            export SIGNING_KEY_ALIAS="my-key-alias"
-            export SIGNING_KEY_PASSWORD="password"
-          fi
-          
           chmod +x gradlew
           ./gradlew assembleRelease
         env:
-          SIGNING_STORE_FILE: "release-key.keystore"
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD || 'password' }}
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS || 'my-key-alias' }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD || 'password' }}
+          SIGNING_STORE_FILE: release-key.jks
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
-      - name: Upload APKs
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: RevisionMaster-Release-APKs
+          name: revisionmaster-apk
           path: android/app/build/outputs/apk/release/*.apk
