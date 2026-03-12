@@ -1,4 +1,4 @@
-name: Build Android APKs and AAB
+name: Build Android Debug APK
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build React project
+      - name: Build React app
         run: npm run build
 
       - name: Install Capacitor
@@ -42,36 +42,13 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync
 
-      - name: Enable ABI splits
-        run: |
-          sed -i '/android {/a\
-              splits {\
-                  abi {\
-                      enable true\
-                      reset()\
-                      include "armeabi-v7a","arm64-v8a"\
-                      universalApk true\
-                  }\
-              }' android/app/build.gradle
-
-      - name: Build APKs
+      - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleRelease
+          ./gradlew assembleDebug
 
-      - name: Build Play Store AAB
-        run: |
-          cd android
-          ./gradlew bundleRelease
-
-      - name: Upload APK artifacts
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: android-apks
-          path: android/app/build/outputs/apk/release/*.apk
-
-      - name: Upload AAB artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-aab
-          path: android/app/build/outputs/bundle/release/*.aab
+          name: debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
