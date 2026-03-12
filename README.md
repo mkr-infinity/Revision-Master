@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0D9zosCq11-SfHs4olEz6fF9Ai6iLUTksEN0J6JNmxO8BFkTHxy1wy_YjBoGMYYSwLS83Bn_Pqe7-RBx7onjWqVeoHkxYYplWkS0QWAfucMFqAdS38AVyQ7ALuKvyG_eNTGGXkaZsCfGo856e_ntxGd0Xd-YiumVfyro1OZ6qs2Df7eZyZc4hifPyN_fTU4oL9K-puwWzkazv6BD_955f9TVlc_EglXydrXW3wOVoFVgkI0JHDw-PGlgV52AvPZpVza6iM-AKuhTT" alt="Revision Master Logo" width="120" />
   
   # Revision Master
   
