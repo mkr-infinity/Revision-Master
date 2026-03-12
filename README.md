@@ -35,8 +35,7 @@ Test your knowledge with auto-generated mock tests based on your flashcards or A
 *   **Mock Test Feel:** Card revisions now feel like real exams with 4 multiple-choice options.
 *   **Detailed Analytics:** Track accuracy, time taken, and review every question with explanations.
 
-### ⏱️ Customizable Focus Timer
-A built-in Pomodoro timer with Study, Short Break, Long Break, and Custom duration modes. Includes a "Deep Focus" mode to block distractions and keep you in the zone.
+
 
 ### ∑ Formula Library
 A dedicated section for storing and reviewing math, physics, and chemistry formulas, complete with beautiful formatting.
