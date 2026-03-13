@@ -1,0 +1,81 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Get repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Create env file for Gemini API
+      - name: Create .env
+        run: |
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
+
+      # 5️⃣ Build React app
+      - name: Build web app
+        run: npm run build
+
+      # 6️⃣ Setup Java for Android build
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      # 7️⃣ Generate Android project if missing
+      - name: Ensure Android platform exists
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+
+      # 8️⃣ Sync web build with Android
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      # 9️⃣ Restore signing keystore
+      - name: Restore Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks
+
+      # 🔟 Build signed APK
+      - name: Build Release APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+        env:
+          SIGNING_STORE_FILE: release-key.jks
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
+      # 1️⃣1️⃣ Upload APK artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: revision-master-apk
+          path: android/app/build/outputs/apk/release/*.apk
