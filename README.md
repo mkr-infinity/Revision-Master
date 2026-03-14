@@ -19,7 +19,7 @@
 **Revision Master** is built with a core philosophy: your data belongs to you. 
 - 🛡️ **100% Privacy Focused:** Everything you create—your flashcards, formulas, mock test results, and study streaks—is stored **locally on your device**. No databases, no tracking, no cloud syncs reading your notes.
 - 🔌 **Offline-First:** You can study anywhere, anytime, without an internet connection. The only feature that requires the internet is the MKR Ai assistant.
-- 🎨 **Vibe Coding:** *A note from the developer:* I am not a traditional coder. I do "vibe coding"—I build, customize, and design things my way, focusing on what feels right, looks beautiful, and actually helps students. This app is a product of passion, intuition, and a desire to create the perfect study environment.
+- 🎨 **Vibe Coding:** I am not a traditional coder. I do "vibe coding"—I build, customize, and design things my way, focusing on what feels right, looks beautiful, and actually helps students. This app is a product of passion, intuition, and a desire to create the perfect study environment.
 
 ## ✨ Key Features
 
