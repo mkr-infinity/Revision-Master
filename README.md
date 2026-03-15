@@ -149,34 +149,6 @@ npx @capacitor/assets generate
 
 ---
 
-## 🌐 Hosting as a Website (Vercel / Netlify)
-
-Since Revision Master is built with modern web technologies (Vite/React), it can be easily hosted online as a standard website or Progressive Web App (PWA).
-
-### Deploying to Vercel
-
-1. **Push your code** to a Git repository (GitHub, GitLab, or Bitbucket).
-2. Go to the [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New...** > **Project**.
-3. Import your Git repository.
-4. Vercel will automatically detect the framework (Vite). Ensure the following settings are correct:
-   - **Framework Preset:** Vite
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
-5. Click **Deploy**. Your app will be live in a few minutes!
-
-### Deploying to Netlify
-
-1. **Push your code** to a Git repository.
-2. Go to the [Netlify Dashboard](https://app.netlify.com/) and click **Add new site** > **Import an existing project**.
-3. Connect your Git provider and select the repository.
-4. Netlify should auto-detect the settings. Verify them:
-   - **Build command:** `npm run build`
-   - **Publish directory:** `dist`
-5. Click **Deploy site**.
-
-*Note: If you are using client-side routing, you may need to add routing rewrite rules. For Netlify, create a `public/_redirects` file with `/* /index.html 200`. For Vercel, create a `vercel.json` file with `{"rewrites": [{"source": "/(.*)", "destination": "/index.html"}]}`.*
-
----
 
 ## 📄 License
 This project is licensed under the MIT License.
