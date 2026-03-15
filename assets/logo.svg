@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#3b0764" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+  
+  <!-- Glowing Aura -->
+  <circle cx="256" cy="256" r="120" fill="#c084fc" opacity="0.2" filter="url(#glow)" />
+  
+  <!-- Book Base -->
+  <path d="M140 320 Q 198 350 256 320 Q 314 350 372 320 L 372 200 Q 314 230 256 200 Q 198 230 140 200 Z" fill="url(#accent)" opacity="0.8" />
+  <path d="M140 340 Q 198 370 256 340 Q 314 370 372 340 L 372 320 Q 314 350 256 320 Q 198 350 140 320 Z" fill="#ffffff" opacity="0.3" />
+  <path d="M256 200 L 256 340" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+  
+  <!-- Brain/Lightbulb/Spark -->
+  <path d="M256 100 C 200 100 170 140 190 180 C 200 200 230 210 256 180 C 282 210 312 200 322 180 C 342 140 312 100 256 100 Z" fill="#ffffff" filter="url(#glow)" />
+  
+  <!-- Stars -->
+  <path d="M256 50 L 262 75 L 287 81 L 262 87 L 256 112 L 250 87 L 225 81 L 250 75 Z" fill="#fef08a" filter="url(#glow)" />
+  <path d="M160 120 L 164 134 L 178 138 L 164 142 L 160 156 L 156 142 L 142 138 L 156 134 Z" fill="#7dd3fc" filter="url(#glow)" />
+  <path d="M352 120 L 356 134 L 370 138 L 356 142 L 352 156 L 348 142 L 334 138 L 348 134 Z" fill="#f9a8d4" filter="url(#glow)" />
+</svg>

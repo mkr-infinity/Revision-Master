@@ -1,0 +1,93 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create .env file for AI Features
+        run: |
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
+
+      - name: Build web assets
+        run: npm run build
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Generate Android folder if missing
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+
+      - name: Generate App Icons
+        run: npx -y @capacitor/assets@latest generate
+
+      - name: Restore secret files
+        run: |
+          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
+            echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > android/app/google-services.json
+          fi
+
+     # 8️⃣ Sync Capacitor
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      # 9️⃣ Restore Keystore
+      - name: Restore Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks
+
+      # 🔟 Inject signing config into build.gradle
+      - name: Configure Android signing
+        run: |
+          sed -i '/android {/a\
+          signingConfigs {\n\
+              release {\n\
+                  storeFile file(System.getenv("SIGNING_STORE_FILE"))\n\
+                  storePassword System.getenv("SIGNING_STORE_PASSWORD")\n\
+                  keyAlias System.getenv("SIGNING_KEY_ALIAS")\n\
+                  keyPassword System.getenv("SIGNING_KEY_PASSWORD")\n\
+              }\n\
+          }' android/app/build.gradle
+
+          sed -i 's/buildTypes {/buildTypes {\n        release {\n            signingConfig signingConfigs.release\n        }/' android/app/build.gradle
+
+      # 1️⃣1️⃣ Build signed APK
+      - name: Build Release APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+        env:
+          SIGNING_STORE_FILE: release-key.jks
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
+      # 1️⃣2️⃣ Upload APK
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: revision-master-apk
+          path: android/app/build/outputs/apk/release/*.apk
