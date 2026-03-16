@@ -1,0 +1,33 @@
+<svg width="800" height="500" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" rx="24" fill="#0F172A"/>
+  <rect x="20" y="20" width="760" height="460" rx="16" fill="#1E293B"/>
+  
+  <!-- Sidebar -->
+  <rect x="20" y="20" width="200" height="460" rx="16" fill="#0F172A" fill-opacity="0.5"/>
+  <rect x="40" y="50" width="120" height="12" rx="6" fill="#6366F1"/>
+  <rect x="40" y="90" width="140" height="8" rx="4" fill="#334155"/>
+  <rect x="40" y="110" width="140" height="8" rx="4" fill="#334155"/>
+  <rect x="40" y="130" width="140" height="8" rx="4" fill="#334155"/>
+  
+  <!-- Main Content -->
+  <text x="250" y="60" font-family="sans-serif" font-size="24" font-weight="bold" fill="white">My Subjects</text>
+  
+  <!-- Cards Grid -->
+  <rect x="250" y="90" width="250" height="120" rx="12" fill="#312E81" fill-opacity="0.3" stroke="#6366F1" stroke-width="2"/>
+  <circle cx="285" cy="125" r="20" fill="#6366F1"/>
+  <rect x="320" y="120" width="150" height="10" rx="5" fill="white"/>
+  <rect x="320" y="140" width="100" height="6" rx="3" fill="#94A3B8"/>
+  
+  <rect x="520" y="90" width="250" height="120" rx="12" fill="#064E3B" fill-opacity="0.3" stroke="#10B981" stroke-width="2"/>
+  <circle cx="555" cy="125" r="20" fill="#10B981"/>
+  <rect x="590" y="120" width="150" height="10" rx="5" fill="white"/>
+  <rect x="590" y="140" width="100" height="6" rx="3" fill="#94A3B8"/>
+  
+  <rect x="250" y="230" width="520" height="230" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="270" y="265" font-family="sans-serif" font-size="18" fill="white">Revision Progress</text>
+  
+  <!-- Chart -->
+  <path d="M280 420 L350 350 L420 380 L490 300 L560 330 L630 250 L700 280" stroke="#6366F1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke-dasharray" from="0,600" to="600,0" dur="3s" repeatCount="indefinite" />
+  </path>
+</svg>
