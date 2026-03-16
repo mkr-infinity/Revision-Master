@@ -1,0 +1,8 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M50 15L80 28V50C80 68 68 82 50 88C32 82 20 68 20 50V28L50 15Z" fill="#10B981" fill-opacity="0.1" stroke="#10B981" stroke-width="4">
+    <animate attributeName="stroke-opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite" />
+  </path>
+  <path d="M40 50L47 57L60 43" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke-dasharray" from="0,50" to="50,0" dur="1.5s" repeatCount="indefinite" />
+  </path>
+</svg>
