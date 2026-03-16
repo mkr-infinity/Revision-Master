@@ -17,10 +17,21 @@
 <br>
 
 <div align="center">
-  <img src="assets/mockups/hero.svg" width="320" alt="App Preview">
+  <img src="assets/mockups/sliding_hero.svg" width="800" alt="Revision Master Animated Preview">
 </div>
 
 ---
+
+## 📱 App Showcase
+
+<p align="center"><i>Swipe / scroll to explore the app</i></p>
+
+<p align="center">
+  <img src="assets/mockups/dashboard.svg" width="250">
+  <img src="assets/mockups/flashcards.svg" width="250">
+  <img src="assets/mockups/ai_chat.svg" width="250">
+</p>
+
 
 ## 🌟 Why Revision Master?
 
@@ -39,44 +50,16 @@ Your study habits and data are yours alone. Revision Master follows a **Local-Fi
 
 ---
 
-## 🚀 Key Features
+## ✨ Powerful Features
 
-<table align="center">
-  <tr>
-    <td align="center" width="33%">
-      <img src="assets/icons/speed.svg" width="80"><br>
-      <b>Subject Management</b><br>
-      Organize your curriculum into units and topics with custom colors.
-    </td>
-    <td align="center" width="33%">
-      <img src="assets/icons/ai.svg" width="80"><br>
-      <b>Smart Flashcards</b><br>
-      Create, study, and organize cards. Export decks as printable PDFs.
-    </td>
-    <td align="center" width="33%">
-      <img src="assets/icons/offline.svg" width="80"><br>
-      <b>Mock Tests</b><br>
-      Simulate real test environments with timed exams and detailed reviews.
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="33%">
-      <img src="assets/icons/privacy.svg" width="80"><br>
-      <b>Formula Library</b><br>
-      Quick access to all your essential formulas, organized by subject.
-    </td>
-    <td align="center" width="33%">
-      <img src="assets/icons/ai.svg" width="80"><br>
-      <b>Advanced Analytics</b><br>
-      Visualize your progress, streaks, and mastery with beautiful charts.
-    </td>
-    <td align="center" width="33%">
-      <img src="assets/icons/speed.svg" width="80"><br>
-      <b>MKR Ai Assistant</b><br>
-      Generate flashcards from any topic using the power of Google Gemini.
-    </td>
-  </tr>
-</table>
+| Feature | Description |
+|-------|-------------|
+| <img src="assets/features/subjects.svg" width="40"> **Smart Subjects** | Organize study material with custom icons and progress tracking |
+| <img src="assets/features/flashcards.svg" width="40"> **Active Recall** | Interactive flashcards with support for text, images, formulas |
+| <img src="assets/features/tests.svg" width="40"> **Exam Simulation** | Create custom mock tests to simulate real exam conditions |
+| <img src="assets/features/ai.svg" width="40"> **AI Study Buddy** | Generate flashcards and explanations using MKR AI |
+| <img src="assets/features/analytics.svg" width="40"> **Deep Insights** | Track progress with statistics and performance heatmaps |
+| <img src="assets/features/pdf.svg" width="40"> **Offline Study** | Export flashcards and decks as PDFs |
 
 ---
 
@@ -130,9 +113,6 @@ Revision Master is fully configured for mobile deployment using Capacitor.
 1. **Build Web Assets:** `npm run build`
 2. **Sync Capacitor:** `npx cap sync`
 3. **Open Native IDE:** `npx cap open android`
-
-> [!IMPORTANT]
-> For a step-by-step walkthrough on generating an APK and setting up mobile assets, check the [**Capacitor Guide**](./CAPACITOR_GUIDE.md).
 
 ---
 
