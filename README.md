@@ -24,7 +24,6 @@
 
 ## 📱 App Showcase
 
-<p align="center"><i>Swipe / scroll to explore the app</i></p>
 
 <p align="center">
   <img src="assets/mockups/dashboard.svg" width="250">
@@ -74,13 +73,23 @@ Revision Master adapts to your style:
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React 18 + TypeScript
-- **Styling:** Tailwind CSS (Modern Utility-First)
-- **Animations:** Framer Motion
-- **Icons:** Lucide React
-- **Mobile Bridge:** Capacitor (Cross-platform Native)
-- **AI Engine:** Google Gemini API
-- **State Management:** React Context API + LocalStorage Persistence
+<p align="center">
+  <!-- Frontend -->
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="60" height="60"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="60" height="60"/>
+  
+  <!-- Styling -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind CSS" width="60" height="60"/>
+  
+  <!-- Mobile Bridge -->
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/capacitor/capacitor-original.svg" alt="Capacitor" width="60" height="60"/>
+  
+  <!-- AI Engine -->
+  <img src="https://vectorlogo.zone/logos/google/google-icon.svg" alt="Google Gemini AI" width="60" height="60"/>
+  
+  <!-- State Management -->
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React Context API" width="60" height="60"/>
+</p>
 
 ---
 
@@ -89,30 +98,8 @@ Revision Master adapts to your style:
 ### 🌐 Web Development
 To run the project locally for development:
 
-1. **Clone & Install:**
-   ```bash
-   git clone https://github.com/mkr-infinity/revision-master.git
-   cd revision-master
-   npm install
-   ```
-
-2. **Run Dev Server:**
-   ```bash
-   npm run dev
-   ```
-
 > [!TIP]
 > For a detailed guide on web deployment and hosting, see our [**Web Build Guide**](./BUILD_GUIDE.md).
-
----
-
-## 📱 Mobile Build (Android/iOS)
-
-Revision Master is fully configured for mobile deployment using Capacitor.
-
-1. **Build Web Assets:** `npm run build`
-2. **Sync Capacitor:** `npx cap sync`
-3. **Open Native IDE:** `npx cap open android`
 
 ---
 
