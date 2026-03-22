@@ -16,9 +16,32 @@
 
 <br>
 
+
+---
+## 📲 Download the App
+
 <div align="center">
-  <img src="assets/mockups/sliding_hero.svg" width="800" alt="Revision Master Animated Preview">
+
+<a href="https://github.com/mkr-infinity/Revision-Master/releases/download/v1.0/Revision-Master_v1.0.apk">
+  <img src="https://img.shields.io/badge/⬇️%20Download%20APK-Revision%20Master-blue?style=for-the-badge&logo=android" />
+</a>
+
+
+<a href="https://github.com/mkr-infinity/Revision-Master/releases/latest">
+  <img src="https://img.shields.io/badge/🚀%20Latest%20Release-Get%20Now-success?style=for-the-badge&logo=github" />
+</a>
+
 </div>
+
+
+
+
+### 📌 Installation Steps
+1. Download the APK file  
+2. Enable **Install from Unknown Sources**  
+3. Open the APK and install  
+4. Enjoy the app 🎉
+
 
 ---
 
