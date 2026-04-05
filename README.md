@@ -1,6 +1,6 @@
 <div align="center">
   <img src="assets/logo.svg" width="160" height="160" alt="Revision Master Logo">
-  <h1>✨ Revision Master ✨</h1>
+  <h1> Revision Master </h1>
   <p align="center">
     <b>The Ultimate Companion for Exam Excellence</b><br>
     <i>A high-performance, beautiful, and intuitive study application designed to help students conquer their exams.</i>
