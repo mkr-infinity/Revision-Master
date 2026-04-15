@@ -100,7 +100,7 @@ Revision Master adapts to your style:
 ---
 
 <p align="center">
-  <a href="https://github.com/mkr-infinity" target="_blank">
+  <a href="https://supportmkr.netlify.app/" target="_blank">
     <img src="https://img.shields.io/badge/Other%20Ways%20to%20Support-Click%20Here-blue?style=for-the-badge"/>
   </a>
 </p>
