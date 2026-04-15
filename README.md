@@ -85,6 +85,27 @@ Revision Master adapts to your style:
 
 ---
 
+## 💖 Support
+
+<p align="center">
+  <a href="https://buymeacoffee.com/mkr_infinity" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="55" alt="Buy Me A Coffee"/>
+  </a>
+</p>
+
+<p align="center">
+  If you like <b>Revision Master</b>, please consider supporting 🙌
+</p>
+
+---
+
+<p align="center">
+  <a href="https://github.com/mkr-infinity" target="_blank">
+    <img src="https://img.shields.io/badge/Other%20Ways%20to%20Support-Click%20Here-blue?style=for-the-badge"/>
+  </a>
+</p>
+
+---
 
 
 ## 📦 Getting Started
