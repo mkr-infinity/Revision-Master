@@ -45,15 +45,6 @@
 
 ---
 
-## 📱 App Showcase
-
-
-<p align="center">
-  <img src="assets/mockups/dashboard.svg" width="250">
-  <img src="assets/mockups/flashcards.svg" width="250">
-  <img src="assets/mockups/ai_chat.svg" width="250">
-</p>
-
 
 ## 🌟 Why Revision Master?
 
