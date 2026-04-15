@@ -85,27 +85,7 @@ Revision Master adapts to your style:
 
 ---
 
-## 🛠️ Tech Stack
 
-<p align="center">
-  <!-- Frontend -->
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="60" height="60"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="60" height="60"/>
-  
-  <!-- Styling -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind CSS" width="60" height="60"/>
-  
-  <!-- Mobile Bridge -->
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/capacitor/capacitor-original.svg" alt="Capacitor" width="60" height="60"/>
-  
-  <!-- AI Engine -->
-  <img src="https://vectorlogo.zone/logos/google/google-icon.svg" alt="Google Gemini AI" width="60" height="60"/>
-  
-  <!-- State Management -->
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React Context API" width="60" height="60"/>
-</p>
-
----
 
 ## 📦 Getting Started
 
