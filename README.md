@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" width="160" height="160" alt="Revision Master Logo">
+  <img src="assets/icon.png." width="160" height="160" alt="Revision Master Logo">
   <h1>Revision Master</h1>
   <p align="center">
     <b>The Anime-Themed Companion for Exam Excellence</b><br>
