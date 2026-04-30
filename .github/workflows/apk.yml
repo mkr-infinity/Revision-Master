@@ -1,0 +1,91 @@
+name: Build Android APK (Capacitor)
+
+# Builds a debug APK from the React/Vite + Capacitor project end-to-end.
+# This workflow handles EVERYTHING — you do NOT need to commit the android/
+# folder. It will:
+#   1. Install npm dependencies
+#   2. Build the web bundle (Vite)
+#   3. Generate the android/ folder (npx cap add android) if missing
+#   4. Sync the web assets into the android project
+#   5. Generate all icon sizes + splash screens from resources/
+#      (uses logo.svg → adaptive icon for every Android launcher style)
+#   6. Build a debug APK and upload it as an artifact you can download
+#
+# Trigger manually from the Actions tab or by pushing to main.
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    name: Assemble debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Setup Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build web bundle (Vite)
+        run: npm run build
+
+      - name: Generate android/ folder if missing
+        run: |
+          if [ ! -d "android" ]; then
+            echo "android/ not found — generating with 'npx cap add android'..."
+            npx cap add android
+          else
+            echo "android/ already exists — skipping cap add."
+          fi
+
+      - name: Capacitor sync (copy web assets into android/)
+        run: npx cap sync android
+
+      - name: Generate adaptive launcher icons from resources/
+        run: |
+          if [ -f "resources/icon.png" ] || [ -f "resources/icon-foreground.png" ]; then
+            echo "Generating adaptive icons from resources/..."
+            npx capacitor-assets generate --android
+          else
+            echo "::warning::resources/icon*.png not found — skipping icon generation. The default Capacitor icon will be used."
+          fi
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x android/gradlew
+
+      - name: Assemble debug APK (signed with Android debug keystore)
+        working-directory: android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+          if-no-files-found: error

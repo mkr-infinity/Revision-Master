@@ -1,0 +1,16 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Capacitor / Android — generated locally or in CI by `npx cap add android`.
+# Keep the source-of-truth (resources/, capacitor.config.ts, src/) only.
+android/
+ios/
+*.apk
+*.aab
+.gradle/

@@ -1,0 +1,1059 @@
+/* Bundled fonts (work offline / inside Android WebView). */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/800.css";
+@import "@fontsource/inter/900.css";
+@import "@fontsource/zen-maru-gothic/500.css";
+@import "@fontsource/zen-maru-gothic/700.css";
+@import "@fontsource/zen-maru-gothic/900.css";
+@import "@fontsource/mochiy-pop-one/400.css";
+@import "@fontsource/bagel-fat-one/400.css";
+@import "@fontsource/caveat/400.css";
+@import "@fontsource/caveat/700.css";
+@import "@fontsource/dm-serif-display/400.css";
+@import "tailwindcss";
+
+@variant dark (&:is(.dark *));
+
+@theme {
+  --font-display: 'Zen Maru Gothic', 'Mochiy Pop One', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-pop: 'Bagel Fat One', 'Mochiy Pop One', 'Zen Maru Gothic', system-ui, sans-serif;
+  --font-serif: 'Bagel Fat One', 'DM Serif Display', Georgia, serif;
+  --font-signature: 'Caveat', cursive;
+
+  --color-primary: #7c4dff;
+  --color-primary-soft: #b39ddb;
+  --color-primary-glow: rgba(124, 77, 255, 0.45);
+
+  --color-coral: #ff6b81;
+  --color-amber: #ffb648;
+  --color-mint: #5fe3c7;
+  --color-blush: #ffd1dc;
+
+  --color-background-light: #f3eee5;
+  --color-background-dark: #0e0a17;
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes indeterminate {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(300%); }
+  }
+  @keyframes float-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(124, 77, 255, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(124, 77, 255, 0.6); }
+  }
+  --animation-spin-slow: spin-slow 3s linear infinite;
+}
+
+/* ============================================================
+   THEMES — 3 Light + 3 Dark, Material 3 premium palettes
+   Use `[data-theme="..."]` for palette + `.light`/`.dark` for mode
+   ============================================================ */
+
+/* Default base (used as fallback) */
+:root {
+  --bg-app: #f7f3ec;
+  --bg-elevated: #ffffff;
+  --bg-surface-1: #ffffff;
+  --bg-surface-2: #efe9de;
+  --bg-surface-3: #e2dccf;
+  --bg-inverse: #15101f;
+
+  --text-primary: #1b1424;
+  --text-secondary: #4a4156;
+  --text-tertiary: #8b8198;
+  --text-on-primary: #ffffff;
+
+  --border-subtle: rgba(27, 20, 36, 0.08);
+  --border-strong: rgba(27, 20, 36, 0.16);
+
+  --shadow-sm: 0 1px 2px rgba(27, 20, 36, 0.06);
+  --shadow-md: 0 6px 18px -4px rgba(27, 20, 36, 0.10), 0 2px 6px rgba(27, 20, 36, 0.05);
+  --shadow-lg: 0 24px 50px -12px rgba(27, 20, 36, 0.18), 0 6px 16px rgba(27, 20, 36, 0.08);
+  --shadow-glow: 0 14px 40px var(--color-primary-glow);
+
+  --color-primary: #6750a4;
+  --color-primary-soft: #b39ddb;
+  --color-primary-glow: rgba(103, 80, 164, 0.30);
+  --color-coral: #ff6b81;
+  --color-amber: #f4a83a;
+  --color-mint: #19b48a;
+
+  --frame-bg: #181122;
+}
+
+/* ---------- Light: Demon Slayer (Tanjiro red + black checker) ---------- */
+[data-theme="light-cream"] {
+  --bg-app: #fff1f6;
+  --bg-elevated: #ffffff;
+  --bg-surface-1: #fff7fa;
+  --bg-surface-2: #ffd9e2;
+  --bg-surface-3: #ffb6c8;
+  --bg-inverse: #2a0a14;
+
+  --text-primary: #2a0a14;
+  --text-secondary: #5a2331;
+  --text-tertiary: #946074;
+  --text-on-primary: #ffffff;
+
+  --border-subtle: rgba(42, 10, 20, 0.10);
+  --border-strong: rgba(42, 10, 20, 0.20);
+
+  --shadow-md: 0 6px 20px -4px rgba(255, 58, 94, 0.20), 0 2px 6px rgba(42, 10, 20, 0.06);
+  --shadow-lg: 0 24px 50px -12px rgba(255, 58, 94, 0.32), 0 6px 16px rgba(42, 10, 20, 0.10);
+
+  --color-primary: #ff3a5e;
+  --color-primary-soft: #ffb0c0;
+  --color-primary-glow: rgba(255, 58, 94, 0.45);
+  --color-coral: #ff3a5e;
+  --color-amber: #2dd17a;
+  --color-mint: #5fe3c7;
+  --shadow-glow: 0 14px 40px var(--color-primary-glow);
+
+  /* Tanjiro haori — black/green checker */
+  --theme-pattern:
+    linear-gradient(135deg, transparent 46%, rgba(45,209,122,0.10) 46% 54%, transparent 54%),
+    linear-gradient(45deg, transparent 46%, rgba(20,12,8,0.05) 46% 54%, transparent 54%);
+  --theme-pattern-size: 36px 36px, 36px 36px;
+  --theme-aura: rgba(255, 58, 94, 0.28);
+
+  --frame-bg: #2a0a14;
+}
+
+/* ---------- Light: My Hero Academia (Deku blue + All Might yellow) ---------- */
+[data-theme="light-paper"] {
+  --bg-app: #eef4ff;
+  --bg-elevated: #ffffff;
+  --bg-surface-1: #f7faff;
+  --bg-surface-2: #d7e4ff;
+  --bg-surface-3: #b9caff;
+  --bg-inverse: #0a1230;
+
+  --text-primary: #0a1230;
+  --text-secondary: #2c3666;
+  --text-tertiary: #6f7aa3;
+  --text-on-primary: #ffffff;
+
+  --border-subtle: rgba(10, 18, 48, 0.10);
+  --border-strong: rgba(10, 18, 48, 0.20);
+
+  --shadow-md: 0 6px 20px -4px rgba(31, 109, 255, 0.20), 0 2px 6px rgba(10, 18, 48, 0.06);
+  --shadow-lg: 0 24px 50px -12px rgba(31, 109, 255, 0.32), 0 6px 16px rgba(10, 18, 48, 0.10);
+
+  --color-primary: #1f6dff;
+  --color-primary-soft: #a3c4ff;
+  --color-primary-glow: rgba(31, 109, 255, 0.38);
+  --color-coral: #ff5252;
+  --color-amber: #ffd60a;
+  --color-mint: #2ee6a8;
+  --shadow-glow: 0 14px 40px var(--color-primary-glow);
+
+  /* Plus Ultra rays + dot grid */
+  --theme-pattern:
+    repeating-linear-gradient(115deg, rgba(255,214,10,0.08) 0 2px, transparent 2px 22px),
+    radial-gradient(rgba(31,109,255,0.10) 1px, transparent 1.5px);
+  --theme-pattern-size: auto, 18px 18px;
+  --theme-aura: rgba(31, 109, 255, 0.30);
+
+  --frame-bg: #0a1230;
+}
+
+/* ---------- Light: Naruto (Hokage orange + Hidden Leaf cream) ---------- */
+[data-theme="light-sand"] {
+  --bg-app: #fff1de;
+  --bg-elevated: #fff8eb;
+  --bg-surface-1: #ffffff;
+  --bg-surface-2: #ffd9a8;
+  --bg-surface-3: #ffb86b;
+  --bg-inverse: #2a1206;
+
+  --text-primary: #2a1206;
+  --text-secondary: #5c2e16;
+  --text-tertiary: #8b5a3a;
+  --text-on-primary: #ffffff;
+
+  --border-subtle: rgba(42, 18, 6, 0.12);
+  --border-strong: rgba(42, 18, 6, 0.22);
+
+  --shadow-md: 0 6px 20px -4px rgba(255, 122, 26, 0.24), 0 2px 6px rgba(42, 18, 6, 0.08);
+  --shadow-lg: 0 24px 50px -12px rgba(255, 122, 26, 0.34), 0 6px 16px rgba(42, 18, 6, 0.12);
+
+  --color-primary: #ff7a1a;
+  --color-primary-soft: #ffc492;
+  --color-primary-glow: rgba(255, 122, 26, 0.40);
+  --color-coral: #ff4040;
+  --color-amber: #ffd24a;
+  --color-mint: #2bc48a;
+  --shadow-glow: 0 14px 40px var(--color-primary-glow);
+
+  /* Rasengan swirls */
+  --theme-pattern:
+    repeating-radial-gradient(circle at 20% 30%, rgba(255,122,26,0.10) 0 6px, transparent 6px 14px),
+    repeating-radial-gradient(circle at 80% 70%, rgba(255,210,74,0.10) 0 6px, transparent 6px 14px);
+  --theme-pattern-size: 220px 220px, 260px 260px;
+  --theme-aura: rgba(255, 122, 26, 0.30);
+
+  --frame-bg: #2a1206;
+}
+
+/* ---------- Dark: Jujutsu Kaisen (Gojo violet + cursed energy) ---------- */
+[data-theme="dark-plum"] {
+  --bg-app: #0e0820;
+  --bg-elevated: #1b1138;
+  --bg-surface-1: #1b1138;
+  --bg-surface-2: #2a1a55;
+  --bg-surface-3: #3b2474;
+  --bg-inverse: #f0e3ff;
+
+  --text-primary: #f0e3ff;
+  --text-secondary: #c8b1ec;
+  --text-tertiary: #8b7aaa;
+  --text-on-primary: #0e0820;
+
+  --border-subtle: rgba(190, 156, 255, 0.12);
+  --border-strong: rgba(190, 156, 255, 0.22);
+
+  --shadow-md: 0 6px 20px -4px rgba(168, 85, 247, 0.30), 0 2px 6px rgba(0, 0, 0, 0.40);
+  --shadow-lg: 0 28px 60px -16px rgba(168, 85, 247, 0.36), 0 10px 24px rgba(0, 0, 0, 0.55);
+
+  --color-primary: #a855f7;
+  --color-primary-soft: #d6b4ff;
+  --color-primary-glow: rgba(168, 85, 247, 0.60);
+  --color-coral: #ff5fa9;
+  --color-amber: #ffd84d;
+  --color-mint: #5fe3c7;
+  --shadow-glow: 0 14px 50px var(--color-primary-glow);
+
+  /* Cursed-energy swirling rays */
+  --theme-pattern:
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      rgba(168, 85, 247, 0.08) 0deg 6deg,
+      transparent 6deg 14deg);
+  --theme-pattern-size: auto;
+  --theme-aura: rgba(168, 85, 247, 0.45);
+
+  --frame-bg: #06030f;
+}
+
+/* ---------- Dark: Bleach (Zanpakuto cyan + Hollow black) ---------- */
+[data-theme="dark-graphite"] {
+  --bg-app: #050a18;
+  --bg-elevated: #0c1530;
+  --bg-surface-1: #0c1530;
+  --bg-surface-2: #142142;
+  --bg-surface-3: #1d2f5e;
+  --bg-inverse: #e0f4ff;
+
+  --text-primary: #f0f7ff;
+  --text-secondary: #a8b8d8;
+  --text-tertiary: #6f7e9c;
+  --text-on-primary: #050a18;
+
+  --border-subtle: rgba(72, 216, 255, 0.14);
+  --border-strong: rgba(72, 216, 255, 0.28);
+
+  --shadow-md: 0 6px 20px -4px rgba(72, 216, 255, 0.24), 0 2px 6px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 28px 60px -16px rgba(72, 216, 255, 0.34), 0 10px 24px rgba(0, 0, 0, 0.60);
+
+  --color-primary: #48d8ff;
+  --color-primary-soft: #a3ebff;
+  --color-primary-glow: rgba(72, 216, 255, 0.55);
+  --color-coral: #ff5c93;
+  --color-amber: #ffd84d;
+  --color-mint: #5fe3c7;
+  --shadow-glow: 0 14px 50px var(--color-primary-glow);
+
+  /* Reiatsu vertical slashes */
+  --theme-pattern:
+    repeating-linear-gradient(90deg,
+      rgba(72, 216, 255, 0.08) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(0deg,
+      rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 32px);
+  --theme-pattern-size: auto, auto;
+  --theme-aura: rgba(72, 216, 255, 0.40);
+
+  --frame-bg: #02050d;
+}
+
+/* ---------- Dark: Vinland Saga (Norse frost teal + cream) ---------- */
+[data-theme="dark-forest"] {
+  --bg-app: #08161c;
+  --bg-elevated: #0e2128;
+  --bg-surface-1: #0e2128;
+  --bg-surface-2: #163039;
+  --bg-surface-3: #1f4350;
+  --bg-inverse: #f0e6cf;
+
+  --text-primary: #f0e6cf;
+  --text-secondary: #c2c8b8;
+  --text-tertiary: #7a8a86;
+  --text-on-primary: #08161c;
+
+  --border-subtle: rgba(95, 227, 199, 0.10);
+  --border-strong: rgba(95, 227, 199, 0.22);
+
+  --shadow-md: 0 6px 20px -4px rgba(95, 227, 199, 0.20), 0 2px 6px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 28px 60px -16px rgba(95, 227, 199, 0.30), 0 10px 24px rgba(0, 0, 0, 0.60);
+
+  --color-primary: #5fe3c7;
+  --color-primary-soft: #a3f0dd;
+  --color-primary-glow: rgba(95, 227, 199, 0.45);
+  --color-coral: #d65a3a;
+  --color-amber: #f0c878;
+  --color-mint: #5fe3c7;
+  --shadow-glow: 0 14px 50px var(--color-primary-glow);
+
+  /* Norse rune-like crossed marks */
+  --theme-pattern:
+    repeating-linear-gradient(45deg,
+      rgba(240, 230, 207, 0.04) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(-45deg,
+      rgba(95, 227, 199, 0.05) 0 1px, transparent 1px 28px);
+  --theme-pattern-size: auto, auto;
+  --theme-aura: rgba(95, 227, 199, 0.30);
+
+  --frame-bg: #030a0d;
+}
+
+/* Backwards compat — old "light"/"dark" map to defaults */
+:root.light:not([data-theme]),
+:root[data-theme="light"] {
+  /* same as Sakura Bloom */
+  --bg-app: #fff1f6;
+  --bg-elevated: #ffffff;
+  --bg-surface-1: #fff7fa;
+  --bg-surface-2: #ffe1ec;
+  --bg-surface-3: #ffc8dc;
+  --text-primary: #2a0e1f;
+  --text-secondary: #5a3247;
+  --text-tertiary: #946e80;
+  --color-primary: #ff5c93;
+  --color-primary-soft: #ffb3cf;
+  --color-primary-glow: rgba(255, 92, 147, 0.40);
+  --frame-bg: #2a0e1f;
+}
+:root.dark:not([data-theme]),
+:root[data-theme="dark"] {
+  /* same as Midnight Manga */
+  --bg-app: #140a22;
+  --bg-elevated: #1f1338;
+  --bg-surface-1: #1f1338;
+  --bg-surface-2: #2c1d4e;
+  --bg-surface-3: #3a2766;
+  --text-primary: #fce4f0;
+  --text-secondary: #c8b1d8;
+  --text-tertiary: #897a99;
+  --color-primary: #ff6bb3;
+  --color-primary-soft: #ffb6da;
+  --color-primary-glow: rgba(255, 107, 179, 0.55);
+  --frame-bg: #0a0414;
+}
+
+/* ============================================================
+   Base layout — mobile-first, full scroll, native feel
+   ============================================================ */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--frame-bg);
+  color: var(--text-primary);
+}
+
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
+}
+
+/* Force system default font when user opts in */
+.use-system-font,
+.use-system-font body,
+.use-system-font *,
+.use-system-font .font-anime-pop,
+.use-system-font .font-anime-soft,
+.use-system-font .font-anime-body,
+.use-system-font .font-display,
+.use-system-font .font-serif-display {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+input, textarea, [contenteditable="true"], .selectable {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+* {
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar { display: none; }
+* { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ---------- Mobile-only viewport frame ---------- */
+.mobile-frame {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: var(--frame-bg);
+  overflow: hidden;
+}
+.mobile-frame__device {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  height: 100%;
+  background: var(--bg-app);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 640px) {
+  .mobile-frame { padding: 24px 0; }
+  .mobile-frame__device {
+    max-width: 440px;
+    height: min(100%, 920px);
+    border-radius: 38px;
+    /* Become the containing block for position:fixed children so the
+       bottom nav sticks to the bottom of the phone-frame on desktop. */
+    transform: translateZ(0);
+    will-change: transform;
+    box-shadow:
+      0 0 0 8px rgba(255, 255, 255, 0.04),
+      0 30px 90px -20px rgba(0, 0, 0, 0.65);
+  }
+  :root.light .mobile-frame__device,
+  :root[data-theme^="light"] .mobile-frame__device {
+    box-shadow:
+      0 0 0 8px rgba(0, 0, 0, 0.05),
+      0 30px 90px -20px rgba(0, 0, 0, 0.25);
+  }
+}
+
+@layer utilities {
+  .safe-area-top { padding-top: env(safe-area-inset-top); }
+  .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-area-left { padding-left: env(safe-area-inset-left); }
+  .safe-area-right { padding-right: env(safe-area-inset-right); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .perspective-1000 { perspective: 1000px; }
+  .transform-style-preserve-3d { transform-style: preserve-3d; }
+  .backface-hidden { backface-visibility: hidden; }
+  .rotate-y-180 { transform: rotateY(180deg); }
+
+  .backdrop-blur-sm { -webkit-backdrop-filter: blur(6px) saturate(140%); backdrop-filter: blur(6px) saturate(140%); }
+  .backdrop-blur-md { -webkit-backdrop-filter: blur(12px) saturate(140%); backdrop-filter: blur(12px) saturate(140%); }
+  .backdrop-blur-lg { -webkit-backdrop-filter: blur(18px) saturate(150%); backdrop-filter: blur(18px) saturate(150%); }
+  .backdrop-blur-xl { -webkit-backdrop-filter: blur(24px) saturate(160%); backdrop-filter: blur(24px) saturate(160%); }
+  .backdrop-blur-2xl { -webkit-backdrop-filter: blur(32px) saturate(160%); backdrop-filter: blur(32px) saturate(160%); }
+
+  .blur-2xl { filter: blur(16px) !important; transform: translateZ(0); }
+  .blur-3xl { filter: blur(24px) !important; transform: translateZ(0); }
+
+  .gpu {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+  }
+
+  /* Surfaces */
+  .bg-app { background-color: var(--bg-app); }
+  .bg-elevated { background-color: var(--bg-elevated); }
+  .bg-surface-1 { background-color: var(--bg-surface-1); }
+  .bg-surface-2 { background-color: var(--bg-surface-2); }
+  .bg-surface-3 { background-color: var(--bg-surface-3); }
+  .bg-inverse { background-color: var(--bg-inverse); }
+
+  .text-primary-fg { color: var(--text-primary); }
+  .text-secondary-fg { color: var(--text-secondary); }
+  .text-tertiary-fg { color: var(--text-tertiary); }
+  .text-on-primary { color: var(--text-on-primary); }
+  .text-on-inverse { color: var(--bg-app); }
+
+  .border-subtle { border-color: var(--border-subtle); }
+  .border-strong { border-color: var(--border-strong); }
+
+  .shadow-card { box-shadow: var(--shadow-md); }
+  .shadow-card-lg { box-shadow: var(--shadow-lg); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+
+  .ring-primary-soft { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 18%, transparent); }
+
+  .glass {
+    background: color-mix(in srgb, var(--bg-elevated) 82%, transparent);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    border: 1.5px solid color-mix(in srgb, var(--color-primary) 22%, var(--border-subtle));
+  }
+
+  .font-serif-display { font-family: var(--font-serif); letter-spacing: -0.005em; }
+
+  /* Anime-flavored card: thick playful border + soft drop-shadow */
+  .premium-card {
+    background: var(--bg-surface-1);
+    border: 2px solid color-mix(in srgb, var(--color-primary) 18%, var(--border-strong));
+    border-radius: 24px;
+    box-shadow:
+      0 6px 0 -2px color-mix(in srgb, var(--color-primary) 18%, transparent),
+      var(--shadow-md);
+    position: relative;
+  }
+
+  /* Manga page-style background with per-theme decorative pattern */
+  .anime-page-bg {
+    position: relative;
+    background:
+      radial-gradient(60% 40% at 12% 0%, color-mix(in srgb, var(--color-primary) 18%, transparent) 0%, transparent 60%),
+      radial-gradient(50% 35% at 90% 8%, color-mix(in srgb, var(--color-amber) 22%, transparent) 0%, transparent 60%),
+      radial-gradient(70% 50% at 50% 100%, color-mix(in srgb, var(--color-mint) 14%, transparent) 0%, transparent 65%),
+      var(--bg-app);
+    background-attachment: fixed;
+  }
+  /* Per-theme decorative pattern overlay (Demon Slayer haori, JJK swirls, etc.) */
+  .anime-page-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: var(--theme-pattern, none);
+    background-size: var(--theme-pattern-size, auto);
+    opacity: 0.55;
+    mix-blend-mode: normal;
+  }
+  .anime-page-bg > * { position: relative; z-index: 1; }
+
+  /* Manga-style section headline pill */
+  .manga-headline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--bg-elevated);
+    border: 2.5px solid var(--text-primary);
+    box-shadow: 3px 3px 0 0 var(--text-primary);
+    font-family: 'Bagel Fat One', 'Mochiy Pop One', system-ui, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+  }
+  .manga-headline::before {
+    content: "★";
+    color: var(--color-primary);
+  }
+
+  /* Anime sticker — bold border + offset shadow that responds to theme */
+  .anime-sticker {
+    border: 2.5px solid var(--text-primary);
+    box-shadow: 4px 4px 0 0 var(--text-primary);
+    border-radius: 18px;
+    background: var(--bg-elevated);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .anime-sticker:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--text-primary);
+  }
+
+  /* Glowing aura that takes the active theme color (Gojo violet, Tanjiro flame, Naruto chakra, etc.).
+     Only applies when :root has the .use-aura class (toggle in Settings → Appearance).
+     Glow is fire-like: layered hot-core + radiant outer flame, asymmetric flicker. */
+  .anime-aura { box-shadow: none; }
+  :root.use-aura .anime-aura {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-primary) 55%, transparent),
+      0 0 14px color-mix(in srgb, var(--color-primary) 60%, transparent),
+      0 0 28px var(--theme-aura, var(--color-primary-glow)),
+      0 0 60px var(--theme-aura, var(--color-primary-glow));
+    animation: aura-flicker 2.6s ease-in-out infinite;
+  }
+  @keyframes aura-flicker {
+    0%, 100% {
+      box-shadow:
+        0 0 0 2px color-mix(in srgb, var(--color-primary) 55%, transparent),
+        0 0 12px color-mix(in srgb, var(--color-primary) 55%, transparent),
+        0 0 26px var(--theme-aura, var(--color-primary-glow)),
+        0 0 52px var(--theme-aura, var(--color-primary-glow));
+    }
+    25% {
+      box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--color-primary) 70%, transparent),
+        0 -2px 18px color-mix(in srgb, var(--color-primary) 70%, transparent),
+        0 -4px 36px var(--theme-aura, var(--color-primary-glow)),
+        0 0 72px var(--theme-aura, var(--color-primary-glow));
+    }
+    50% {
+      box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--color-primary) 80%, transparent),
+        0 -1px 22px color-mix(in srgb, var(--color-primary) 75%, transparent),
+        0 -6px 44px var(--theme-aura, var(--color-primary-glow)),
+        0 0 88px var(--theme-aura, var(--color-primary-glow));
+    }
+    75% {
+      box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--color-primary) 65%, transparent),
+        0 -1px 16px color-mix(in srgb, var(--color-primary) 60%, transparent),
+        0 -3px 32px var(--theme-aura, var(--color-primary-glow)),
+        0 0 64px var(--theme-aura, var(--color-primary-glow));
+    }
+  }
+
+  /* When aura is enabled, give every primary CTA / panel / chip a strong theme halo. */
+  :root.use-aura .anime-cta,
+  :root.use-aura .gradient-violet,
+  :root.use-aura .manga-headline,
+  :root.use-aura .manga-panel,
+  :root.use-aura .speech-bubble,
+  :root.use-aura .anime-modal,
+  :root.use-aura .anime-sticker {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-primary) 35%, transparent),
+      0 0 18px color-mix(in srgb, var(--color-primary) 40%, transparent),
+      0 0 36px var(--theme-aura, transparent),
+      4px 4px 0 0 var(--text-primary);
+  }
+  :root.use-aura.dark .anime-cta,
+  :root.use-aura.dark .gradient-violet,
+  :root.use-aura.dark .manga-headline,
+  :root.use-aura.dark .manga-panel,
+  :root.use-aura.dark .speech-bubble,
+  :root.use-aura.dark .anime-modal,
+  :root.use-aura.dark .anime-sticker {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-primary) 45%, transparent),
+      0 0 22px color-mix(in srgb, var(--color-primary) 50%, transparent),
+      0 0 44px var(--theme-aura, transparent),
+      4px 4px 0 0 #f7e9d2;
+  }
+
+  /* Apply theme aura to all primary action buttons by default (no class needed). */
+  :root.use-aura button[class*="gradient-violet"],
+  :root.use-aura .shadow-glow {
+    box-shadow:
+      0 0 0 1.5px color-mix(in srgb, var(--color-primary) 30%, transparent),
+      0 0 16px color-mix(in srgb, var(--color-primary) 40%, transparent),
+      0 0 32px var(--theme-aura, var(--color-primary-glow));
+  }
+
+  /* Home screen sticky header — themed gradient instead of plain bg-app */
+  .home-header-bg {
+    background:
+      linear-gradient(180deg,
+        color-mix(in srgb, var(--color-primary) 14%, var(--bg-app)) 0%,
+        color-mix(in srgb, var(--color-primary) 6%, var(--bg-app)) 70%,
+        color-mix(in srgb, var(--bg-app) 80%, transparent) 100%);
+  }
+
+  /* Home screen body — themed gradient wash so it never looks plain white */
+  .home-screen-bg {
+    background:
+      radial-gradient(80% 40% at 0% 0%, color-mix(in srgb, var(--color-primary) 16%, transparent) 0%, transparent 60%),
+      radial-gradient(70% 35% at 100% 12%, color-mix(in srgb, var(--color-amber) 14%, transparent) 0%, transparent 60%),
+      radial-gradient(90% 50% at 50% 100%, var(--theme-aura, color-mix(in srgb, var(--color-primary) 12%, transparent)) 0%, transparent 70%),
+      linear-gradient(180deg, var(--bg-app) 0%, color-mix(in srgb, var(--color-primary) 6%, var(--bg-app)) 100%);
+    min-height: 100%;
+  }
+
+  /* ---------- Bottom nav (floating Telegram-style capsule) ---------- */
+  /* Rounded pill bar that floats inset from the bottom and the side edges.
+     Page content is visible above, beside, and below it. The capsule itself
+     is mostly opaque (slightly translucent with backdrop blur) so it reads
+     as a solid floating bar, while items briefly peeking under it during
+     scroll are still subtly visible through the glass. */
+  .app-bottom-nav-capsule {
+    background: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 24%, var(--border-subtle));
+    border-radius: 9999px;
+    box-shadow:
+      0 14px 32px -10px rgba(0, 0, 0, 0.45),
+      0 4px 10px -4px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 color-mix(in srgb, #fff 12%, transparent);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .app-bottom-nav-capsule {
+      background: var(--bg-elevated);
+    }
+  }
+
+  /* Brighter icon colour for inactive items so they don't disappear on dark themes */
+  .app-bottom-nav__icon {
+    color: color-mix(in srgb, var(--text-primary) 78%, transparent);
+  }
+
+  /* Animated atmospheric aura layer on every themed page background. */
+  :root.use-aura .anime-page-bg::after {
+    content: "";
+    position: fixed;
+    inset: -10%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(40% 35% at 14% 18%, var(--theme-aura, transparent) 0%, transparent 60%),
+      radial-gradient(45% 35% at 86% 12%, var(--theme-aura, transparent) 0%, transparent 60%),
+      radial-gradient(60% 40% at 50% 100%, var(--theme-aura, transparent) 0%, transparent 65%);
+    filter: blur(20px);
+    opacity: 0.55;
+    animation: aura-drift 14s ease-in-out infinite;
+  }
+  @keyframes aura-drift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.45; }
+    50% { transform: translate3d(2%, -1%, 0) scale(1.04); opacity: 0.7; }
+  }
+  :root:not(.use-aura) .anime-page-bg::after { display: none; }
+
+  /* Anime modal panel */
+  .anime-modal {
+    background: var(--bg-elevated);
+    border: 2.5px solid color-mix(in srgb, var(--color-primary) 35%, var(--border-strong));
+    border-radius: 28px;
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--color-primary) 12%, transparent),
+      0 24px 60px -12px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Sticker-style icon badge */
+  .anime-badge {
+    border: 2px solid var(--text-primary);
+    border-radius: 14px;
+    box-shadow: 3px 3px 0 0 var(--text-primary);
+  }
+
+  .gradient-violet {
+    background: linear-gradient(135deg,
+      color-mix(in srgb, var(--color-primary) 95%, white) 0%,
+      var(--color-primary) 50%,
+      color-mix(in srgb, var(--color-primary) 65%, var(--color-coral)) 100%);
+  }
+  .gradient-coral { background: linear-gradient(135deg, #ff8fa1 0%, var(--color-coral) 50%, #c9305a 100%); }
+  .gradient-amber { background: linear-gradient(135deg, #ffce6e 0%, var(--color-amber) 50%, #c97a14 100%); }
+  .gradient-mint { background: linear-gradient(135deg, #6bf3d3 0%, var(--color-mint) 50%, #0a9b7d 100%); }
+
+  /* ============================================================
+     Anime / manga onboarding aesthetic
+     ============================================================ */
+  .font-anime-pop { font-family: 'Bagel Fat One', 'Mochiy Pop One', 'Zen Maru Gothic', system-ui, sans-serif; letter-spacing: 0.005em; }
+  .font-anime-soft { font-family: 'Mochiy Pop One', 'Zen Maru Gothic', system-ui, sans-serif; }
+  .font-anime-body { font-family: 'Zen Maru Gothic', 'Mochiy Pop One', system-ui, sans-serif; }
+
+  .anime-sky {
+    background:
+      radial-gradient(120% 90% at 50% -10%, #ffd1dc 0%, #ffe6f1 22%, #ffeec3 45%, #c8e7ff 70%, #e9d6ff 100%);
+  }
+  .dark .anime-sky {
+    background:
+      radial-gradient(120% 90% at 50% -10%, #5b2a55 0%, #3b1a4e 28%, #1f1538 60%, #0e0a17 100%);
+  }
+
+  .speed-lines {
+    background-image:
+      repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        rgba(255,255,255,0) 0deg 4deg,
+        rgba(255,255,255,0.55) 4deg 5deg
+      );
+    -webkit-mask-image: radial-gradient(closest-side at 50% 50%, transparent 28%, black 60%, transparent 92%);
+            mask-image: radial-gradient(closest-side at 50% 50%, transparent 28%, black 60%, transparent 92%);
+    mix-blend-mode: overlay;
+    opacity: 0.6;
+  }
+  .dark .speed-lines {
+    background-image:
+      repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        rgba(255,255,255,0) 0deg 4deg,
+        rgba(255,255,255,0.18) 4deg 5deg
+      );
+    opacity: 0.5;
+  }
+
+  .halftone {
+    background-image: radial-gradient(rgba(124,77,255,0.35) 1.2px, transparent 1.4px);
+    background-size: 10px 10px;
+    -webkit-mask-image: linear-gradient(180deg, black 30%, transparent 100%);
+            mask-image: linear-gradient(180deg, black 30%, transparent 100%);
+  }
+
+  .manga-panel {
+    background: var(--bg-elevated);
+    border: 3px solid #15101f;
+    border-radius: 28px;
+    box-shadow:
+      6px 6px 0 0 #15101f,
+      0 14px 40px rgba(21, 16, 31, 0.18);
+  }
+  .dark .manga-panel {
+    background: var(--bg-surface-1);
+    border-color: #f7e9d2;
+    box-shadow:
+      6px 6px 0 0 #f7e9d2,
+      0 16px 50px rgba(0, 0, 0, 0.55);
+  }
+
+  .manga-chip {
+    background: var(--bg-elevated);
+    border: 2.5px solid #15101f;
+    box-shadow: 3px 3px 0 0 #15101f;
+    border-radius: 999px;
+  }
+  .dark .manga-chip {
+    border-color: #f7e9d2;
+    box-shadow: 3px 3px 0 0 #f7e9d2;
+  }
+
+  .speech-bubble {
+    position: relative;
+    background: #ffffff;
+    border: 3px solid #15101f;
+    border-radius: 28px;
+    box-shadow: 5px 5px 0 0 #15101f;
+    color: #15101f;
+  }
+  .speech-bubble::after {
+    content: "";
+    position: absolute;
+    left: 38px;
+    bottom: -18px;
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 18px solid #ffffff;
+    filter: drop-shadow(0 3px 0 #15101f);
+  }
+  .dark .speech-bubble {
+    background: #f7e9d2;
+    color: #15101f;
+    border-color: #15101f;
+    box-shadow: 5px 5px 0 0 rgba(247,233,210,0.25);
+  }
+  .dark .speech-bubble::after { border-top-color: #f7e9d2; }
+
+  .anime-cta {
+    background: linear-gradient(135deg, #ff6b81 0%, #ff8fa1 40%, #ff6bb3 70%, #c34dff 100%);
+    color: #15101f;
+    border: 3px solid #15101f;
+    box-shadow: 5px 5px 0 0 #15101f;
+  }
+  .anime-cta:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 0 #15101f; }
+  .dark .anime-cta { color: #15101f; border-color: #f7e9d2; box-shadow: 5px 5px 0 0 #f7e9d2; }
+  .dark .anime-cta:active { box-shadow: 2px 2px 0 0 #f7e9d2; }
+
+  .anime-ghost {
+    background: transparent;
+    color: #15101f;
+    border: 3px solid #15101f;
+    box-shadow: 4px 4px 0 0 #15101f;
+  }
+  .anime-ghost:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 #15101f; }
+  .dark .anime-ghost { color: #f7e9d2; border-color: #f7e9d2; box-shadow: 4px 4px 0 0 #f7e9d2; }
+
+  .anime-input {
+    background: #ffffff;
+    color: #15101f;
+    border: 3px solid #15101f;
+    border-radius: 18px;
+    box-shadow: 4px 4px 0 0 #15101f;
+  }
+  .anime-input:focus { box-shadow: 4px 4px 0 0 #c34dff; outline: none; }
+  .dark .anime-input { background: #f7e9d2; box-shadow: 4px 4px 0 0 #ff8fa1; }
+  .dark .anime-input:focus { box-shadow: 4px 4px 0 0 #c34dff; }
+
+  .kira {
+    color: #ffd84d;
+    filter: drop-shadow(0 0 6px rgba(255, 216, 77, 0.7));
+  }
+
+  @keyframes sakura-fall {
+    0%   { transform: translate3d(0,-10vh,0) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 1; }
+    100% { transform: translate3d(20vw, 110vh, 0) rotate(420deg); opacity: 0; }
+  }
+  .sakura {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 60% 0 60% 0;
+    background: linear-gradient(135deg, #ffc8d8, #ff8fb1);
+    box-shadow: inset -2px -2px 0 rgba(255,255,255,0.55);
+    animation: sakura-fall linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes kira-twinkle {
+    0%, 100% { transform: scale(0.6) rotate(0deg); opacity: 0.4; }
+    50%      { transform: scale(1.15) rotate(20deg); opacity: 1; }
+  }
+  .twinkle { animation: kira-twinkle 2.4s ease-in-out infinite; }
+
+  @keyframes mascot-bob {
+    0%,100% { transform: translateY(0) rotate(-1.2deg); }
+    50%     { transform: translateY(-6px) rotate(1.2deg); }
+  }
+  .mascot-bob { animation: mascot-bob 4s ease-in-out infinite; transform-origin: 50% 80%; }
+}
+
+/* ---------- Legacy class bridges ---------- */
+.bg-background-light { background-color: var(--bg-elevated) !important; }
+.bg-background-dark { background-color: var(--bg-app) !important; }
+.dark .bg-background-light { background-color: var(--bg-elevated) !important; }
+.dark .bg-background-dark { background-color: var(--bg-app) !important; }
+
+.bg-white { background-color: var(--bg-elevated); }
+.dark .bg-white { background-color: var(--bg-elevated); }
+
+.text-slate-900 { color: var(--text-primary); }
+.text-slate-100 { color: var(--text-primary); }
+.text-slate-700 { color: var(--text-secondary); }
+.text-slate-500 { color: var(--text-secondary); }
+.text-slate-400 { color: var(--text-tertiary); }
+.dark .text-slate-100 { color: var(--text-primary); }
+.dark .text-slate-400 { color: var(--text-tertiary); }
+.dark .text-slate-500 { color: var(--text-tertiary); }
+.dark .text-slate-700 { color: var(--text-secondary); }
+
+.bg-slate-100 { background-color: var(--bg-surface-2); }
+.bg-slate-200 { background-color: var(--bg-surface-2); }
+.dark .bg-slate-700 { background-color: var(--bg-surface-2); }
+.dark .bg-slate-800 { background-color: var(--bg-surface-2); }
+.dark .bg-slate-900 { background-color: var(--bg-surface-1); }
+
+.border-slate-100,
+.border-slate-200 { border-color: var(--border-subtle); }
+.dark .border-slate-700,
+.dark .border-slate-800 { border-color: var(--border-subtle); }
+
+.bg-white\/5 { background-color: color-mix(in srgb, var(--text-primary) 4%, transparent); }
+.dark .bg-white\/5 { background-color: color-mix(in srgb, #ffffff 4%, transparent); }
+.bg-black\/20 { background-color: color-mix(in srgb, var(--text-primary) 4%, transparent); }
+.dark .bg-black\/20 { background-color: color-mix(in srgb, #000000 30%, transparent); }
+.border-white\/10 { border-color: var(--border-subtle); }
+.dark .border-white\/10 { border-color: var(--border-strong); }
+.border-white\/5 { border-color: var(--border-subtle); }
+
+/* Map blue → primary */
+.bg-blue-500 { background-color: var(--color-primary) !important; }
+.text-blue-500 { color: var(--color-primary) !important; }
+.from-blue-500 { --tw-gradient-from: var(--color-primary) !important; }
+.to-blue-500 { --tw-gradient-to: var(--color-primary) !important; }
+.via-blue-500 { --tw-gradient-via: var(--color-primary) !important; }
+.bg-blue-500\/10, .bg-blue-500\/20 { background-color: color-mix(in srgb, var(--color-primary) 16%, transparent) !important; }
+.text-blue-400 { color: var(--color-primary-soft) !important; }
+.text-blue-600 { color: var(--color-primary) !important; }
+.dark .text-blue-400 { color: var(--color-primary-soft) !important; }
+
+/* Performance mode */
+.no-animations * {
+  animation: none !important;
+  transition: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Range input thumbs */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  box-shadow: 0 2px 6px var(--color-primary-glow);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  border: none;
+  cursor: pointer;
+}
+
+/* Inputs polish */
+input, textarea, select {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  background-color: transparent;
+}
+input::placeholder, textarea::placeholder { color: var(--text-tertiary); }
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline: none; }
+
+/* Premium switch (used across settings) */
+.switch-track {
+  width: 44px; height: 24px; border-radius: 9999px;
+  background: var(--bg-surface-3); position: relative;
+  transition: background 0.2s ease;
+}
+.switch-track::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px; border-radius: 9999px;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  transition: transform 0.2s ease;
+}
+.switch-input:checked + .switch-track { background: var(--color-primary); }
+.switch-input:checked + .switch-track::after { transform: translateX(20px); }
+
+/* Native button feel */
+button { font-family: inherit; }
+
+/* Map "primary" tailwind tokens to our CSS variable */
+.bg-primary { background-color: var(--color-primary) !important; }
+.text-primary { color: var(--color-primary) !important; }
+.border-primary { border-color: var(--color-primary) !important; }
+.ring-primary { --tw-ring-color: var(--color-primary) !important; }
+.from-primary { --tw-gradient-from: var(--color-primary) !important; }
+.to-primary { --tw-gradient-to: var(--color-primary) !important; }
+.via-primary { --tw-gradient-via: var(--color-primary) !important; }
+.bg-primary\/5  { background-color: color-mix(in srgb, var(--color-primary)  5%, transparent) !important; }
+.bg-primary\/10 { background-color: color-mix(in srgb, var(--color-primary) 10%, transparent) !important; }
+.bg-primary\/20 { background-color: color-mix(in srgb, var(--color-primary) 20%, transparent) !important; }
+.bg-primary\/30 { background-color: color-mix(in srgb, var(--color-primary) 30%, transparent) !important; }
+.text-primary\/80 { color: color-mix(in srgb, var(--color-primary) 80%, transparent) !important; }
+.border-primary\/10 { border-color: color-mix(in srgb, var(--color-primary) 10%, transparent) !important; }
+.border-primary\/20 { border-color: color-mix(in srgb, var(--color-primary) 20%, transparent) !important; }
+.border-primary\/30 { border-color: color-mix(in srgb, var(--color-primary) 30%, transparent) !important; }
+.ring-primary\/20 { --tw-ring-color: color-mix(in srgb, var(--color-primary) 20%, transparent) !important; }
+.ring-primary\/50 { --tw-ring-color: color-mix(in srgb, var(--color-primary) 50%, transparent) !important; }
+.shadow-primary\/20 { --tw-shadow-color: color-mix(in srgb, var(--color-primary) 20%, transparent) !important; }
+.shadow-primary\/40 { --tw-shadow-color: color-mix(in srgb, var(--color-primary) 40%, transparent) !important; }
+
+/* Make sure modal backdrops always look right */
+.modal-backdrop {
+  background: color-mix(in srgb, #000 55%, transparent);
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+}

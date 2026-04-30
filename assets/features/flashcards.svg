@@ -1,0 +1,11 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="40" fill="#EC4899" fill-opacity="0.1"/>
+  <g>
+    <rect x="60" y="50" width="80" height="100" rx="12" fill="white" stroke="#EC4899" stroke-width="4">
+      <animateTransform attributeName="transform" type="rotate" values="-5 100 100; 5 100 100; -5 100 100" dur="4s" repeatCount="indefinite" />
+    </rect>
+    <rect x="80" y="80" width="40" height="6" rx="3" fill="#EC4899" fill-opacity="0.2"/>
+    <rect x="80" y="95" width="40" height="6" rx="3" fill="#EC4899" fill-opacity="0.2"/>
+  </g>
+  <path d="M150 100L170 100M160 90L160 110" stroke="#EC4899" stroke-width="4" stroke-linecap="round"/>
+</svg>

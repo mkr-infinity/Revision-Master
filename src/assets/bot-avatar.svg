@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7e3ff2"/>
+      <stop offset="100%" stop-color="#3b1d7a"/>
+    </linearGradient>
+    <linearGradient id="bodyg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fafaff"/>
+      <stop offset="100%" stop-color="#d4cef0"/>
+    </linearGradient>
+    <radialGradient id="eyeg" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0%" stop-color="#aef9ff"/>
+      <stop offset="100%" stop-color="#1e8aff"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#bgg)"/>
+  <circle cx="100" cy="34" r="4" fill="#aef9ff" filter="url(#glow)"/>
+  <line x1="100" y1="38" x2="100" y2="58" stroke="#fafaff" stroke-width="3" stroke-linecap="round"/>
+  <rect x="44" y="60" width="112" height="96" rx="28" fill="url(#bodyg)" stroke="#1a0d2e" stroke-width="2"/>
+  <rect x="56" y="76" width="88" height="60" rx="18" fill="#15102b"/>
+  <circle cx="78" cy="106" r="11" fill="url(#eyeg)" filter="url(#glow)"/>
+  <circle cx="122" cy="106" r="11" fill="url(#eyeg)" filter="url(#glow)"/>
+  <circle cx="75" cy="103" r="3" fill="#fafaff"/>
+  <circle cx="119" cy="103" r="3" fill="#fafaff"/>
+  <rect x="86" y="124" width="28" height="4" rx="2" fill="#aef9ff" opacity="0.7"/>
+  <rect x="40" y="98" width="6" height="20" rx="3" fill="#fafaff" stroke="#1a0d2e" stroke-width="1.5"/>
+  <rect x="154" y="98" width="6" height="20" rx="3" fill="#fafaff" stroke="#1a0d2e" stroke-width="1.5"/>
+  <circle cx="64" cy="148" r="4" fill="#7e3ff2"/>
+  <circle cx="100" cy="148" r="4" fill="#aef9ff"/>
+  <circle cx="136" cy="148" r="4" fill="#7e3ff2"/>
+</svg>

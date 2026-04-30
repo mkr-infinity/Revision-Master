@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 360" width="320" height="360">
+  <defs>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffb3d1"/>
+      <stop offset="50%" stop-color="#ff7aa8"/>
+      <stop offset="100%" stop-color="#c34dff"/>
+    </linearGradient>
+    <linearGradient id="hairShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="uniform" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f2547"/>
+      <stop offset="100%" stop-color="#0f1330"/>
+    </linearGradient>
+    <linearGradient id="bow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff6b81"/>
+      <stop offset="100%" stop-color="#c9305a"/>
+    </linearGradient>
+    <radialGradient id="cheek" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ff7aa8" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ff7aa8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="eyeFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a3cff"/>
+      <stop offset="55%" stop-color="#4d1ec9"/>
+      <stop offset="100%" stop-color="#220a6e"/>
+    </linearGradient>
+    <linearGradient id="bookSpine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffb648"/>
+      <stop offset="100%" stop-color="#c97a14"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Halo glow -->
+  <circle cx="160" cy="150" r="120" fill="#ffd1dc" opacity="0.35"/>
+  <circle cx="160" cy="150" r="90" fill="#ffeec3" opacity="0.5"/>
+
+  <!-- Back hair (long) -->
+  <path d="M70 150 Q60 80 130 50 Q160 35 200 55 Q260 85 252 165 Q258 230 240 280 L210 270 Q220 220 215 180 L210 175 Q200 200 200 230 L120 232 Q120 200 108 178 L102 184 Q100 220 110 270 L80 280 Q66 230 70 150 Z"
+        fill="url(#hair)" stroke="#15101f" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Neck -->
+  <path d="M140 220 L140 248 Q160 260 180 248 L180 220 Z" fill="#ffe2cc" stroke="#15101f" stroke-width="2.5"/>
+
+  <!-- Uniform/collar -->
+  <path d="M88 282 Q120 252 140 250 L160 274 L180 250 Q200 252 232 282 Q240 320 234 360 L86 360 Q80 320 88 282 Z"
+        fill="url(#uniform)" stroke="#15101f" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M140 250 L160 295 L180 250 L172 250 L160 280 L148 250 Z" fill="#ffffff" stroke="#15101f" stroke-width="2"/>
+  <!-- Bow tie -->
+  <path d="M138 268 L160 282 L182 268 L176 296 L160 290 L144 296 Z" fill="url(#bow)" stroke="#15101f" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="160" cy="284" r="4" fill="#15101f"/>
+
+  <!-- Face -->
+  <path d="M104 152 Q104 100 160 96 Q216 100 216 156 Q216 210 178 232 Q160 240 142 232 Q104 210 104 152 Z"
+        fill="#ffe6d2" stroke="#15101f" stroke-width="3"/>
+
+  <!-- Front bangs -->
+  <path d="M96 142 Q108 88 160 82 Q212 88 224 144 Q220 132 198 130 Q186 100 158 102 Q132 104 122 130 Q108 134 96 142 Z"
+        fill="url(#hair)" stroke="#15101f" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M132 108 Q150 96 168 102 L150 126 Z" fill="url(#hairShade)" opacity="0.7"/>
+
+  <!-- Side bangs -->
+  <path d="M104 144 Q98 196 110 224 Q108 192 118 168 Q112 156 104 144 Z" fill="url(#hair)" stroke="#15101f" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M216 144 Q222 196 210 224 Q212 192 202 168 Q208 156 216 144 Z" fill="url(#hair)" stroke="#15101f" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Cheek blush -->
+  <ellipse cx="128" cy="190" rx="14" ry="8" fill="url(#cheek)"/>
+  <ellipse cx="192" cy="190" rx="14" ry="8" fill="url(#cheek)"/>
+
+  <!-- Eyes -->
+  <g>
+    <!-- Eye whites + outline -->
+    <path d="M118 168 Q132 156 150 168 Q150 192 134 196 Q120 192 118 168 Z" fill="#ffffff" stroke="#15101f" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M170 168 Q184 156 202 168 Q204 192 188 196 Q172 192 170 168 Z" fill="#ffffff" stroke="#15101f" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Iris -->
+    <ellipse cx="135" cy="180" rx="12" ry="14" fill="url(#eyeFill)"/>
+    <ellipse cx="186" cy="180" rx="12" ry="14" fill="url(#eyeFill)"/>
+    <!-- Pupil -->
+    <ellipse cx="135" cy="184" rx="4" ry="6" fill="#0a0420"/>
+    <ellipse cx="186" cy="184" rx="4" ry="6" fill="#0a0420"/>
+    <!-- Highlights -->
+    <circle cx="140" cy="174" r="3.5" fill="#ffffff"/>
+    <circle cx="191" cy="174" r="3.5" fill="#ffffff"/>
+    <circle cx="131" cy="188" r="2" fill="#ffffff" opacity="0.85"/>
+    <circle cx="182" cy="188" r="2" fill="#ffffff" opacity="0.85"/>
+    <!-- Lashes top -->
+    <path d="M118 168 Q132 154 150 168" fill="none" stroke="#15101f" stroke-width="4" stroke-linecap="round"/>
+    <path d="M170 168 Q184 154 202 168" fill="none" stroke="#15101f" stroke-width="4" stroke-linecap="round"/>
+    <!-- Eyebrows -->
+    <path d="M120 148 Q132 142 148 148" stroke="#15101f" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M172 148 Q184 142 200 148" stroke="#15101f" stroke-width="4" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Mouth (small smile) -->
+  <path d="M152 212 Q160 220 168 212" stroke="#15101f" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M156 213 Q160 217 164 213" fill="#ff8fa1"/>
+
+  <!-- Star hair pin -->
+  <g transform="translate(108 110) rotate(-12)">
+    <polygon points="0,-10 3,-3 10,-3 4.5,2 7,10 0,5 -7,10 -4.5,2 -10,-3 -3,-3" fill="#ffd84d" stroke="#15101f" stroke-width="2"/>
+  </g>
+
+  <!-- Floating book -->
+  <g transform="translate(232 252) rotate(14)">
+    <rect x="-30" y="-22" width="60" height="44" rx="4" fill="url(#bookSpine)" stroke="#15101f" stroke-width="3"/>
+    <rect x="-26" y="-18" width="52" height="36" rx="2" fill="#fff7e0" stroke="#15101f" stroke-width="2"/>
+    <line x1="-18" y1="-8" x2="18" y2="-8" stroke="#15101f" stroke-width="2" stroke-linecap="round"/>
+    <line x1="-18" y1="0" x2="14" y2="0" stroke="#15101f" stroke-width="2" stroke-linecap="round"/>
+    <line x1="-18" y1="8" x2="10" y2="8" stroke="#15101f" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Sparkles -->
+  <g fill="#ffd84d" stroke="#15101f" stroke-width="1.5">
+    <polygon points="60,90 64,80 68,90 78,94 68,98 64,108 60,98 50,94"/>
+    <polygon points="262,128 266,118 270,128 280,132 270,136 266,146 262,136 252,132"/>
+    <polygon points="86,260 89,253 92,260 99,263 92,266 89,273 86,266 79,263"/>
+  </g>
+</svg>
