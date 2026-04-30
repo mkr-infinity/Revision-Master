@@ -1,70 +1,49 @@
-name: Build Android APK (Capacitor)
-
-# Builds a debug APK from the React/Vite + Capacitor project end-to-end.
-# This workflow handles EVERYTHING — you do NOT need to commit the android/
-# folder. It will:
-#   1. Install npm dependencies
-#   2. Build the web bundle (Vite)
-#   3. Generate the android/ folder (npx cap add android) if missing
-#   4. Sync the web assets into the android project
-#   5. Generate all icon sizes + splash screens from resources/
-#      (uses logo.svg → adaptive icon for every Android launcher style)
-#   6. Build a debug APK and upload it as an artifact you can download
-#
-# Trigger manually from the Actions tab or by pushing to main.
+name: Build Android APK
 
 on:
-  push:
-    branches: [main, master]
-    paths-ignore:
-      - "**/*.md"
-      - "docs/**"
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
-  build-apk:
-    name: Assemble debug APK
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          cache: "npm"
+          node-version: '22'
 
-      - name: Setup Java 21 (Temurin)
-        uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          java-version: "21"
+      - name: Install dependencies
+        run: npm install
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Create .env file for AI Features
+        run: |
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
 
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Build web bundle (Vite)
+      - name: Build web assets
         run: npm run build
 
-      - name: Generate android/ folder if missing
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Generate Android folder if missing
         run: |
           if [ ! -d "android" ]; then
-            echo "android/ not found — generating with 'npx cap add android'..."
             npx cap add android
-          else
-            echo "android/ already exists — skipping cap add."
           fi
 
-      - name: Capacitor sync (copy web assets into android/)
+     # 8️⃣ Sync Capacitor
+      - name: Sync Capacitor
         run: npx cap sync android
+
+      - name: Install capacitor assets
+        run: npm install @capacitor/assets
 
       - name: Generate adaptive launcher icons from resources/
         run: |
@@ -75,17 +54,43 @@ jobs:
             echo "::warning::resources/icon*.png not found — skipping icon generation. The default Capacitor icon will be used."
           fi
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x android/gradlew
 
-      - name: Assemble debug APK (signed with Android debug keystore)
-        working-directory: android
-        run: ./gradlew --no-daemon assembleDebug
 
-      - name: Upload APK artifact
+      # 9️⃣ Restore Keystore
+      - name: Restore Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks
+
+      # 🔟 Inject signing config into build.gradle
+      - name: Configure Android signing
+        run: |
+          sed -i '/android {/a\
+          signingConfigs {\n\
+              release {\n\
+                  storeFile file(System.getenv("SIGNING_STORE_FILE"))\n\
+                  storePassword System.getenv("SIGNING_STORE_PASSWORD")\n\
+                  keyAlias System.getenv("SIGNING_KEY_ALIAS")\n\
+                  keyPassword System.getenv("SIGNING_KEY_PASSWORD")\n\
+              }\n\
+          }' android/app/build.gradle
+
+          sed -i 's/buildTypes {/buildTypes {\n        release {\n            signingConfig signingConfigs.release\n        }/' android/app/build.gradle
+
+      # 1️⃣1️⃣ Build signed APK
+      - name: Build Release APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+        env:
+          SIGNING_STORE_FILE: release-key.jks
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
+      # 1️⃣2️⃣ Upload APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30
-          if-no-files-found: error
+          name: revision-master-apk
+          path: android/app/build/outputs/apk/release/*.apk
