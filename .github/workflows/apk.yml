@@ -91,14 +91,60 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Build Debug APK
+      # 🔐 Decode keystore
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+
+      # 🔐 Create keystore.properties
+      - name: Create keystore.properties
+        run: |
+          cat <<EOF > android/keystore.properties
+          storeFile=release.keystore
+          storePassword=${{ secrets.SIGNING_KEY_PASSWORD }}
+          keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}
+          keyPassword=${{ secrets.SIGNING_KEY_PASSWORD }}
+          EOF
+
+      # 🔥 Inject signing config into Gradle
+      - name: Inject signing config
+        run: |
+          FILE=android/app/build.gradle
+
+          sed -i '1i\
+def keystoreProperties = new Properties()\
+def keystorePropertiesFile = rootProject.file("keystore.properties")\
+if (keystorePropertiesFile.exists()) {\
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))\
+}\
+' $FILE
+
+          sed -i 's/buildTypes {/signingConfigs {\
+              release {\
+                  storeFile file(keystoreProperties["storeFile"])\
+                  storePassword keystoreProperties["storePassword"]\
+                  keyAlias keystoreProperties["keyAlias"]\
+                  keyPassword keystoreProperties["keyPassword"]\
+              }\
+          }\
+          buildTypes {\
+              release {\
+                  signingConfig signingConfigs.release\
+                  minifyEnabled false\
+              }\
+          }\
+          /' $FILE
+
+      # 🚀 Build RELEASE APK (changed from debug)
+      - name: Build Release APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
 
+      # 📤 Upload signed APK (updated path/name)
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: app-release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
