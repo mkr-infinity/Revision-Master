@@ -1,16 +1,16 @@
 name: Build Signed Release APK
 
 on:
-workflow_dispatch:
-push:
-tags:
-- 'v*'
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
-build:
-runs-on: ubuntu-latest
-
-steps:
+  build:
+    runs-on: ubuntu-latest
+    
+   steps:
   - name: Checkout code
     uses: actions/checkout@v4
 
