@@ -23,7 +23,7 @@
 
 <div align="center">
 
-<a href="https://github.com/mkr-infinity/Revision-Master/releases/download/v2.0/Revision-Master_v2.0.apk">
+<a href="https://github.com/mkr-infinity/Revision-Master/releases/download/v2.0.1/Revision-Master_v2.0.1.apk">
   <img src="https://img.shields.io/badge/⬇️%20Download%20APK-Revision%20Master-blue?style=for-the-badge&logo=android" />
 </a>
 
