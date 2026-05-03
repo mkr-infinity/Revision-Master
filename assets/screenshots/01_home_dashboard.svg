@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" width="390" height="844">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f0b1e"/>
+      <stop offset="100%" stop-color="#12091a"/>
+    </linearGradient>
+    <linearGradient id="cardGrad1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a1060"/>
+      <stop offset="100%" stop-color="#1a0840"/>
+    </linearGradient>
+    <linearGradient id="purpleBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7f13ec"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="pinkBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="cyanBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e0a40"/>
+      <stop offset="100%" stop-color="#2a0e5c"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="390" height="844" fill="url(#bgGrad)"/>
+
+  <!-- Speed lines bg pattern -->
+  <g opacity="0.04">
+    <line x1="0" y1="200" x2="390" y2="180" stroke="#7f13ec" stroke-width="1"/>
+    <line x1="0" y1="220" x2="390" y2="200" stroke="#7f13ec" stroke-width="0.5"/>
+    <line x1="0" y1="260" x2="390" y2="240" stroke="#7f13ec" stroke-width="1"/>
+    <line x1="0" y1="290" x2="390" y2="270" stroke="#7f13ec" stroke-width="0.5"/>
+    <line x1="0" y1="320" x2="390" y2="300" stroke="#7f13ec" stroke-width="1"/>
+  </g>
+
+  <!-- Status bar -->
+  <rect width="390" height="44" fill="#0f0b1e"/>
+  <text x="20" y="28" fill="#e2d9f3" font-family="Arial" font-size="13" font-weight="600">9:41</text>
+  <text x="330" y="28" fill="#e2d9f3" font-family="Arial" font-size="11">●●● ▲ 84%</text>
+
+  <!-- Top header -->
+  <rect x="0" y="44" width="390" height="64" fill="#0f0b1e"/>
+  <text x="20" y="72" fill="#a78bfa" font-family="Arial" font-size="12" font-weight="700" letter-spacing="2">REVISION MASTER</text>
+  <text x="20" y="92" fill="#e2d9f3" font-family="Arial" font-size="16" font-weight="700">Good morning, Hero! ⚡</text>
+  <!-- Avatar -->
+  <circle cx="360" cy="76" r="20" fill="url(#purpleBtn)"/>
+  <text x="360" y="82" fill="white" font-family="Arial" font-size="14" font-weight="700" text-anchor="middle">S</text>
+
+  <!-- Hero banner -->
+  <rect x="16" y="120" width="358" height="100" rx="20" fill="url(#heroGrad)"/>
+  <rect x="16" y="120" width="358" height="100" rx="20" fill="none" stroke="#7f13ec" stroke-width="1" stroke-opacity="0.5"/>
+  <!-- Halftone dots -->
+  <g opacity="0.15">
+    <circle cx="280" cy="140" r="2" fill="#a855f7"/>
+    <circle cx="295" cy="140" r="2" fill="#a855f7"/>
+    <circle cx="310" cy="140" r="2" fill="#a855f7"/>
+    <circle cx="325" cy="140" r="2" fill="#a855f7"/>
+    <circle cx="340" cy="140" r="2" fill="#a855f7"/>
+    <circle cx="355" cy="140" r="2" fill="#a855f7"/>
+    <circle cx="280" cy="155" r="2" fill="#a855f7"/>
+    <circle cx="295" cy="155" r="2" fill="#a855f7"/>
+    <circle cx="310" cy="155" r="2" fill="#a855f7"/>
+    <circle cx="325" cy="155" r="2" fill="#a855f7"/>
+    <circle cx="340" cy="155" r="2" fill="#a855f7"/>
+    <circle cx="355" cy="155" r="2" fill="#a855f7"/>
+    <circle cx="280" cy="170" r="2" fill="#a855f7"/>
+    <circle cx="295" cy="170" r="2" fill="#a855f7"/>
+    <circle cx="310" cy="170" r="2" fill="#a855f7"/>
+    <circle cx="325" cy="170" r="2" fill="#a855f7"/>
+  </g>
+  <text x="36" y="149" fill="#c4b5fd" font-family="Arial" font-size="11" font-weight="600" letter-spacing="1">TODAY'S GOAL</text>
+  <text x="36" y="171" fill="white" font-family="Arial" font-size="20" font-weight="800">Study 3 Subjects 🎯</text>
+  <text x="36" y="191" fill="#a78bfa" font-family="Arial" font-size="12">2 of 3 completed · Keep going!</text>
+  <!-- Progress bar -->
+  <rect x="36" y="200" width="200" height="6" rx="3" fill="#2a1060"/>
+  <rect x="36" y="200" width="134" height="6" rx="3" fill="url(#purpleBtn)"/>
+
+  <!-- Quick stats row -->
+  <text x="20" y="252" fill="#7c6fa8" font-family="Arial" font-size="11" font-weight="700" letter-spacing="1">QUICK STATS</text>
+
+  <rect x="16" y="260" width="106" height="76" rx="16" fill="#1a0d30"/>
+  <rect x="16" y="260" width="106" height="76" rx="16" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="69" y="289" fill="#7f13ec" font-family="Arial" font-size="22" font-weight="800" text-anchor="middle">48</text>
+  <text x="69" y="305" fill="#7c6fa8" font-family="Arial" font-size="10" text-anchor="middle">Flashcards</text>
+  <text x="69" y="320" fill="#a78bfa" font-family="Arial" font-size="10" font-weight="600" text-anchor="middle">Total</text>
+
+  <rect x="142" y="260" width="106" height="76" rx="16" fill="#1a0d30"/>
+  <rect x="142" y="260" width="106" height="76" rx="16" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="195" y="289" fill="#ec4899" font-family="Arial" font-size="22" font-weight="800" text-anchor="middle">7</text>
+  <text x="195" y="305" fill="#7c6fa8" font-family="Arial" font-size="10" text-anchor="middle">Mock Tests</text>
+  <text x="195" y="320" fill="#f472b6" font-family="Arial" font-size="10" font-weight="600" text-anchor="middle">Done</text>
+
+  <rect x="268" y="260" width="106" height="76" rx="16" fill="#1a0d30"/>
+  <rect x="268" y="260" width="106" height="76" rx="16" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="321" y="289" fill="#06b6d4" font-family="Arial" font-size="22" font-weight="800" text-anchor="middle">92%</text>
+  <text x="321" y="305" fill="#7c6fa8" font-family="Arial" font-size="10" text-anchor="middle">Accuracy</text>
+  <text x="321" y="320" fill="#67e8f9" font-family="Arial" font-size="10" font-weight="600" text-anchor="middle">This Week</text>
+
+  <!-- Subjects section -->
+  <text x="20" y="368" fill="#7c6fa8" font-family="Arial" font-size="11" font-weight="700" letter-spacing="1">YOUR SUBJECTS</text>
+  <text x="330" y="368" fill="#7f13ec" font-family="Arial" font-size="11" font-weight="600">See all →</text>
+
+  <!-- Subject cards -->
+  <rect x="16" y="376" width="358" height="66" rx="16" fill="#1a0d30"/>
+  <rect x="16" y="376" width="358" height="66" rx="16" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <circle cx="46" cy="409" r="16" fill="#2a1060"/>
+  <text x="46" y="415" font-family="Arial" font-size="16" text-anchor="middle">⚗️</text>
+  <text x="74" y="403" fill="white" font-family="Arial" font-size="14" font-weight="700">Chemistry</text>
+  <text x="74" y="422" fill="#7c6fa8" font-family="Arial" font-size="12">18 cards · 3 tests</text>
+  <rect x="270" y="404" width="84" height="10" rx="5" fill="#2a1060"/>
+  <rect x="270" y="404" width="60" height="10" rx="5" fill="url(#purpleBtn)"/>
+  <text x="358" y="413" fill="#a78bfa" font-family="Arial" font-size="11" font-weight="700" text-anchor="end">71%</text>
+
+  <rect x="16" y="450" width="358" height="66" rx="16" fill="#1a0d30"/>
+  <rect x="16" y="450" width="358" height="66" rx="16" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <circle cx="46" cy="483" r="16" fill="#1e0a20"/>
+  <text x="46" y="489" font-family="Arial" font-size="16" text-anchor="middle">📐</text>
+  <text x="74" y="477" fill="white" font-family="Arial" font-size="14" font-weight="700">Mathematics</text>
+  <text x="74" y="496" fill="#7c6fa8" font-family="Arial" font-size="12">24 cards · 5 tests</text>
+  <rect x="270" y="478" width="84" height="10" rx="5" fill="#2a1060"/>
+  <rect x="270" y="478" width="76" height="10" rx="5" fill="url(#pinkBtn)"/>
+  <text x="358" y="487" fill="#f472b6" font-family="Arial" font-size="11" font-weight="700" text-anchor="end">90%</text>
+
+  <rect x="16" y="524" width="358" height="66" rx="16" fill="#1a0d30"/>
+  <rect x="16" y="524" width="358" height="66" rx="16" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <circle cx="46" cy="557" r="16" fill="#082020"/>
+  <text x="46" y="563" font-family="Arial" font-size="16" text-anchor="middle">🧬</text>
+  <text x="74" y="551" fill="white" font-family="Arial" font-size="14" font-weight="700">Biology</text>
+  <text x="74" y="570" fill="#7c6fa8" font-family="Arial" font-size="12">12 cards · 2 tests</text>
+  <rect x="270" y="552" width="84" height="10" rx="5" fill="#082820"/>
+  <rect x="270" y="552" width="40" height="10" rx="5" fill="url(#cyanBtn)"/>
+  <text x="358" y="561" fill="#67e8f9" font-family="Arial" font-size="11" font-weight="700" text-anchor="end">48%</text>
+
+  <!-- Recent activity -->
+  <text x="20" y="618" fill="#7c6fa8" font-family="Arial" font-size="11" font-weight="700" letter-spacing="1">RECENT ACTIVITY</text>
+  <rect x="16" y="626" width="358" height="52" rx="14" fill="#1a0d30"/>
+  <rect x="16" y="626" width="358" height="52" rx="14" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <circle cx="42" cy="652" r="12" fill="#2a1060"/>
+  <text x="42" y="658" font-family="Arial" font-size="12" text-anchor="middle">✨</text>
+  <text x="62" y="647" fill="white" font-family="Arial" font-size="13" font-weight="600">Studied Organic Chemistry</text>
+  <text x="62" y="663" fill="#7c6fa8" font-family="Arial" font-size="11">25 min ago · 14 cards reviewed</text>
+
+  <!-- Bottom Nav -->
+  <rect x="0" y="756" width="390" height="88" fill="#0f0b1e"/>
+  <rect x="0" y="756" width="390" height="1" fill="#2a1555"/>
+  <rect x="24" y="760" width="342" height="56" rx="28" fill="#1a0d30"/>
+  <rect x="24" y="760" width="342" height="56" rx="28" fill="none" stroke="#2a1555" stroke-width="1"/>
+
+  <!-- Nav items -->
+  <g opacity="1">
+    <rect x="30" y="764" width="80" height="48" rx="24" fill="url(#purpleBtn)"/>
+    <text x="70" y="787" font-family="Arial" font-size="18" text-anchor="middle">🏠</text>
+    <text x="70" y="804" fill="white" font-family="Arial" font-size="9" font-weight="700" text-anchor="middle">Home</text>
+  </g>
+  <text x="133" y="785" font-family="Arial" font-size="18" text-anchor="middle">📚</text>
+  <text x="133" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Cards</text>
+  <text x="195" y="785" font-family="Arial" font-size="18" text-anchor="middle">📝</text>
+  <text x="195" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Tests</text>
+  <text x="257" y="785" font-family="Arial" font-size="18" text-anchor="middle">📊</text>
+  <text x="257" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Stats</text>
+  <text x="319" y="785" font-family="Arial" font-size="18" text-anchor="middle">⚙️</text>
+  <text x="319" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Settings</text>
+
+  <!-- Home indicator -->
+  <rect x="165" y="836" width="60" height="4" rx="2" fill="#3a2060"/>
+</svg>

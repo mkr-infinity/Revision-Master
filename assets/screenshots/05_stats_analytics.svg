@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" width="390" height="844">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f0b1e"/>
+      <stop offset="100%" stop-color="#12091a"/>
+    </linearGradient>
+    <linearGradient id="purpleBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7f13ec"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="barGrad1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#7f13ec"/>
+    </linearGradient>
+    <linearGradient id="barGrad2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="barGrad3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="390" height="844" fill="url(#bgGrad)"/>
+
+  <!-- Status bar -->
+  <rect width="390" height="44" fill="#0f0b1e"/>
+  <text x="20" y="28" fill="#e2d9f3" font-family="Arial" font-size="13" font-weight="600">9:41</text>
+  <text x="330" y="28" fill="#e2d9f3" font-family="Arial" font-size="11">●●● ▲ 84%</text>
+
+  <!-- Header -->
+  <rect x="0" y="44" width="390" height="60" fill="#0f0b1e"/>
+  <text x="20" y="77" fill="white" font-family="Arial" font-size="22" font-weight="800">Statistics</text>
+  <text x="20" y="95" fill="#7c6fa8" font-family="Arial" font-size="12">Your study insights · Last 7 days</text>
+  <!-- Period selector -->
+  <rect x="300" y="62" width="72" height="28" rx="14" fill="#2a1060"/>
+  <text x="336" y="80" fill="#a78bfa" font-family="Arial" font-size="11" font-weight="700" text-anchor="middle">7 days ▾</text>
+
+  <!-- Big stat cards row -->
+  <rect x="16" y="116" width="167" height="86" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="116" width="167" height="86" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="28" y="140" fill="#7c6fa8" font-family="Arial" font-size="11">Cards Reviewed</text>
+  <text x="28" y="168" fill="white" font-family="Arial" font-size="30" font-weight="800">142</text>
+  <text x="28" y="188" fill="#10b981" font-family="Arial" font-size="11">↑ +23 vs last week</text>
+
+  <rect x="207" y="116" width="167" height="86" rx="20" fill="#1a0d30"/>
+  <rect x="207" y="116" width="167" height="86" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="219" y="140" fill="#7c6fa8" font-family="Arial" font-size="11">Study Streak</text>
+  <text x="219" y="168" fill="#f97316" font-family="Arial" font-size="30" font-weight="800">🔥 7</text>
+  <text x="219" y="188" fill="#fb923c" font-family="Arial" font-size="11">Days in a row!</text>
+
+  <rect x="16" y="212" width="167" height="86" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="212" width="167" height="86" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="28" y="236" fill="#7c6fa8" font-family="Arial" font-size="11">Avg Accuracy</text>
+  <text x="28" y="264" fill="#a855f7" font-family="Arial" font-size="30" font-weight="800">87%</text>
+  <text x="28" y="284" fill="#a78bfa" font-family="Arial" font-size="11">↑ +4% improvement</text>
+
+  <rect x="207" y="212" width="167" height="86" rx="20" fill="#1a0d30"/>
+  <rect x="207" y="212" width="167" height="86" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="219" y="236" fill="#7c6fa8" font-family="Arial" font-size="11">Study Time</text>
+  <text x="219" y="264" fill="#06b6d4" font-family="Arial" font-size="30" font-weight="800">4.2h</text>
+  <text x="219" y="284" fill="#67e8f9" font-family="Arial" font-size="11">This week total</text>
+
+  <!-- Weekly activity chart -->
+  <text x="20" y="328" fill="#7c6fa8" font-family="Arial" font-size="11" font-weight="700" letter-spacing="1">WEEKLY ACTIVITY</text>
+  <rect x="16" y="336" width="358" height="140" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="336" width="358" height="140" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+
+  <!-- Chart bars -->
+  <g>
+    <!-- Mon -->
+    <rect x="40" y="413" width="30" height="40" rx="6" fill="url(#barGrad1)" opacity="0.6"/>
+    <text x="55" y="465" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">M</text>
+    <!-- Tue -->
+    <rect x="86" y="398" width="30" height="55" rx="6" fill="url(#barGrad1)" opacity="0.8"/>
+    <text x="101" y="465" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">T</text>
+    <!-- Wed -->
+    <rect x="132" y="405" width="30" height="48" rx="6" fill="url(#barGrad1)" opacity="0.7"/>
+    <text x="147" y="465" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">W</text>
+    <!-- Thu -->
+    <rect x="178" y="383" width="30" height="70" rx="6" fill="url(#barGrad2)"/>
+    <text x="193" y="465" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">T</text>
+    <!-- Fri -->
+    <rect x="224" y="357" width="30" height="96" rx="6" fill="url(#barGrad1)"/>
+    <text x="239" y="465" fill="#a78bfa" font-family="Arial" font-size="9" font-weight="700" text-anchor="middle">F</text>
+    <!-- Sat -->
+    <rect x="270" y="390" width="30" height="63" rx="6" fill="url(#barGrad3)" opacity="0.8"/>
+    <text x="285" y="465" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">S</text>
+    <!-- Sun (today) -->
+    <rect x="316" y="370" width="30" height="83" rx="6" fill="url(#barGrad1)"/>
+    <text x="331" y="465" fill="#a78bfa" font-family="Arial" font-size="9" font-weight="700" text-anchor="middle">S</text>
+  </g>
+
+  <!-- Heatmap section -->
+  <text x="20" y="502" fill="#7c6fa8" font-family="Arial" font-size="11" font-weight="700" letter-spacing="1">ACTIVITY HEATMAP</text>
+  <rect x="16" y="510" width="358" height="100" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="510" width="358" height="100" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+
+  <!-- Heatmap grid -->
+  <g>
+    <!-- Row 1 -->
+    <rect x="30" y="526" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="48" y="526" width="14" height="14" rx="3" fill="#3a1880"/>
+    <rect x="66" y="526" width="14" height="14" rx="3" fill="#5a24b0"/>
+    <rect x="84" y="526" width="14" height="14" rx="3" fill="#7f13ec" opacity="0.9"/>
+    <rect x="102" y="526" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="120" y="526" width="14" height="14" rx="3" fill="#5a24b0"/>
+    <rect x="138" y="526" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="156" y="526" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="174" y="526" width="14" height="14" rx="3" fill="#3a1880"/>
+    <rect x="192" y="526" width="14" height="14" rx="3" fill="#7f13ec" opacity="0.7"/>
+    <rect x="210" y="526" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="228" y="526" width="14" height="14" rx="3" fill="#5a24b0"/>
+    <rect x="246" y="526" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="264" y="526" width="14" height="14" rx="3" fill="#a855f7"/>
+    <rect x="282" y="526" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="300" y="526" width="14" height="14" rx="3" fill="#3a1880"/>
+    <rect x="318" y="526" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="336" y="526" width="14" height="14" rx="3" fill="#a855f7"/>
+    <!-- Row 2 -->
+    <rect x="30" y="546" width="14" height="14" rx="3" fill="#5a24b0"/>
+    <rect x="48" y="546" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="66" y="546" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="84" y="546" width="14" height="14" rx="3" fill="#3a1880"/>
+    <rect x="102" y="546" width="14" height="14" rx="3" fill="#7f13ec" opacity="0.8"/>
+    <rect x="120" y="546" width="14" height="14" rx="3" fill="#a855f7"/>
+    <rect x="138" y="546" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="156" y="546" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="174" y="546" width="14" height="14" rx="3" fill="#5a24b0"/>
+    <rect x="192" y="546" width="14" height="14" rx="3" fill="#a855f7"/>
+    <rect x="210" y="546" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="228" y="546" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="246" y="546" width="14" height="14" rx="3" fill="#3a1880"/>
+    <rect x="264" y="546" width="14" height="14" rx="3" fill="#7f13ec" opacity="0.6"/>
+    <rect x="282" y="546" width="14" height="14" rx="3" fill="#a855f7"/>
+    <rect x="300" y="546" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="318" y="546" width="14" height="14" rx="3" fill="#5a24b0"/>
+    <rect x="336" y="546" width="14" height="14" rx="3" fill="#a855f7"/>
+    <!-- Row 3 -->
+    <rect x="30" y="566" width="14" height="14" rx="3" fill="#3a1880"/>
+    <rect x="48" y="566" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="66" y="566" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="84" y="566" width="14" height="14" rx="3" fill="#a855f7"/>
+    <rect x="102" y="566" width="14" height="14" rx="3" fill="#5a24b0"/>
+    <rect x="120" y="566" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="138" y="566" width="14" height="14" rx="3" fill="#7f13ec" opacity="0.8"/>
+    <rect x="156" y="566" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="174" y="566" width="14" height="14" rx="3" fill="#a855f7"/>
+    <rect x="192" y="566" width="14" height="14" rx="3" fill="#3a1880"/>
+    <rect x="210" y="566" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="228" y="566" width="14" height="14" rx="3" fill="#5a24b0"/>
+    <rect x="246" y="566" width="14" height="14" rx="3" fill="#a855f7"/>
+    <rect x="264" y="566" width="14" height="14" rx="3" fill="#2a1060"/>
+    <rect x="282" y="566" width="14" height="14" rx="3" fill="#3a1880"/>
+    <rect x="300" y="566" width="14" height="14" rx="3" fill="#a855f7"/>
+    <rect x="318" y="566" width="14" height="14" rx="3" fill="#7f13ec"/>
+    <rect x="336" y="566" width="14" height="14" rx="3" fill="#2a1060"/>
+  </g>
+  <text x="30" y="600" fill="#4a3570" font-family="Arial" font-size="10">Less</text>
+  <rect x="58" y="590" width="10" height="10" rx="2" fill="#2a1060"/>
+  <rect x="72" y="590" width="10" height="10" rx="2" fill="#3a1880"/>
+  <rect x="86" y="590" width="10" height="10" rx="2" fill="#5a24b0"/>
+  <rect x="100" y="590" width="10" height="10" rx="2" fill="#7f13ec"/>
+  <rect x="114" y="590" width="10" height="10" rx="2" fill="#a855f7"/>
+  <text x="128" y="600" fill="#4a3570" font-family="Arial" font-size="10">More</text>
+
+  <!-- Subject breakdown -->
+  <text x="20" y="630" fill="#7c6fa8" font-family="Arial" font-size="11" font-weight="700" letter-spacing="1">SUBJECT BREAKDOWN</text>
+  <rect x="16" y="638" width="358" height="80" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="638" width="358" height="80" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="30" y="663" fill="white" font-family="Arial" font-size="13" font-weight="700">Chemistry</text>
+  <rect x="180" y="654" width="150" height="10" rx="5" fill="#2a1060"/>
+  <rect x="180" y="654" width="107" height="10" rx="5" fill="url(#purpleBtn)"/>
+  <text x="345" y="663" fill="#a78bfa" font-family="Arial" font-size="11" text-anchor="end">71%</text>
+  <text x="30" y="692" fill="white" font-family="Arial" font-size="13" font-weight="700">Mathematics</text>
+  <rect x="180" y="683" width="150" height="10" rx="5" fill="#2a1060"/>
+  <rect x="180" y="683" width="135" height="10" rx="5" fill="#ec4899"/>
+  <text x="345" y="692" fill="#f472b6" font-family="Arial" font-size="11" text-anchor="end">90%</text>
+
+  <!-- Bottom Nav -->
+  <rect x="0" y="756" width="390" height="88" fill="#0f0b1e"/>
+  <rect x="0" y="756" width="390" height="1" fill="#2a1555"/>
+  <rect x="24" y="760" width="342" height="56" rx="28" fill="#1a0d30"/>
+  <rect x="24" y="760" width="342" height="56" rx="28" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="70" y="785" font-family="Arial" font-size="18" text-anchor="middle">🏠</text>
+  <text x="70" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Home</text>
+  <text x="133" y="785" font-family="Arial" font-size="18" text-anchor="middle">📚</text>
+  <text x="133" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Cards</text>
+  <text x="195" y="785" font-family="Arial" font-size="18" text-anchor="middle">📝</text>
+  <text x="195" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Tests</text>
+  <rect x="236" y="764" width="80" height="48" rx="24" fill="url(#purpleBtn)"/>
+  <text x="276" y="787" font-family="Arial" font-size="18" text-anchor="middle">📊</text>
+  <text x="276" y="804" fill="white" font-family="Arial" font-size="9" font-weight="700" text-anchor="middle">Stats</text>
+  <text x="338" y="785" font-family="Arial" font-size="18" text-anchor="middle">⚙️</text>
+  <text x="338" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Settings</text>
+  <rect x="165" y="836" width="60" height="4" rx="2" fill="#3a2060"/>
+</svg>

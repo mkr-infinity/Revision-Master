@@ -1,0 +1,44 @@
+<svg width="400" height="700" viewBox="0 0 400 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Phone Frame -->
+  <rect x="10" y="10" width="380" height="680" rx="40" fill="#121212" stroke="#333" stroke-width="8"/>
+  <rect x="150" y="25" width="100" height="20" rx="10" fill="#222"/>
+  
+  <!-- Screen Content -->
+  <rect x="25" y="60" width="350" height="580" rx="20" fill="#0F172A"/>
+  
+  <!-- Header -->
+  <rect x="40" y="80" width="120" height="20" rx="4" fill="#6366F1" fill-opacity="0.2"/>
+  <circle cx="340" cy="90" r="15" fill="#6366F1" fill-opacity="0.2"/>
+  
+  <!-- Subject Cards -->
+  <rect x="40" y="120" width="320" height="80" rx="12" fill="#1E293B">
+    <animate attributeName="fill" values="#1E293B;#2D3748;#1E293B" dur="3s" repeatCount="indefinite" />
+  </rect>
+  <rect x="55" y="140" width="40" height="40" rx="8" fill="#6366F1"/>
+  <rect x="110" y="145" width="150" height="12" rx="4" fill="#94A3B8"/>
+  <rect x="110" y="165" width="80" height="8" rx="4" fill="#475569"/>
+  
+  <rect x="40" y="210" width="320" height="80" rx="12" fill="#1E293B"/>
+  <rect x="55" y="230" width="40" height="40" rx="8" fill="#10B981"/>
+  <rect x="110" y="235" width="150" height="12" rx="4" fill="#94A3B8"/>
+  <rect x="110" y="255" width="80" height="8" rx="4" fill="#475569"/>
+  
+  <rect x="40" y="300" width="320" height="80" rx="12" fill="#1E293B"/>
+  <rect x="55" y="320" width="40" height="40" rx="8" fill="#F59E0B"/>
+  <rect x="110" y="325" width="150" height="12" rx="4" fill="#94A3B8"/>
+  <rect x="110" y="345" width="80" height="8" rx="4" fill="#475569"/>
+  
+  <!-- Stats Section -->
+  <rect x="40" y="400" width="320" height="120" rx="16" fill="#6366F1" fill-opacity="0.1" stroke="#6366F1" stroke-opacity="0.2"/>
+  <text x="60" y="435" fill="#6366F1" font-family="sans-serif" font-weight="bold" font-size="14">Weekly Progress</text>
+  <path d="M60 490 L100 460 L140 475 L180 440 L220 465 L260 430 L300 450" stroke="#6366F1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke-dasharray" from="0,500" to="500,0" dur="2s" repeatCount="indefinite" />
+  </path>
+  
+  <!-- Bottom Nav -->
+  <rect x="25" y="580" width="350" height="60" rx="0" fill="#1E293B"/>
+  <circle cx="70" cy="610" r="12" fill="#6366F1"/>
+  <circle cx="155" cy="610" r="12" fill="#475569"/>
+  <circle cx="245" cy="610" r="12" fill="#475569"/>
+  <circle cx="330" cy="610" r="12" fill="#475569"/>
+</svg>

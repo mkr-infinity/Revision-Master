@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" width="390" height="844">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f0b1e"/>
+      <stop offset="100%" stop-color="#12091a"/>
+    </linearGradient>
+    <linearGradient id="purpleBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7f13ec"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="pinkBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="cyanBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="greenBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="390" height="844" fill="url(#bgGrad)"/>
+
+  <!-- Status bar -->
+  <rect width="390" height="44" fill="#0f0b1e"/>
+  <text x="20" y="28" fill="#e2d9f3" font-family="Arial" font-size="13" font-weight="600">9:41</text>
+  <text x="330" y="28" fill="#e2d9f3" font-family="Arial" font-size="11">●●● ▲ 84%</text>
+
+  <!-- Header -->
+  <rect x="0" y="44" width="390" height="60" fill="#0f0b1e"/>
+  <text x="20" y="77" fill="white" font-family="Arial" font-size="22" font-weight="800">Flashcard Decks</text>
+  <text x="20" y="95" fill="#7c6fa8" font-family="Arial" font-size="12">48 cards across 4 decks</text>
+  <!-- Plus button -->
+  <circle cx="362" cy="74" r="20" fill="url(#purpleBtn)"/>
+  <text x="362" y="81" fill="white" font-family="Arial" font-size="20" font-weight="300" text-anchor="middle">+</text>
+
+  <!-- Search bar -->
+  <rect x="16" y="116" width="358" height="44" rx="14" fill="#1a0d30"/>
+  <rect x="16" y="116" width="358" height="44" rx="14" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="40" y="143" fill="#7c6fa8" font-family="Arial" font-size="16">🔍</text>
+  <text x="64" y="143" fill="#4a3570" font-family="Arial" font-size="14">Search decks…</text>
+
+  <!-- Sort tabs -->
+  <rect x="16" y="172" width="88" height="32" rx="16" fill="url(#purpleBtn)"/>
+  <text x="60" y="192" fill="white" font-family="Arial" font-size="12" font-weight="700" text-anchor="middle">All Decks</text>
+  <rect x="114" y="172" width="88" height="32" rx="16" fill="#1a0d30"/>
+  <text x="158" y="192" fill="#7c6fa8" font-family="Arial" font-size="12" text-anchor="middle">Favorites</text>
+  <rect x="212" y="172" width="88" height="32" rx="16" fill="#1a0d30"/>
+  <text x="256" y="192" fill="#7c6fa8" font-family="Arial" font-size="12" text-anchor="middle">Recent</text>
+
+  <!-- Deck cards -->
+  <!-- Deck 1 -->
+  <rect x="16" y="218" width="358" height="110" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="218" width="358" height="110" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <rect x="16" y="218" width="6" height="110" rx="3" fill="url(#purpleBtn)"/>
+  <circle cx="54" cy="265" r="24" fill="#2a1060"/>
+  <text x="54" y="272" font-family="Arial" font-size="24" text-anchor="middle">⚗️</text>
+  <text x="88" y="253" fill="white" font-family="Arial" font-size="16" font-weight="700">Organic Chemistry</text>
+  <text x="88" y="271" fill="#7c6fa8" font-family="Arial" font-size="12">18 cards · Last studied 2h ago</text>
+  <rect x="88" y="282" width="56" height="20" rx="10" fill="#2a1060"/>
+  <text x="116" y="296" fill="#a78bfa" font-family="Arial" font-size="10" font-weight="700" text-anchor="middle">Chemistry</text>
+  <!-- Progress -->
+  <text x="230" y="253" fill="#7c6fa8" font-family="Arial" font-size="11">Mastery</text>
+  <text x="360" y="253" fill="#a78bfa" font-family="Arial" font-size="13" font-weight="700" text-anchor="end">71%</text>
+  <rect x="230" y="260" width="130" height="8" rx="4" fill="#2a1060"/>
+  <rect x="230" y="260" width="92" height="8" rx="4" fill="url(#purpleBtn)"/>
+  <rect x="300" y="283" width="72" height="28" rx="14" fill="url(#purpleBtn)"/>
+  <text x="336" y="301" fill="white" font-family="Arial" font-size="11" font-weight="700" text-anchor="middle">Study Now</text>
+
+  <!-- Deck 2 -->
+  <rect x="16" y="340" width="358" height="110" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="340" width="358" height="110" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <rect x="16" y="340" width="6" height="110" rx="3" fill="url(#pinkBtn)"/>
+  <circle cx="54" cy="387" r="24" fill="#1e0a20"/>
+  <text x="54" y="394" font-family="Arial" font-size="24" text-anchor="middle">📐</text>
+  <text x="88" y="375" fill="white" font-family="Arial" font-size="16" font-weight="700">Calculus Formulas</text>
+  <text x="88" y="393" fill="#7c6fa8" font-family="Arial" font-size="12">24 cards · Last studied today</text>
+  <rect x="88" y="404" width="56" height="20" rx="10" fill="#1e0a20"/>
+  <text x="116" y="418" fill="#f472b6" font-family="Arial" font-size="10" font-weight="700" text-anchor="middle">Maths</text>
+  <text x="230" y="375" fill="#7c6fa8" font-family="Arial" font-size="11">Mastery</text>
+  <text x="360" y="375" fill="#f472b6" font-family="Arial" font-size="13" font-weight="700" text-anchor="end">90%</text>
+  <rect x="230" y="382" width="130" height="8" rx="4" fill="#1e0a20"/>
+  <rect x="230" y="382" width="117" height="8" rx="4" fill="url(#pinkBtn)"/>
+  <rect x="300" y="405" width="72" height="28" rx="14" fill="url(#pinkBtn)"/>
+  <text x="336" y="423" fill="white" font-family="Arial" font-size="11" font-weight="700" text-anchor="middle">Study Now</text>
+
+  <!-- Deck 3 -->
+  <rect x="16" y="462" width="358" height="110" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="462" width="358" height="110" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <rect x="16" y="462" width="6" height="110" rx="3" fill="url(#cyanBtn)"/>
+  <circle cx="54" cy="509" r="24" fill="#082020"/>
+  <text x="54" y="516" font-family="Arial" font-size="24" text-anchor="middle">🧬</text>
+  <text x="88" y="497" fill="white" font-family="Arial" font-size="16" font-weight="700">Cell Biology</text>
+  <text x="88" y="515" fill="#7c6fa8" font-family="Arial" font-size="12">12 cards · Not studied yet</text>
+  <rect x="88" y="526" width="56" height="20" rx="10" fill="#082020"/>
+  <text x="116" y="540" fill="#67e8f9" font-family="Arial" font-size="10" font-weight="700" text-anchor="middle">Biology</text>
+  <text x="230" y="497" fill="#7c6fa8" font-family="Arial" font-size="11">Mastery</text>
+  <text x="360" y="497" fill="#67e8f9" font-family="Arial" font-size="13" font-weight="700" text-anchor="end">48%</text>
+  <rect x="230" y="504" width="130" height="8" rx="4" fill="#082820"/>
+  <rect x="230" y="504" width="62" height="8" rx="4" fill="url(#cyanBtn)"/>
+  <rect x="300" y="527" width="72" height="28" rx="14" fill="url(#cyanBtn)"/>
+  <text x="336" y="545" fill="white" font-family="Arial" font-size="11" font-weight="700" text-anchor="middle">Study Now</text>
+
+  <!-- Deck 4 -->
+  <rect x="16" y="584" width="358" height="110" rx="20" fill="#1a0d30"/>
+  <rect x="16" y="584" width="358" height="110" rx="20" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <rect x="16" y="584" width="6" height="110" rx="3" fill="url(#greenBtn)"/>
+  <circle cx="54" cy="631" r="24" fill="#062020"/>
+  <text x="54" y="638" font-family="Arial" font-size="24" text-anchor="middle">🌍</text>
+  <text x="88" y="619" fill="white" font-family="Arial" font-size="16" font-weight="700">World History</text>
+  <text x="88" y="637" fill="#7c6fa8" font-family="Arial" font-size="12">30 cards · Last studied 3d ago</text>
+  <rect x="88" y="648" width="56" height="20" rx="10" fill="#062820"/>
+  <text x="116" y="662" fill="#6ee7b7" font-family="Arial" font-size="10" font-weight="700" text-anchor="middle">History</text>
+  <text x="230" y="619" fill="#7c6fa8" font-family="Arial" font-size="11">Mastery</text>
+  <text x="360" y="619" fill="#6ee7b7" font-family="Arial" font-size="13" font-weight="700" text-anchor="end">63%</text>
+  <rect x="230" y="626" width="130" height="8" rx="4" fill="#062820"/>
+  <rect x="230" y="626" width="82" height="8" rx="4" fill="url(#greenBtn)"/>
+  <rect x="300" y="649" width="72" height="28" rx="14" fill="url(#greenBtn)"/>
+  <text x="336" y="667" fill="white" font-family="Arial" font-size="11" font-weight="700" text-anchor="middle">Study Now</text>
+
+  <!-- Bottom Nav -->
+  <rect x="0" y="756" width="390" height="88" fill="#0f0b1e"/>
+  <rect x="0" y="756" width="390" height="1" fill="#2a1555"/>
+  <rect x="24" y="760" width="342" height="56" rx="28" fill="#1a0d30"/>
+  <rect x="24" y="760" width="342" height="56" rx="28" fill="none" stroke="#2a1555" stroke-width="1"/>
+  <text x="70" y="785" font-family="Arial" font-size="18" text-anchor="middle">🏠</text>
+  <text x="70" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Home</text>
+  <rect x="112" y="764" width="80" height="48" rx="24" fill="url(#purpleBtn)"/>
+  <text x="152" y="787" font-family="Arial" font-size="18" text-anchor="middle">📚</text>
+  <text x="152" y="804" fill="white" font-family="Arial" font-size="9" font-weight="700" text-anchor="middle">Cards</text>
+  <text x="214" y="785" font-family="Arial" font-size="18" text-anchor="middle">📝</text>
+  <text x="214" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Tests</text>
+  <text x="276" y="785" font-family="Arial" font-size="18" text-anchor="middle">📊</text>
+  <text x="276" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Stats</text>
+  <text x="338" y="785" font-family="Arial" font-size="18" text-anchor="middle">⚙️</text>
+  <text x="338" y="802" fill="#7c6fa8" font-family="Arial" font-size="9" text-anchor="middle">Settings</text>
+  <rect x="165" y="836" width="60" height="4" rx="2" fill="#3a2060"/>
+</svg>

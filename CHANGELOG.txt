@@ -1,0 +1,93 @@
+Revision Master — Changelog
+===========================
+
+v2.0.0 — Anime Edition
+----------------------
+
+Navigation
+- Bottom navigation rebuilt as four FLOATING pill buttons (Home / Cards /
+  Tests / Settings) instead of a single connected bar. Each button has its
+  own elevated surface, soft drop shadow, hairline border and gentle 1-px
+  inset highlight, so they read as discrete buttons even on dark themes.
+- Single brand accent (orchid / theme primary) is used across all four
+  tabs. The active tab fills with a violet gradient, lifts up 6 px,
+  glows with a radial halo and turns its icon + label white. Inactive
+  tabs show a tiny accent dot for a uniform mobile-app feel.
+- Bottom nav is flush to the screen edge with a smooth gradient backdrop
+  fade above the buttons — no dark "blank strip" between the nav and
+  the content.
+- Bottom-nav icons brightened (78% of text-primary) so they're clearly
+  visible on every theme background.
+
+Splash / Loading
+- The in-app loading screen now shows the real Revision Master logo with
+  an orchid drop-shadow + animated radial halo + "Revision Master"
+  wordmark, instead of the previous gradient-square placeholder. This
+  matches the Capacitor Android splash on cold launch.
+- Single canonical app logo at src/assets/logo.svg (violet→pink RM
+  monogram with a lightning spark). All other duplicate icons removed.
+
+Updates / Distribution
+- In-app update check now polls
+  https://api.github.com/repos/mkr-infinity/Revision-Master/releases/latest
+  every app launch (cached 5 min, snoozable 7 days).
+- When a newer release is published on GitHub, both the "Download
+  Update" and "View Release on GitHub" buttons in the popup open the
+  official release page (https://github.com/mkr-infinity/Revision-Master/releases/latest)
+  in the system browser, where users can grab the APK attached to that
+  release. Falls back to window.open in the dev preview.
+- Version comparison uses semver via the `compare-versions` package, so
+  "v2.1.0" > "2.0.0" works correctly with or without the leading v.
+- New GitHub Actions workflow (.github/workflows/apk.yml) builds a debug
+  APK on every push to main: Node 22 + JDK 21 + npm ci + vite build +
+  cap sync + gradlew assembleDebug, uploaded as a versioned artifact.
+
+UI / Theme
+- Full anime / manga aesthetic across every screen and popup.
+- Six themes renamed and re-coloured: Sakura Bloom, Cloud Nine, Sunset Magic,
+  Midnight Manga, Cyber Tokyo, Forest Spirit.
+- New playful base styles: thicker borders, offset drop-shadows, sticker
+  badges, manga panel cards, speech bubbles, sparkle/sakura page background.
+- Anime fonts loaded by default (Bagel Fat One, Mochiy Pop One, Zen Maru
+  Gothic) with new helpers: font-anime-pop / font-anime-soft / font-anime-body.
+- All screen titles updated to the bold anime "pop" font.
+- English only — all Japanese characters and romanised terms removed
+  (Yatta, kouhai, Bot-chan, Senpai, etc.).
+
+Onboarding
+- Redesigned 4-step onboarding with chibi mascot, rainbow striped progress
+  bar, manga panels and speech bubbles.
+- Skip button is now visible on every step (previously hidden on the final
+  step). Tapping Skip creates a default profile (name "Scholar", target
+  "General") and goes straight to the home screen.
+
+Settings
+- New "Use system default font" toggle in Appearance. When on, the app uses
+  your device's default font instead of the anime fonts.
+- "Report a Bug" and "Request a Feature" links now open pre-filled GitHub
+  issues against github.com/mkr-infinity/Revision-Master.
+
+Home
+- Formulas tile in the Home quick-access grid now opens the Cards screen on
+  the Formulas tab (/flashcards?tab=formulas) instead of a separate route.
+- Streak hero gradient now follows the active theme colour.
+- Greeting name uses the anime "pop" font with a small star accent.
+
+App version
+- App version bumped from 1.0.0 to 2.0.0.
+- Android versionCode 1 -> 2, versionName 1.0 -> 2.0.
+
+Files of note
+- src/index.css — theme palettes, anime utilities, system-font override.
+- src/context/AppContext.tsx — theme list and useSystemFont user preference.
+- src/screens/Onboarding.tsx — anime onboarding, always-on Skip button.
+- src/screens/Settings.tsx — appearance section + system-font toggle.
+- src/screens/Home.tsx — formulas tile route fix, anime header polish.
+- src/screens/Flashcards.tsx — reads/writes ?tab=formulas query param.
+
+
+v1.0.0 — Initial Release
+------------------------
+- React + Vite + TypeScript study app wrapped with Capacitor for Android.
+- Flashcards, Mock Tests, Stats, Formula Library, Settings, About.
+- Streak tracking, XP, levels, themes, AI-assisted card / test generation.
