@@ -68,11 +68,9 @@ jobs:
       - name: Build React app
         run: npm run build -- --mode production
 
-      # ⚡ Capacitor setup (since no android folder)
       - name: Add Android platform
         run: npx cap add android
 
-      # 🎨 Generate adaptive icons (your logic)
       - name: Generate adaptive launcher icons
         run: |
           if [ -f "resources/icon.png" ] || [ -f "resources/icon-foreground.png" ]; then
@@ -96,53 +94,50 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
 
-      # 🔐 Create keystore.properties
+      # 🔐 Create keystore.properties (SAFE METHOD)
       - name: Create keystore.properties
         run: |
-          cat <<EOF > android/keystore.properties
-          storeFile=release.keystore
-          storePassword=${{ secrets.SIGNING_KEY_PASSWORD }}
-          keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}
-          keyPassword=${{ secrets.SIGNING_KEY_PASSWORD }}
-          EOF
+          echo "storeFile=release.keystore" > android/keystore.properties
+          echo "storePassword=${{ secrets.SIGNING_KEY_PASSWORD }}" >> android/keystore.properties
+          echo "keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}" >> android/keystore.properties
+          echo "keyPassword=${{ secrets.SIGNING_KEY_PASSWORD }}" >> android/keystore.properties
 
-      # 🔥 Inject signing config into Gradle
+      # 🔥 Inject signing config safely
       - name: Inject signing config
         run: |
           FILE=android/app/build.gradle
 
-          sed -i '1i\
-def keystoreProperties = new Properties()\
-def keystorePropertiesFile = rootProject.file("keystore.properties")\
-if (keystorePropertiesFile.exists()) {\
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))\
-}\
-' $FILE
+          echo "" >> $FILE
+          echo "def keystoreProperties = new Properties()" >> $FILE
+          echo "def keystorePropertiesFile = rootProject.file(\"keystore.properties\")" >> $FILE
+          echo "if (keystorePropertiesFile.exists()) {" >> $FILE
+          echo "    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))" >> $FILE
+          echo "}" >> $FILE
 
-          sed -i 's/buildTypes {/signingConfigs {\
-              release {\
-                  storeFile file(keystoreProperties["storeFile"])\
-                  storePassword keystoreProperties["storePassword"]\
-                  keyAlias keystoreProperties["keyAlias"]\
-                  keyPassword keystoreProperties["keyPassword"]\
-              }\
-          }\
-          buildTypes {\
-              release {\
-                  signingConfig signingConfigs.release\
-                  minifyEnabled false\
-              }\
-          }\
-          /' $FILE
+          echo "" >> $FILE
+          echo "android {" >> $FILE
+          echo "    signingConfigs {" >> $FILE
+          echo "        release {" >> $FILE
+          echo "            storeFile file(keystoreProperties['storeFile'])" >> $FILE
+          echo "            storePassword keystoreProperties['storePassword']" >> $FILE
+          echo "            keyAlias keystoreProperties['keyAlias']" >> $FILE
+          echo "            keyPassword keystoreProperties['keyPassword']" >> $FILE
+          echo "        }" >> $FILE
+          echo "    }" >> $FILE
+          echo "    buildTypes {" >> $FILE
+          echo "        release {" >> $FILE
+          echo "            signingConfig signingConfigs.release" >> $FILE
+          echo "            minifyEnabled false" >> $FILE
+          echo "        }" >> $FILE
+          echo "    }" >> $FILE
+          echo "}" >> $FILE
 
-      # 🚀 Build RELEASE APK (changed from debug)
       - name: Build Release APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleRelease
 
-      # 📤 Upload signed APK (updated path/name)
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
