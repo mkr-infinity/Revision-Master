@@ -70,7 +70,12 @@ jobs:
 
       - name: Add Android platform
         run: npx cap add android
-
+        
+      - name: Update Android version
+        run: |
+          sed -i "s/versionCode [0-9]\+/versionCode 2/" android/app/build.gradle
+          sed -i "s/versionName \".*\"/versionName \"2.0\"/" android/app/build.gradle
+          
       - name: Generate adaptive launcher icons
         run: |
           if [ -f "resources/icon.png" ] || [ -f "resources/icon-foreground.png" ]; then
