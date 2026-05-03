@@ -106,7 +106,8 @@ const SupportPopup: React.FC = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[300] flex items-center justify-center p-5 bg-black/60 backdrop-blur-lg"
+          className="fixed inset-0 z-[300] flex items-start sm:items-center justify-center p-5 bg-black/60 backdrop-blur-lg"
+          style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)" }}
           onClick={close}
         >
           <motion.div
@@ -207,10 +208,14 @@ const SupportPopup: React.FC = () => {
                 <motion.button
                   whileTap={{ scale: 0.97 }}
                   onClick={openSupport}
-                  className={`w-full h-12 rounded-2xl font-bold text-[14.5px] text-white flex items-center justify-center gap-2 bg-gradient-to-r ${t.gradientClass} shadow-lg`}
+                  className={`group relative w-full h-13 rounded-[1.4rem] font-black text-[14.5px] text-white flex items-center justify-center gap-2.5 bg-gradient-to-r ${t.gradientClass} shadow-[0_18px_40px_-20px_rgba(0,0,0,0.6)] overflow-hidden transition-transform duration-300 hover:-translate-y-0.5`}
                 >
-                  <Coffee size={17} strokeWidth={2.5} />
-                  Support this project
+                  <span className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_55%)] pointer-events-none" />
+                  <span className="absolute -right-6 top-1/2 -translate-y-1/2 size-20 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+                  <span className="relative size-8 rounded-full bg-white/18 flex items-center justify-center backdrop-blur-sm border border-white/20">
+                    <Coffee size={16} strokeWidth={2.5} />
+                  </span>
+                  <span className="relative">Buy me a coffee</span>
                 </motion.button>
                 <button
                   onClick={close}

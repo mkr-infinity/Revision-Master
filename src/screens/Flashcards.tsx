@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -1084,24 +1085,25 @@ const Flashcards = () => {
       </AnimatePresence>
 
       {/* Study Modal */}
-      <AnimatePresence>
-      {studyCard && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-start justify-center p-4 bg-black/80 backdrop-blur-md overflow-hidden"
-          style={{
-            paddingTop: "max(1rem, env(safe-area-inset-top, 0px) + 1rem)",
-            paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px) + 5rem)",
-          }}
-        >
+      {createPortal(
+        <AnimatePresence>
+        {studyCard && (
           <motion.div 
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="border border-primary/20 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col h-[calc(100vh-8rem)] max-h-[calc(100vh-8rem)] max-sm:h-[calc(100vh-9rem)] max-sm:max-h-[calc(100vh-9rem)]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-start justify-center p-4 bg-black/80 backdrop-blur-md overflow-hidden"
+            style={{
+              paddingTop: "max(1rem, env(safe-area-inset-top, 0px) + 1rem)",
+              paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px) + 5rem)",
+            }}
           >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="border border-primary/20 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col h-full max-h-full"
+            >
             <div className="flex items-center justify-between p-4 border-b border-primary/10">
               <div className="flex items-center gap-2">
                 <div className={`size-8 rounded flex items-center justify-center ${activeTab === 'flashcards' ? 'bg-primary/10 text-primary' : 'bg-teal-500/10 text-teal-500'}`}>
@@ -1218,7 +1220,7 @@ const Flashcards = () => {
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setViewerImage(studyCard.image);
+                                if (studyCard.image) setViewerImage(studyCard.image);
                               }}
                               className="mt-6 w-full max-h-52 rounded-xl overflow-hidden border-2 border-primary/30 shadow-md shrink-0 bg-surface-2"
                             >
@@ -1242,7 +1244,7 @@ const Flashcards = () => {
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setViewerImage(studyCard.image);
+                                if (studyCard.image) setViewerImage(studyCard.image);
                               }}
                               className="mt-6 w-full max-h-52 rounded-xl overflow-hidden border-2 border-primary/30 shadow-md shrink-0 bg-surface-2"
                             >
@@ -1299,7 +1301,9 @@ const Flashcards = () => {
           </motion.div>
         </motion.div>
       )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
 
       <AnimatePresence>
         {viewerImage && (

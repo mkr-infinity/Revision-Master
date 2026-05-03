@@ -1318,6 +1318,7 @@ button { font-family: inherit; }
 /* Make sure modal backdrops always look right */
 .modal-backdrop {
   background: color-mix(in srgb, #000 55%, transparent);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
   backdrop-filter: blur(8px) saturate(140%);
   -webkit-backdrop-filter: blur(8px) saturate(140%);
 }

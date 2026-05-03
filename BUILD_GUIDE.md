@@ -173,44 +173,6 @@ jobs:
         run: |
           echo "VITE_GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
 
-      - name: Create localStorage patch
-        run: |
-          mkdir -p public
-          cat << 'EOF' > public/localstorage-fix.js
-          (function () {
-            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Preferences) {
-              const pref = window.Capacitor.Plugins.Preferences;
-
-              const originalSet = localStorage.setItem;
-              const originalGet = localStorage.getItem;
-
-              localStorage.setItem = function (key, value) {
-                try {
-                  pref.set({ key: key, value: value });
-                } catch (e) {
-                  originalSet.call(localStorage, key, value);
-                }
-              };
-
-              localStorage.getItem = function (key) {
-                try {
-                  let value = null;
-                  pref.get({ key: key }).then(function (res) {
-                    value = res.value;
-                  });
-                  return value;
-                } catch (e) {
-                  return originalGet.call(localStorage, key);
-                }
-              };
-            }
-          })();
-          EOF
-
-      - name: Inject script into index.html
-        run: |
-          sed -i 's|</head>|<script src="/localstorage-fix.js"></script></head>|' index.html
-
       - name: Build React app
         run: npm run build -- --mode production
 

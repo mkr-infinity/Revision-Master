@@ -444,7 +444,8 @@ const MockTests = () => {
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
-                className="fixed inset-0 z-[70] bg-slate-950/20 backdrop-blur-md flex items-center justify-center p-4"
+                className="fixed inset-0 z-[70] bg-slate-950/20 backdrop-blur-md flex items-start sm:items-center justify-center p-4"
+                style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)", paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 16px)" }}
               >
                 <div className="w-full max-w-md rounded-3xl bg-white/70 dark:bg-slate-900/65 border border-white/30 dark:border-white/10 shadow-2xl shadow-blue-500/10 backdrop-blur-xl p-6 text-center space-y-5">
                   <div className="mx-auto size-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/25">

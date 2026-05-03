@@ -182,12 +182,13 @@ export default function UpdateNotifier() {
   return (
     <AnimatePresence>
       {isVisible && updateInfo && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[200] flex items-start sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)", paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 16px)" }}>
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className="w-full max-w-sm bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800"
+            style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
           >
             <div className="bg-gradient-to-r from-primary to-blue-600 p-6 text-white relative overflow-hidden">
               <div className="absolute -top-10 -right-10 opacity-20">

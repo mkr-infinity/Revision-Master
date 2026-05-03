@@ -176,6 +176,7 @@ const Layout: React.FC = () => {
         className="flex-1 overflow-y-auto"
         style={{
           WebkitOverflowScrolling: "touch",
+          paddingTop: "env(safe-area-inset-top, 0px)",
           paddingBottom: contentPaddingBottom,
           paddingLeft: "env(safe-area-inset-left, 0px)",
           position: "relative",

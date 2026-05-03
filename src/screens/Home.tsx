@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -973,17 +974,17 @@ const Home = () => {
       )}
 
       {/* Study Modal */}
-      {studyCard && (
+      {studyCard && createPortal(
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-[200] flex items-start sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4"
           style={{
-            paddingTop: `calc(env(safe-area-inset-top) + 16px)`,
+            paddingTop: `calc(env(safe-area-inset-top, 0px) + 16px)`,
             paddingBottom: `calc(env(safe-area-inset-bottom) + 16px)`,
           }}
           onClick={() => setStudyCard(null)}
         >
           <div
-            className="bg-elevated border border-subtle rounded-3xl w-full max-w-md overflow-hidden shadow-card-lg flex flex-col h-[85vh] max-h-[750px] max-sm:h-[88vh]"
+            className="bg-elevated border border-subtle rounded-3xl w-full max-w-md overflow-hidden shadow-card-lg flex flex-col h-full max-h-full"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between p-4 border-b border-subtle">
@@ -1141,7 +1142,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
     </motion.div>
   );
 };

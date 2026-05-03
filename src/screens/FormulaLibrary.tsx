@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { Search, FunctionSquare, Bookmark, ArrowLeft, X, Layers, Star, RefreshCw, XCircle, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -227,20 +228,22 @@ const FormulaLibrary = () => {
       </main>
 
       {/* Study Modal */}
-      <AnimatePresence>
-      {studyCard && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
-        >
+      {createPortal(
+        <AnimatePresence>
+        {studyCard && (
           <motion.div 
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="border border-subtle bg-elevated rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col h-[85vh] max-h-[750px] max-sm:h-[88vh]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center p-4 bg-black/70 backdrop-blur-md"
+            style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)", paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 16px)" }}
           >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="border border-subtle bg-elevated rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col h-full max-h-full"
+            >
             <div className="flex items-center justify-between p-4 border-b border-subtle bg-elevated">
               <div className="flex items-center gap-2">
                 <div className="size-8 rounded flex items-center justify-center bg-teal-500/10 text-teal-500">
@@ -312,7 +315,9 @@ const FormulaLibrary = () => {
           </motion.div>
         </motion.div>
       )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
 
       <svg width="0" height="0">
         <defs>

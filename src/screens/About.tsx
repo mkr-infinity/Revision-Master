@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   ArrowLeft,
@@ -17,10 +17,23 @@ const About = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const scrollAppToTop = () => {
+    const scroller = document.querySelector("main");
+    if (scroller instanceof HTMLElement) {
+      scroller.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      return;
+    }
+    window.scrollTo(0, 0);
+  };
+
+  useLayoutEffect(() => {
+    scrollAppToTop();
+  }, []);
+
   useEffect(() => {
     const state = location.state as { scrollToTop?: boolean } | null;
     if (state?.scrollToTop) {
-      window.scrollTo(0, 0);
+      scrollAppToTop();
       navigate(location.pathname, { replace: true, state: null });
     }
   }, [location.pathname, location.state, navigate]);
@@ -64,35 +77,72 @@ const About = () => {
         </div>
       </header>
 
-      <main className="flex-1 p-4 max-w-md mx-auto w-full space-y-10 relative z-10">
-        <div className="relative group mt-8">
-          <div className="absolute -inset-1 bg-gradient-to-r from-primary via-purple-500 to-blue-500 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-          <div className="relative flex items-center gap-5 p-6 bg-white/40 dark:bg-primary/5 border border-primary/20 rounded-3xl backdrop-blur-xl shadow-xl overflow-hidden">
-            {/* Inner Glass Effect Blocks */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-              <div className="absolute top-4 left-4 size-12 bg-white/10 rounded-lg rotate-12 blur-sm"></div>
-              <div className="absolute bottom-10 right-4 size-16 bg-primary/10 rounded-full -rotate-12 blur-md"></div>
-            </div>
+      <main className="flex-1 p-4 max-w-md mx-auto w-full space-y-8 relative z-10">
+        <section className="relative group mt-6">
+          <div className="absolute -inset-1 bg-gradient-to-r from-primary via-violet-500 to-blue-500 rounded-[2rem] blur opacity-25 group-hover:opacity-40 transition duration-700"></div>
+          <div className="relative overflow-hidden rounded-[2rem] border border-primary/20 bg-white/55 dark:bg-primary/8 backdrop-blur-2xl shadow-xl">
+            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(124,77,255,0.16),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.12),transparent_34%)]" />
+            <div className="relative p-6 sm:p-7">
+              <div className="flex items-start gap-4">
+                <div className="relative shrink-0">
+                  <div className="absolute inset-0 bg-primary/25 rounded-full blur-xl scale-110"></div>
+                  <div className="relative size-20 sm:size-24 rounded-full border-2 border-primary p-0.5 bg-background-dark overflow-hidden shadow-[0_0_24px_rgba(var(--color-primary),0.28)]">
+                    <img
+                      src="https://github.com/mkr-infinity.png"
+                      alt="Mohammad Kaif Raja"
+                      className="w-full h-full rounded-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                </div>
 
-            <div className="relative shrink-0 z-10">
-              <div className="absolute inset-0 bg-primary/30 rounded-full blur-lg scale-110"></div>
-              <div className="relative size-20 sm:size-24 rounded-full border-2 border-primary p-0.5 bg-background-dark overflow-hidden shadow-[0_0_20px_rgba(var(--color-primary),0.3)]">
-                <img
-                  src="https://github.com/mkr-infinity.png"
-                  alt="Mohammad Kaif Raja"
-                  className="w-full h-full rounded-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
+                <div className="flex-1 min-w-0 pt-1">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.2em] border border-primary/15 mb-3">
+                    Developer profile
+                  </div>
+                  <h2 className="text-3xl sm:text-[2.5rem] font-black leading-tight text-primary-fg mb-2">
+                    Mohammad Kaif Raja
+                  </h2>
+                  <p className="text-sm sm:text-[15px] leading-relaxed text-secondary-fg max-w-[26rem]">
+                    I build anime-inspired tools that help students revise faster, stay consistent, and actually enjoy the process.
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex-1 relative z-10">
-              <h2 className="text-3xl sm:text-4xl font-signature text-primary tracking-wide drop-shadow-sm mb-2">
-                Mohammad Kaif Raja
-              </h2>
-              <p className="text-primary font-bold italic text-xs sm:text-sm tracking-wide bg-primary/10 px-3 py-1.5 rounded-2xl inline-block border border-primary/10 leading-snug">
-                "Excellence is a skill that takes practice."
-              </p>
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                {[
+                  "React Native feel",
+                  "Capacitor APK",
+                  "AI study tools",
+                  "Offline-friendly",
+                ].map((item) => (
+                  <span
+                    key={item}
+                    className="px-3 py-1.5 rounded-full bg-surface-2/90 border border-subtle text-[10px] font-bold uppercase tracking-wider text-secondary-fg"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-5 grid grid-cols-3 gap-2.5">
+                {[
+                  { label: "Focus", value: "Study UX" },
+                  { label: "Stack", value: "React + Capacitor" },
+                  { label: "Style", value: "Anime-inspired" },
+                ].map((stat) => (
+                  <div key={stat.label} className="rounded-2xl border border-subtle bg-surface-2/80 px-3 py-3">
+                    <p className="text-[9px] font-black uppercase tracking-[0.18em] text-tertiary-fg">{stat.label}</p>
+                    <p className="mt-1 text-[11px] font-bold leading-snug text-primary-fg">{stat.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 rounded-2xl border border-primary/10 bg-primary/5 px-4 py-3.5">
+                <p className="text-sm italic text-primary-fg leading-relaxed">
+                  “Excellence is a skill that takes practice.”
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -143,15 +193,16 @@ const About = () => {
             href="https://buymeacoffee.com/mkr_infinity"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex items-center gap-4 rounded-[2rem] p-4 border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent shadow-[0_0_24px_rgba(245,158,11,0.18)] group"
+            className="group relative flex items-center gap-4 rounded-[2rem] p-4 border border-amber-500/30 bg-gradient-to-r from-amber-500/12 via-orange-500/6 to-transparent shadow-[0_16px_36px_-22px_rgba(245,158,11,0.75)] transition-all duration-300 hover:-translate-y-0.5"
           >
-            <div className="size-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30 shrink-0 group-hover:scale-105 transition-transform">
-              <Coffee size={22} className="text-white" />
+            <div className="absolute right-0 top-0 bottom-0 w-28 pointer-events-none opacity-90" style={{ background: "radial-gradient(ellipse at right center, rgba(251,146,60,0.16), transparent 72%)" }} />
+            <div className="size-12 rounded-[1.15rem] bg-gradient-to-tr from-amber-400 via-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/30 shrink-0 group-hover:scale-105 transition-transform">
+              <Coffee size={22} className="text-white" strokeWidth={2.4} />
             </div>
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 relative z-10">
               <p className="font-black text-sm leading-tight">Buy me a coffee</p>
               <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                buymeacoffee.com/mkr_infinity
+                Support future features and updates
               </p>
             </div>
             <div className="size-9 rounded-full bg-amber-500/15 flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-white transition-all shrink-0">

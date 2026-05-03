@@ -2,6 +2,7 @@ import html2pdf from "html2pdf.js";
 import { Capacitor } from "@capacitor/core";
 import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener";
+import { Share } from "@capacitor/share";
 import { Deck, Card } from "../context/AppContext";
 
 const themeAccent: Record<string, string> = {
@@ -233,18 +234,28 @@ export const exportDecksToPDF = async (
 
     const base64 = dataUriToBase64(dataUri);
 
-    // Write to Documents (visible to file pickers / Files app on Android 11+).
+    // Write to Cache directory to avoid storage permission issues
     const writeRes = await Filesystem.writeFile({
       path: filename,
       data: base64,
-      directory: Directory.Documents,
+      directory: Directory.Cache,
       recursive: true,
     });
+
+    try {
+      await Share.share({
+        title: title,
+        url: writeRes.uri,
+        dialogTitle: 'Save or Share PDF'
+      });
+    } catch (shareErr) {
+      console.error("Share failed", shareErr);
+    }
 
     return emit({
       stage: "done",
       percent: 100,
-      message: "Saved to Documents.",
+      message: "Ready to save or share.",
       filePath: writeRes.uri,
       fileUri: writeRes.uri,
     });
@@ -262,14 +273,21 @@ export const exportDecksToPDF = async (
 export const openExportedPDF = async (uri: string) => {
   if (!Capacitor.isNativePlatform()) return;
   try {
-    await FileOpener.open({
-      filePath: uri,
-      contentType: "application/pdf",
-      openWithDefault: true,
-    });
+    // We already shared it natively upon generation. If they click open again we can re-share
+    await Share.share({ url: uri, dialogTitle: 'Save or Share PDF' });
   } catch (e) {
-    console.error("FileOpener failed", e);
-    throw e;
+    console.error("Share failed", e);
+    // fallback
+    try {
+      await FileOpener.open({
+        filePath: uri,
+        contentType: "application/pdf",
+        openWithDefault: true,
+      });
+    } catch(openerErr) {
+       console.error("Opener failed", openerErr);
+       throw openerErr;
+    }
   }
 };
 

@@ -23,6 +23,7 @@
     "@capacitor/cli": "^8.2.0",
     "@capacitor/core": "^8.2.0",
     "@capacitor/filesystem": "^8.1.2",
+    "@capacitor/preferences": "^8.0.1",
     "@capacitor/share": "^8.0.1",
     "@fontsource/bagel-fat-one": "^5.2.7",
     "@fontsource/caveat": "^5.2.8",
@@ -58,6 +59,8 @@
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
     "@types/express": "^4.17.21",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
     "@types/node": "^22.14.0",
     "autoprefixer": "^10.4.21",
     "tailwindcss": "^4.1.14",

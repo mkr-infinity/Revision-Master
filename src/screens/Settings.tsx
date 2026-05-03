@@ -38,6 +38,7 @@ import {
 import { useAppContext, Theme, AVATARS, THEMES, normalizeTheme } from "../context/AppContext";
 import { usePdfExport } from "../components/PdfExportProvider";
 import { PROVIDERS, AiProvider } from "../utils/ai";
+import { Capacitor } from "@capacitor/core";
 
 const REPO_URL = "https://github.com/mkr-infinity/Revision-Master";
 const APP_VERSION = "2.0.0";
@@ -169,6 +170,9 @@ const Settings = () => {
   useEffect(() => {
     const navState = location.state as { openModal?: string } | null;
     if (navState?.openModal === "aiSettings") {
+      setEditApiKey(state.user.customApiKey || "");
+      setEditProvider((state.user.aiProvider as AiProvider) || "gemini");
+      setEditKeys({ ...(state.user.apiKeys || {}), gemini: (state.user.apiKeys?.gemini as string) || state.user.customApiKey || "" });
       setModalType("aiSettings");
       // Clear the state so refreshes don't re-open it.
       navigate(location.pathname, { replace: true, state: null });
@@ -263,14 +267,41 @@ const Settings = () => {
     setModalType("none");
   };
 
-  const handleExport = () => {
+  const handleExport = async () => {
     const dataStr = JSON.stringify(state, null, 2);
-    const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
     const exportFileDefaultName = "revision_master_backup.json";
-    const linkElement = document.createElement("a");
-    linkElement.setAttribute("href", dataUri);
-    linkElement.setAttribute("download", exportFileDefaultName);
-    linkElement.click();
+
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const { Directory, Filesystem, Encoding } = await import("@capacitor/filesystem");
+        const { Share } = await import("@capacitor/share");
+
+        // Write file to cache directory
+        const result = await Filesystem.writeFile({
+          path: exportFileDefaultName,
+          data: dataStr,
+          directory: Directory.Cache,
+          encoding: Encoding.UTF8
+        });
+
+        // Share the file
+        await Share.share({
+          title: "Export Backup",
+          text: "Here is my Revision Master backup file.",
+          url: result.uri,
+          dialogTitle: "Save or Share Backup"
+        });
+      } catch (error) {
+        showToast("Failed to export natively.", "error");
+        console.error("Native export error:", error);
+      }
+    } else {
+      const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+      const linkElement = document.createElement("a");
+      linkElement.setAttribute("href", dataUri);
+      linkElement.setAttribute("download", exportFileDefaultName);
+      linkElement.click();
+    }
   };
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1306,24 +1337,25 @@ const Settings = () => {
             href="https://buymeacoffee.com/mkr_infinity"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center gap-4 rounded-2xl p-4 border relative overflow-hidden"
+            className="group w-full flex items-center gap-4 rounded-[1.6rem] p-4.5 border relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
             style={{
-              background: "linear-gradient(135deg, color-mix(in srgb, #f59e0b 12%, var(--bg-elevated)) 0%, color-mix(in srgb, #fb923c 8%, var(--bg-elevated)) 100%)",
-              borderColor: "color-mix(in srgb, #f59e0b 28%, var(--border-subtle))",
+              background: "linear-gradient(135deg, color-mix(in srgb, #f59e0b 16%, var(--bg-elevated)) 0%, color-mix(in srgb, #fb923c 10%, var(--bg-elevated)) 55%, color-mix(in srgb, #f97316 6%, var(--bg-elevated)) 100%)",
+              borderColor: "color-mix(in srgb, #f59e0b 32%, var(--border-subtle))",
+              boxShadow: "0 18px 40px -20px rgba(245,158,11,0.65), inset 0 1px 0 rgba(255,255,255,0.35)",
             }}
           >
-            <div className="absolute right-0 top-0 bottom-0 w-28 pointer-events-none"
-              style={{ background: "radial-gradient(ellipse at right center, rgba(251,146,60,0.12), transparent 70%)" }} />
-            <div className="size-11 rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: "linear-gradient(135deg, #f59e0b, #fb923c)", boxShadow: "0 4px 14px -4px rgba(245,158,11,0.5)" }}>
-              <Coffee size={18} className="text-white" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 pointer-events-none opacity-80"
+              style={{ background: "radial-gradient(ellipse at right center, rgba(251,146,60,0.18), transparent 72%)" }} />
+            <div className="relative size-12 rounded-[1.15rem] flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+              style={{ background: "linear-gradient(145deg, #f59e0b, #fb923c 60%, #f97316)", boxShadow: "0 10px 22px -10px rgba(245,158,11,0.8)" }}>
+              <Coffee size={18} className="text-white" strokeWidth={2.4} />
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-sm text-primary-fg">Buy Me a Coffee</p>
-              <p className="text-[11px] text-tertiary-fg mt-0.5">Support the developer ☕</p>
+            <div className="flex-1 min-w-0 relative z-10">
+              <p className="font-black text-[15px] text-primary-fg leading-tight">Buy me a coffee</p>
+              <p className="text-[11px] text-tertiary-fg mt-0.5 leading-snug">Support the developer and keep updates flowing</p>
             </div>
-            <div className="shrink-0 px-3 py-1.5 rounded-full text-[11px] font-black"
-              style={{ background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#fff", boxShadow: "0 4px 10px -3px rgba(245,158,11,0.4)" }}>
+            <div className="shrink-0 px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.18em]"
+              style={{ background: "linear-gradient(135deg, #f59e0b, #fb923c)", color: "#fff", boxShadow: "0 8px 16px -8px rgba(245,158,11,0.85)" }}>
               Support
             </div>
           </motion.a>
@@ -1435,7 +1467,7 @@ const Settings = () => {
       {/* Modals */}
       {modalType !== "none" && (
         <div
-          className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center modal-backdrop"
+          className="fixed inset-0 z-[200] flex items-start sm:items-center justify-center modal-backdrop"
           style={{
             paddingTop: `calc(env(safe-area-inset-top) + 12px)`,
             paddingBottom: `calc(env(safe-area-inset-bottom) + 110px)`,
@@ -1724,7 +1756,10 @@ const Settings = () => {
 
                               <button
                                 type="button"
-                                onClick={() => setEditProvider(p.id)}
+                                onClick={() => {
+                                  setEditProvider(p.id);
+                                  setShowKeyFor(p.id);
+                                }}
                                 className="flex-1 text-left min-w-0"
                               >
                                 <div className="flex items-center gap-2">
@@ -1778,6 +1813,7 @@ const Settings = () => {
                                     <input
                                       type="text"
                                       value={value}
+                                      onFocus={() => setEditProvider(p.id)}
                                       onChange={(e) => {
                                         const v = e.target.value;
                                         setEditKeys((prev) => ({ ...prev, [p.id]: v }));
@@ -1831,10 +1867,20 @@ const Settings = () => {
                     </button>
                     <button 
                       onClick={() => {
+                        const keyToSave = editProvider === "gemini"
+                          ? (editKeys.gemini ?? editApiKey)
+                          : (editKeys[editProvider] ?? "");
+                        console.log("[AI_SETTINGS] Saving AI Settings:", {
+                          provider: editProvider,
+                          hasGeminiKey: !!editKeys.gemini,
+                          hasCustomKey: !!editApiKey,
+                          finalKeyToSave: keyToSave ? `${keyToSave.substring(0, 10)}...` : "EMPTY",
+                          editKeys: Object.keys(editKeys).reduce((acc, k) => ({ ...acc, [k]: !!editKeys[k as keyof typeof editKeys] }), {}),
+                        });
                         updateUser({
                           aiProvider: editProvider,
                           apiKeys: editKeys as any,
-                          customApiKey: editKeys.gemini ?? editApiKey,
+                          customApiKey: editProvider === "gemini" ? keyToSave : (state.user.customApiKey || ""),
                         });
                         setModalType("none");
                         showToast("AI settings saved.", "success");

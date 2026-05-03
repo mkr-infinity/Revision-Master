@@ -402,6 +402,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   // suspended or killed between state updates, so a 1-second debounce causes
   // data loss (e.g. API keys typed and saved appearing to "not save").
   useEffect(() => {
+    if (state.user.customApiKey || state.user.apiKeys?.gemini) {
+      console.log("[STATE] AppContext persisting API key to storage:", {
+        hasCustomKey: !!state.user.customApiKey,
+        hasApiKeys: !!Object.keys(state.user.apiKeys || {}).length,
+        provider: state.user.aiProvider,
+      });
+    }
     safeStorage.setItem("revisionMasterState", JSON.stringify(state));
   }, [state]);
 
