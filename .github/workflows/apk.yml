@@ -32,11 +32,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Add Android platform (if missing)
-        run: |
-          if [ ! -d "android" ]; then
-            npx cap add android
-          fi
+      - name: Add Android platform
+        run: npx cap add android
 
       - name: Sync Capacitor
         run: npx cap sync android
