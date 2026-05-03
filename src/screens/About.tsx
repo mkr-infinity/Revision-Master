@@ -145,7 +145,7 @@ const About = () => {
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         <section className="space-y-4">
           <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 px-4">
