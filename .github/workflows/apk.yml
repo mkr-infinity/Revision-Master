@@ -1,10 +1,7 @@
-name: Build Signed Release APK
+name: Build Dummy Signed Release APK
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*'
 
 jobs:
   build:
@@ -35,15 +32,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: gradle-${{ runner.os }}-
-
       - name: Add Android platform (if missing)
         run: |
           if [ ! -d "android" ]; then
@@ -53,38 +41,29 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Generate adaptive launcher icons
+      - name: Create dummy keystore
         run: |
-          if [ -f "resources/icon.png" ] || [ -f "resources/icon-foreground.png" ]; then
-            npm install @capacitor/assets --no-save
-            npx capacitor-assets generate --android
-          else
-            echo "::warning::No icon files found in resources/ — using default Capacitor icon."
-          fi
+          mkdir -p android/app
+          keytool -genkeypair -v \
+            -keystore android/app/dummy-release.jks \
+            -alias dummy-release-key \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass dummy1234 \
+            -keypass dummy1234 \
+            -dname "CN=Dummy Release, OU=Testing, O=Revision Master, L=Web, S=Web, C=US"
 
-      - name: Decode keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks
-
-      - name: Create keystore.properties
-        run: |
-          echo "storeFile=release-key.jks" > android/keystore.properties
-          echo "storePassword=${{ secrets.SIGNING_STORE_PASSWORD }}" >> android/keystore.properties
-          echo "keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}" >> android/keystore.properties
-          echo "keyPassword=${{ secrets.SIGNING_KEY_PASSWORD }}" >> android/keystore.properties
-
-      - name: Inject signing config into build.gradle
-        run: node scripts/inject-signing.js
-
-      - name: Build signed universal release APK
+      - name: Build signed release APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file=app/dummy-release.jks \
+            -Pandroid.injected.signing.store.password=dummy1234 \
+            -Pandroid.injected.signing.key.alias=dummy-release-key \
+            -Pandroid.injected.signing.key.password=dummy1234
         env:
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           JAVA_OPTS: "-Xmx4g -XX:MaxMetaspaceSize=512m"
 
       - name: List built APKs
@@ -93,8 +72,6 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: revision-master-v2-signed
+          name: revision-master-dummy-signed
           path: android/app/build/outputs/apk/release/*.apk
           retention-days: 30
-
-     
