@@ -38,7 +38,7 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Create dummy keystore
+      - name: Create dummy keystore and properties
         run: |
           mkdir -p android/app
           keytool -genkeypair -v \
@@ -50,16 +50,18 @@ jobs:
             -storepass dummy1234 \
             -keypass dummy1234 \
             -dname "CN=Dummy Release, OU=Testing, O=Revision Master, L=Web, S=Web, C=US"
+          cat > android/keystore.properties <<'EOF'
+          storeFile=app/dummy-release.jks
+          storePassword=dummy1234
+          keyAlias=dummy-release-key
+          keyPassword=dummy1234
+          EOF
 
       - name: Build signed release APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon \
-            -Pandroid.injected.signing.store.file=app/dummy-release.jks \
-            -Pandroid.injected.signing.store.password=dummy1234 \
-            -Pandroid.injected.signing.key.alias=dummy-release-key \
-            -Pandroid.injected.signing.key.password=dummy1234
+          ./gradlew assembleRelease --no-daemon
         env:
           JAVA_OPTS: "-Xmx4g -XX:MaxMetaspaceSize=512m"
 
