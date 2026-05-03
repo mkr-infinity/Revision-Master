@@ -1,148 +1,276 @@
-# Build Guide: Android APK (Debian/Linux)
+🚀 Revision Master — Build APK Guide (React + Capacitor)
 
-This guide explains how to build the Revision Master Android APK from source using the terminal on a Debian-based system or via GitHub Actions.
+This guide helps you:
 
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-1.  **Node.js & npm**:
-    ```bash
-    sudo apt update
-    sudo apt install nodejs npm
-    ```
-    *Note: It's recommended to use Node.js v22.*
-
-2.  **Java Development Kit (JDK) 21**:
-    ```bash
-    sudo apt install openjdk-21-jdk
-    ```
-
-3.  **Android SDK**:
-    Download the command-line tools from the [Android Studio website](https://developer.android.com/studio#command-line-tools-only).
-    Extract them to a directory (e.g., `~/Android/Sdk`) and set the `ANDROID_HOME` environment variable:
-    ```bash
-    export ANDROID_HOME=$HOME/Android/Sdk
-    export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-    ```
-
-## The Easiest Way: Using GitHub Actions (Recommended for Beginners)
-
-If you just downloaded the ZIP file and want to get the APKs without installing Android Studio or any build tools on your computer, follow these steps:
-
-1. **Create a GitHub Account:** If you don't have one, sign up at [github.com](https://github.com).
-2. **Create a New Repository:** Create a new, **private** repository on your GitHub account.
-3. **Upload the Files:** Extract the ZIP file you downloaded. Upload all the extracted files and folders into your new GitHub repository.
-4. **Enable GitHub Actions:** Go to the "Actions" tab in your repository and click "I understand my workflows, go ahead and enable them" (if prompted).
-5. **Add Your Secrets (Crucial):**
-   - Go to your repository's **Settings** > **Secrets and variables** > **Actions**.
-   - Click **New repository secret**.
-   - Name: `GEMINI_API_KEY` | Secret: Paste your actual Gemini API key.
-   - (Optional) Name: `GOOGLE_SERVICES_JSON` | Secret: Paste the content of your `google-services.json` if using Firebase.
-   - Click **Add secret**.
-6. **Run the Build:**
-   - Go back to the **Actions** tab.
-   - Click on **Build Android APK** on the left sidebar.
-   - Click the **Run workflow** button on the right side.
-   - Wait for the process to finish (it usually takes 5-10 minutes).
-7. **Download Your APKs:**
-   - Once the build is complete (green checkmark), click on the workflow run.
-   - Scroll down to the **Artifacts** section.
-   - Download the `RevisionMaster-Release-APKs` ZIP file.
+- 📱 Build APK locally
+- ⚡ Generate APK using GitHub Actions
 
 ---
 
-## Build Steps (Local Terminal)
+📦 Requirements
 
-Follow these steps in the project root directory:
+Install:
 
-### 1. Install Dependencies
-```bash
+- Node.js (v22 recommended)
+- Android Studio (with SDK)
+- Java JDK 21
+
+Check:
+
+node -v
+java -version
+
+---
+
+⚙️ Local Setup
+
+Install dependencies:
+
 npm install
-```
 
-### 2. Configure Environment Variables
-1. Copy the `.env.example` file to a new file named `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-2. Open the `.env` file and replace `"MY_GEMINI_API_KEY"` with your actual Gemini API key.
+---
 
-### 3. Build the Web Application
-```bash
-npm run build
-```
+🔐 Add API Key
 
-### 4. Generate Android Folder (If missing)
-If you don't see an `android` folder in your project, run:
-```bash
+Create ".env" file:
+
+VITE_GEMINI_API_KEY=your_api_key_here
+
+---
+
+🏗 Build React App
+
+npm run build -- --mode production
+
+---
+
+📱 Add Android (First Time)
+
 npx cap add android
-```
 
-### 5. Sync with Capacitor
-This command copies the built web assets into the Android project.
-```bash
+---
+
+🔄 Sync Project
+
 npx cap sync android
-```
 
-### 5b. Generate App Icons (adaptive — matches user's launcher style)
-The `resources/` folder contains the source images:
-- `resources/icon.png` — legacy launcher icon (1024×1024)
-- `resources/icon-foreground.png` — adaptive icon foreground (logo with safe-zone padding)
-- `resources/icon-background.png` — adaptive icon background (gradient)
-- `resources/splash.png` / `resources/splash-dark.png` — splash screens
+---
 
-Generate every required size for Android (mdpi → xxxhdpi, including the
-adaptive XML so the launcher icon takes the user's launcher shape — circle,
-squircle, rounded square, etc.):
-```bash
-npm run cap:icons
-```
-This is also run automatically by `npm run android:build` and the GitHub
-Actions workflow.
+🎨 Generate Icons (Optional)
 
-To re-generate the source PNGs from `assets/logo.svg` (e.g. after editing
-the logo), run:
-```bash
-magick assets/logo.svg -background none -density 400 -resize 1024x1024 resources/icon.png
-magick assets/logo.svg -background none -density 400 -resize 700x700 -gravity center -extent 1024x1024 resources/icon-foreground.png
-magick -size 1024x1024 "gradient:#7f13ec-#a855f7" resources/icon-background.png
-```
+Put icon in:
 
-### 6. Build the APK
-Navigate to the `android` directory and use the Gradle wrapper.
+resources/icon.png
 
-#### For Debug APK:
-```bash
+Run:
+
+npm install @capacitor/assets --no-save
+npx capacitor-assets generate --android
+
+---
+
+🚀 Build APK (CLI)
+
 cd android
+chmod +x gradlew
 ./gradlew assembleDebug
-```
 
-#### For Release APK (Unsigned):
-```bash
-cd android
-./gradlew assembleRelease
-```
+APK output:
 
-## Signing the Release APK
+android/app/build/outputs/apk/debug/app-debug.apk
 
-To install the release APK on a device, it must be signed.
+---
 
-1.  **Generate a Keystore** (if you don't have one):
-    ```bash
-    keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-alias
-    ```
+🖥 Build via Android Studio
 
-2.  **Sign the APK**:
-    Use `apksigner` (found in `$ANDROID_HOME/build-tools/<version>/`):
-    ```bash
-    apksigner sign --ks my-release-key.jks --out revision-master-signed.apk android/app/build/outputs/apk/release/app-release-unsigned.apk
-    ```
+npx cap open android
 
-## Troubleshooting
+Then:
 
-- **Permission Denied**: If `./gradlew` fails with permission denied, run `chmod +x gradlew`.
-- **SDK Location**: If Gradle can't find the Android SDK, create a file named `local.properties` in the `android` directory with the following content:
-  ```properties
-  sdk.dir=/home/your-username/Android/Sdk
-  ```
+- Build → Build APK
+- Or press ▶️ Run
+
+---
+
+⚡ Quick Run
+
+npx cap run android
+
+---
+
+🔁 Update Changes
+
+npm run build
+npx cap sync android
+
+---
+
+❗ Troubleshooting
+
+Java Error (invalid source release 21)
+
+Install Java 21:
+
+java -version
+
+---
+
+App not updating
+
+npm run build
+npx cap sync
+
+---
+
+🧠 Build Flow
+
+Code → Build → Sync → APK
+
+---
+
+⚡ Build APK using GitHub Actions
+
+You can automatically generate APK using GitHub Actions.
+
+📌 Steps
+
+1. Go to your repo → Settings → Secrets
+2. Add secret:
+
+GEMINI_API_KEY = your_api_key
+
+3. Create file:
+
+.github/workflows/build.yml
+
+4. Paste this YAML 👇
+
+name: Build APK (Node 22 + Icons + Storage Fix)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create .env file
+        run: |
+          echo "VITE_GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
+
+      - name: Create localStorage patch
+        run: |
+          mkdir -p public
+          cat << 'EOF' > public/localstorage-fix.js
+          (function () {
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Preferences) {
+              const pref = window.Capacitor.Plugins.Preferences;
+
+              const originalSet = localStorage.setItem;
+              const originalGet = localStorage.getItem;
+
+              localStorage.setItem = function (key, value) {
+                try {
+                  pref.set({ key: key, value: value });
+                } catch (e) {
+                  originalSet.call(localStorage, key, value);
+                }
+              };
+
+              localStorage.getItem = function (key) {
+                try {
+                  let value = null;
+                  pref.get({ key: key }).then(function (res) {
+                    value = res.value;
+                  });
+                  return value;
+                } catch (e) {
+                  return originalGet.call(localStorage, key);
+                }
+              };
+            }
+          })();
+          EOF
+
+      - name: Inject script into index.html
+        run: |
+          sed -i 's|</head>|<script src="/localstorage-fix.js"></script></head>|' index.html
+
+      - name: Build React app
+        run: npm run build -- --mode production
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Generate adaptive launcher icons
+        run: |
+          if [ -f "resources/icon.png" ] || [ -f "resources/icon-foreground.png" ]; then
+            npm install @capacitor/assets --no-save
+            npx capacitor-assets generate --android
+          else
+            echo "::warning::No icon files found in resources/ — using default Capacitor icon."
+          fi
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Setup Java (JDK 21)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build Debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+---
+
+📦 Output
+
+- APK available in Actions → Artifacts
+- Download and install on your device
+
+---
+
+📌 Notes
+
+- Uses Vite env ("VITE_*")
+- Debug APK only (not for Play Store)
+- localStorage patch included (best-effort fix)
+
+---
+
+🚀 Future Improvements
+
+- Signed release APK
+- Play Store deployment
+- Secure API key (backend proxy)
+- Proper storage using Capacitor Preferences
+
+---
+
+💡 Built with React + Capacitor
