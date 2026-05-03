@@ -75,20 +75,6 @@ jobs:
             -keypass dummy1234 \
             -dname "CN=Dummy Release, OU=Testing, O=Revision Master, L=Web, S=Web, C=US"
 
-      - name: Decode keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks || true
-
-      - name: Create keystore.properties
-        run: |
-          echo "storeFile=dummy-release.jks" > android/keystore.properties
-          echo "storePassword=dummy1234" >> android/keystore.properties
-          echo "keyAlias=dummy-release-key" >> android/keystore.properties
-          echo "keyPassword=dummy1234" >> android/keystore.properties
-
-      - name: Inject signing config into build.gradle
-        run: node scripts/inject-signing.js
-
       - name: Build signed universal release APK
         run: |
           cd android
@@ -98,8 +84,6 @@ jobs:
             -Pandroid.injected.signing.store.password=dummy1234 \
             -Pandroid.injected.signing.key.alias=dummy-release-key \
             -Pandroid.injected.signing.key.password=dummy1234
-        env:
-          JAVA_OPTS: "-Xmx4g -XX:MaxMetaspaceSize=512m"
 
       - name: List built APKs
         run: find android/app/build/outputs/apk -name "*.apk" | sort
