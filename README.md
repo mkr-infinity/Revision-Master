@@ -109,17 +109,55 @@ See the full [`CHANGELOG.txt`](./CHANGELOG.txt).
 ## Project Structure
 
 ```
-.github/workflows/apk.yml   # GitHub Actions — debug APK with temp keystore
-android/                    # Capacitor Android project
-src/
-  assets/                   # logos, mascot SVG, feature icons
-  components/               # Layout, Chatbot, modals, providers
-  context/                  # AppContext (themes, user, decks, tests)
-  screens/                  # Home, Flashcards, MockTests, Stats, Settings, About, Onboarding, FormulaLibrary
-  utils/                    # AI client, helpers
-  index.css                 # Tailwind v4 + 6 anime-themed palettes + manga utility classes
-capacitor.config.ts         # Capacitor config (StatusBar, Splash, mixed-content rules)
-vite.config.ts              # Vite + PWA + manualChunks for fast loads
+📦 Revision Master
+├── 📱 Mobile App (React + Capacitor + Vite)
+│   ├── src/
+│   │   ├── components/        # UI components (Layout, Chatbot, modals, providers)
+│   │   ├── context/           # AppContext (themes, user, decks, tests, AI settings)
+│   │   ├── screens/           # App screens (Home, Flashcards, MockTests, Stats, Settings, About, Onboarding, FormulaLibrary, RecycleBin, Changelog)
+│   │   ├── types/             # TypeScript definitions
+│   │   ├── utils/             # AI client, PDF export, utilities
+│   │   ├── assets/            # Icons and feature SVGs
+│   │   ├── index.css          # Tailwind v4 + 6 anime-themed palettes + manga utilities
+│   │   ├── App.tsx            # Main App component
+│   │   └── main.tsx           # Entry point
+│   ├── public/                # Static assets
+│   ├── android/               # Capacitor Android native project
+│   │   ├── app/               # Android app (build files, AndroidManifest.xml, resources)
+│   │   └── capacitor-cordova-android-plugins/
+│   ├── capacitor.config.ts    # Capacitor config (StatusBar, Splash, mixed-content)
+│   ├── vite.config.ts         # Vite + PWA + code splitting for fast loads
+│   ├── tsconfig.json          # TypeScript configuration
+│   └── package.json           # Dependencies
+│
+├── 🌐 Website (React + Vite + Shadcn UI)
+│   ├── website/src/
+│   │   ├── components/        # UI components (Hero, Features, Screenshots, Footer, etc.)
+│   │   ├── pages/             # Pages (Home, not-found)
+│   │   ├── hooks/             # Custom hooks
+│   │   ├── lib/               # Utilities
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── website/public/        # Static assets
+│   └── website/package.json
+│
+├── 📚 Assets
+│   ├── assets/icons/          # App icons
+│   ├── assets/features/       # Feature SVGs
+│   ├── assets/screenshotv2/   # App screenshots
+│   └── assets/mockups/        # UI mockups
+│
+├── 📖 Documentation
+│   ├── README.md              # Project overview
+│   ├── BUILD_GUIDE.md         # Web deployment guide
+│   ├── CAPACITOR_GUIDE.md     # Capacitor setup guide
+│   ├── CHANGELOG.txt          # Version history
+│   └── metadata.json          # Project metadata
+│
+└── ⚙️ Configuration
+    ├── serve-website.js       # Website server script
+    ├── update-colors.ts       # Theme color generator
+    └── .github/workflows/apk.yml  # GitHub Actions — debug APK builder
 ```
 
 ---
