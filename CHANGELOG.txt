@@ -1,6 +1,14 @@
 Revision Master — Changelog
 ===========================
 
+v2.0.1 — Anime Edition
+----------------------
+- Fixed bugs
+- Improved navigation and detils
+- Fix api key issue
+
+
+
 v2.0.0 — Anime Edition
 ----------------------
 
