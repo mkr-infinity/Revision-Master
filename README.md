@@ -32,6 +32,12 @@
   <img src="https://img.shields.io/badge/🚀%20Latest%20Release-Get%20Now-success?style=for-the-badge&logo=github" />
 </a>
 
+----
+
+<a href="https://mkr-infinity.github.io/Revision-Master" target="_blank">
+  <img src="https://img.shields.io/badge/🌐%20Explore%20Features%20%26%20Screenshots-Visit%20Website-blueviolet?style=for-the-badge" />
+</a>
+
 </div>
 
 
@@ -97,24 +103,6 @@ See the full [`CHANGELOG.txt`](./CHANGELOG.txt).
 | <img src="assets/features/ai.svg" width="40"> **AI Study Buddy** | Generate flashcards and explanations using MKR AI |
 | <img src="assets/features/analytics.svg" width="40"> **Deep Insights** | Track progress with statistics and performance heatmaps |
 | <img src="assets/features/pdf.svg" width="40"> **Offline Study** | Export flashcards and decks as PDFs |
-
----
-
-## 📸 Screenshots
-
-<div align="center">
-
-| Home Dashboard | Flashcards | Mock Tests |
-|:-:|:-:|:-:|
-| <img src="assets/screenshotv2/home.jpg" width="200"> | <img src="assets/screenshotv2/flashcards.jpg" width="200"> | <img src="assets/screenshotv2/tests.jpg" width="200"> |
-| **Formula Library** | **Analytics** | **Progress** |
-| <img src="assets/screenshotv2/formulas.jpg" width="200"> | <img src="assets/screenshotv2/analytics.jpg" width="200"> | <img src="assets/screenshotv2/progress.jpg" width="200"> |
-| **Settings** | **Onboarding** | **AI Setup** |
-| <img src="assets/screenshotv2/settings.jpg" width="200"> | <img src="assets/screenshotv2/onboarding.jpg" width="200"> | <img src="assets/screenshotv2/aikey.jpg" width="200"> |
-| **Export Options** | **PDF Export** | **Recycle Bin** |
-| <img src="assets/screenshotv2/export-options.jpg" width="200"> | <img src="assets/screenshotv2/exporting.jpg" width="200"> | <img src="assets/screenshotv2/bin.jpg" width="200"> |
-
-</div>
 
 ---
 
