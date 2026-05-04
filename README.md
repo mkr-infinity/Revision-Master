@@ -104,15 +104,15 @@ See the full [`CHANGELOG.txt`](./CHANGELOG.txt).
 
 <div align="center">
 
-| Home Dashboard | Flashcard Decks | Study Mode |
+| Home Dashboard | Flashcards | Mock Tests |
 |:-:|:-:|:-:|
-| <img src="assets/screenshots/01_home_dashboard.svg" width="200"> | <img src="assets/screenshots/02_flashcards_list.svg" width="200"> | <img src="assets/screenshots/03_flashcard_study.svg" width="200"> |
-| **Mock Test** | **Statistics** | **Settings** |
-| <img src="assets/screenshots/04_mock_test.svg" width="200"> | <img src="assets/screenshots/05_stats_analytics.svg" width="200"> | <img src="assets/screenshots/06_settings.svg" width="200"> |
-| **AI Study Buddy** | **Onboarding** | **Formula Library** |
-| <img src="assets/screenshots/07_ai_chat.svg" width="200"> | <img src="assets/screenshots/08_onboarding.svg" width="200"> | <img src="assets/screenshots/09_formula_library.svg" width="200"> |
-| **Anime Themes** | | |
-| <img src="assets/screenshots/10_themes.svg" width="200"> | | |
+| <img src="assets/screenshotv2/home.jpg" width="200"> | <img src="assets/screenshotv2/flashcards.jpg" width="200"> | <img src="assets/screenshotv2/tests.jpg" width="200"> |
+| **Formula Library** | **Analytics** | **Progress** |
+| <img src="assets/screenshotv2/formulas.jpg" width="200"> | <img src="assets/screenshotv2/analytics.jpg" width="200"> | <img src="assets/screenshotv2/progress.jpg" width="200"> |
+| **Settings** | **Onboarding** | **AI Setup** |
+| <img src="assets/screenshotv2/settings.jpg" width="200"> | <img src="assets/screenshotv2/onboarding.jpg" width="200"> | <img src="assets/screenshotv2/aikey.jpg" width="200"> |
+| **Export Options** | **PDF Export** | **Recycle Bin** |
+| <img src="assets/screenshotv2/export-options.jpg" width="200"> | <img src="assets/screenshotv2/exporting.jpg" width="200"> | <img src="assets/screenshotv2/bin.jpg" width="200"> |
 
 </div>
 

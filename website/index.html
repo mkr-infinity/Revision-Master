@@ -1,6 +1,1778 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Revision Master — Smart study companion with AI flashcards, mock tests, and focus tools. 100% offline. No tracking.">
+  <meta name="theme-color" content="#07070F">
+  <title>Revision Master — Study Smarter, Score Higher</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="icon" href="../assets/logo.svg">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #07070F;
+      --bg-2: #0D0D1A;
+      --surface: #12121E;
+      --card: #18182A;
+      --border: rgba(255,255,255,0.07);
+      --accent: #7C3AED;
+      --accent-2: #06B6D4;
+      --accent-glow: rgba(124,58,237,0.35);
+      --text: #F0F0FF;
+      --text-muted: #8888AA;
+      --gradient: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
+      
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Inter', sans-serif;
+      --font-ui: 'Space Grotesk', sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg: #F8F5FF;
+      --bg-2: #F0EBFF;
+      --surface: #FFFFFF;
+      --card: #F5F0FF;
+      --border: rgba(0,0,0,0.08);
+      --accent: #6D28D9;
+      --accent-2: #0891B2;
+      --accent-glow: rgba(109,40,217,0.2);
+      --text: #1A1A2E;
+      --text-muted: #6B7280;
+      --gradient: linear-gradient(135deg, #6D28D9 0%, #0891B2 100%);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background-color 0.4s, color 0.4s;
+      opacity: 0;
+      animation: pageLoad 0.6s ease-out 1.2s forwards;
+    }
+
+    @keyframes pageLoad {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url('../assets/bg-dark.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      opacity: 0.5;
+      z-index: -2;
+    }
+
+    [data-theme="light"] body::before {
+      background-image: url('../assets/bg-light.jpg');
+      opacity: 0.6;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(7,7,15,0.82);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    [data-theme="light"] body::after {
+      background: rgba(248,245,255,0.88);
+    }
+
+    /* Three.js Canvas */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    /* Loading Screen */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background-color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.6s ease-out 1.2s;
+      pointer-events: none;
+    }
+
+    .loading-screen.fade {
+      opacity: 0;
+    }
+
+    .logo-pulse {
+      width: 80px;
+      height: 80px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Scroll Progress Bar */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--gradient);
+      z-index: 999;
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    /* Cursor Glow */
+    .cursor-glow {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.12), transparent);
+      pointer-events: none;
+      z-index: 1;
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .cursor-glow {
+        display: block;
+      }
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(7,7,15,0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 998;
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      height: 60px;
+      backdrop-filter: blur(30px);
+      background: rgba(7,7,15,0.8);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-logo {
+      width: 36px;
+      height: 36px;
+    }
+
+    .nav-brand {
+      font-family: var(--font-ui);
+      font-weight: 500;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .nav-brand {
+        display: block;
+      }
+    }
+
+    .nav-center {
+      display: none;
+      gap: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+      .nav-center {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .theme-toggle {
+      width: 44px;
+      height: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+    }
+
+    .toggle-circle {
+      width: 20px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    [data-theme="light"] .toggle-circle {
+      transform: translateX(20px);
+    }
+
+    .btn-download {
+      padding: 10px 20px;
+      background: var(--gradient);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-family: var(--font-ui);
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+      font-size: 0.95rem;
+    }
+
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(124,58,237,0.4);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      transition: all 0.3s;
+    }
+
+    @media (max-width: 1023px) {
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(7,7,15,0.95);
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem;
+      z-index: 997;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu .nav-link {
+      font-size: 1.2rem;
+      animation: slideIn 0.4s ease-out backwards;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      padding: 8rem 2rem 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1023px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 6rem 2rem 4rem;
+        gap: 3rem;
+      }
+    }
+
+    .hero-left {
+      z-index: 10;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      color: var(--accent);
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 8vw, 96px);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      animation: titleSlideUp 0.8s ease-out;
+    }
+
+    @keyframes titleSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-title-accent {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-family: var(--font-ui);
+      font-weight: 500;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface);
+      border-color: var(--accent);
+    }
+
+    .stats-strip {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-family: var(--font-ui);
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat::after {
+      content: '';
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+    }
+
+    .stat:last-child::after {
+      display: none;
+    }
+
+    /* Hero Right — Phone Mockup */
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    @media (max-width: 1023px) {
+      .hero-right {
+        order: -1;
+      }
+    }
+
+    .phone-mockup {
+      position: relative;
+      width: 280px;
+      height: 560px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%);
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 20px 60px var(--accent-glow);
+      animation: floatPhone 4s ease-in-out infinite;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes floatPhone {
+      0%, 100% { transform: translateY(0px) rotateY(-10deg) rotateX(5deg); }
+      50% { transform: translateY(-12px) rotateY(-10deg) rotateX(5deg); }
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 28px;
+      background: #0a0a12;
+      border-radius: 0 0 30px 30px;
+      z-index: 10;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(6,182,212,0.1) 100%);
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .phone-float-card {
+      position: absolute;
+      background: rgba(18,18,30,0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      font-family: var(--font-ui);
+      font-weight: 500;
+      animation: floatCard 4s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0px); opacity: 0.6; }
+      50% { transform: translateY(-8px) scale(1.05); opacity: 1; }
+    }
+
+    .card-1 {
+      top: -20px;
+      right: -30px;
+      animation-delay: 0s;
+    }
+
+    .card-2 {
+      bottom: -20px;
+      left: -30px;
+      animation-delay: 0.5s;
+    }
+
+    .card-3 {
+      top: 50%;
+      left: -40px;
+      transform: translateY(-50%);
+      animation-delay: 1s;
+    }
+
+    /* Section Styles */
+    section {
+      padding: 120px 2rem;
+      z-index: 10;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: rgba(18,18,30,0.4);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      background: rgba(18,18,30,0.6);
+      box-shadow: 0 20px 40px var(--accent-glow);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1.5rem;
+      background: var(--gradient);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: white;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-ui);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Privacy Banner */
+    .privacy-section {
+      background: linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(6,182,212,0.08) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+    }
+
+    .privacy-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .privacy-item-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+    }
+
+    .privacy-item h4 {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .privacy-item p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Screenshots Carousel */
+    .screenshots-container {
+      position: relative;
+      height: 600px;
+      background: rgba(18,18,30,0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .screenshot-card {
+      min-width: 300px;
+      height: 550px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%);
+      border-radius: 30px;
+      padding: 10px;
+      box-shadow: 0 20px 60px var(--accent-glow);
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+
+    .screenshot-card.center {
+      min-width: 350px;
+      height: 600px;
+      transform: scale(1.1);
+    }
+
+    .screenshot-card img {
+      width: 100%;
+      height: 100%;
+      border-radius: 25px;
+      object-fit: cover;
+    }
+
+    .carousel-controls {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .carousel-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      color: white;
+    }
+
+    .carousel-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .carousel-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    /* Themes Grid */
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 2.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .theme-swatch {
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .theme-swatch:hover {
+      transform: scale(1.1);
+    }
+
+    .swatch-circles {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1rem;
+    }
+
+    .swatch-circle {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      top: 25px;
+    }
+
+    .swatch-circle:first-child {
+      left: 0;
+    }
+
+    .swatch-circle:last-child {
+      right: 0;
+      box-shadow: 0 0 30px currentColor;
+    }
+
+    .swatch-name {
+      text-align: center;
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* Support Section */
+    .support-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .support-card {
+      background: linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(6,182,212,0.1) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      transition: all 0.3s;
+    }
+
+    .support-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 20px 60px var(--accent-glow);
+    }
+
+    .support-card h3 {
+      font-family: var(--font-ui);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .support-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .support-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+
+    .support-link:last-child {
+      border-bottom: none;
+    }
+
+    .support-link:hover {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .support-link svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      z-index: 10;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 3rem;
+      align-items: start;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      width: 32px;
+      height: 32px;
+    }
+
+    .footer-name {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    .footer-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-nav a:hover {
+      color: var(--accent);
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 768px) {
+      .footer-right {
+        justify-content: center;
+      }
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .license-badge {
+      display: inline-block;
+      background: var(--card);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+    }
+
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: var(--gradient);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .back-to-top.show {
+      display: flex;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px var(--accent-glow);
+    }
+
+    .back-to-top svg {
+      width: 24px;
+      height: 24px;
+      stroke: white;
+      stroke-width: 2;
+    }
+
+    /* Wave Divider */
+    .wave-divider {
+      width: 100%;
+      height: 100px;
+      background: var(--gradient);
+      opacity: 0.1;
+      clip-path: polygon(0 50%, 2% 47%, 4% 48%, 6% 50%, 8% 51%, 10% 50%, 12% 48%, 14% 47%, 16% 49%, 18% 51%, 20% 50%, 22% 48%, 24% 49%, 26% 50%, 28% 51%, 30% 49%, 32% 48%, 34% 47%, 36% 49%, 38% 51%, 40% 50%, 42% 48%, 44% 47%, 46% 49%, 48% 50%, 50% 49%, 52% 48%, 54% 49%, 56% 50%, 58% 48%, 60% 47%, 62% 49%, 64% 50%, 66% 51%, 68% 49%, 70% 48%, 72% 49%, 74% 50%, 76% 51%, 78% 50%, 80% 49%, 82% 47%, 84% 49%, 86% 50%, 88% 51%, 90% 50%, 92% 48%, 94% 49%, 96% 50%, 98% 49%, 100% 50%, 100% 100%, 0 100%);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 1rem;
+      }
+
+      .btn-download {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
+
+      .section-title {
+        font-size: clamp(28px, 4vw, 40px);
+      }
+
+      .hero {
+        padding: 5rem 1.5rem 3rem;
+      }
+
+      .stats-strip {
+        gap: 1rem;
+      }
+
+      .stat {
+        gap: 0.5rem;
+      }
+
+      .screenshots-container {
+        height: 400px;
+      }
+
+      .screenshot-card {
+        min-width: 240px;
+        height: 420px;
+      }
+
+      .screenshot-card.center {
+        min-width: 280px;
+        height: 450px;
+      }
+
+      section {
+        padding: 80px 1.5rem;
+      }
+
+      .back-to-top {
+        width: 44px;
+        height: 44px;
+        right: 1rem;
+        bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen">
+    <svg class="logo-pulse" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="45" fill="none" stroke="#7C3AED" stroke-width="2" opacity="0.3"/>
+      <circle cx="50" cy="50" r="35" fill="none" stroke="#06B6D4" stroke-width="2" opacity="0.5"/>
+      <path d="M 50 20 L 60 40 L 80 40 L 65 55 L 70 75 L 50 60 L 30 75 L 35 55 L 20 40 L 40 40 Z" fill="#7C3AED" opacity="0.8"/>
+    </svg>
+  </div>
+
+  <!-- Particles Canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Cursor Glow -->
+  <div class="cursor-glow"></div>
+
+  <!-- Scroll Progress -->
+  <div class="scroll-progress"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-left">
+      <img src="../assets/logo.svg" alt="Logo" class="nav-logo">
+      <span class="nav-brand">Revision Master</span>
+    </div>
+    <div class="nav-center">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#screenshots" class="nav-link">Screenshots</a>
+      <a href="#support" class="nav-link">Support</a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle">
+        <div class="toggle-circle"></div>
+      </button>
+      <a href="https://github.com/mkr-infinity/Revision-Master/releases/latest/download/app-release.apk" download class="btn-download">Download</a>
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#screenshots" class="nav-link">Screenshots</a>
+    <a href="#support" class="nav-link">Support</a>
+    <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" class="nav-link">GitHub</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">Smart Study. Real Results.</div>
+      <h1 class="hero-title">
+        Study Smarter.<br>
+        <span class="hero-title-accent">Score Higher.</span>
+      </h1>
+      <p class="hero-description">
+        Revision Master combines AI-powered flashcards, exam simulation, and focus tools into one offline-first app. No cloud. No tracking. Just focused study.
+      </p>
+      <div class="hero-cta">
+        <a href="https://github.com/mkr-infinity/Revision-Master/releases/latest/download/app-release.apk" download class="btn btn-primary">Download APK</a>
+        <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" class="btn btn-secondary">View on GitHub</a>
+      </div>
+      <div class="stats-strip">
+        <div class="stat">22+ Stars</div>
+        <div class="stat">Open Source</div>
+        <div class="stat">100% Offline</div>
+        <div class="stat">MIT License</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="phone-mockup">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+            <div style="font-size: 2rem; font-weight: 700; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">RM</div>
+            <div style="font-size: 0.75rem; opacity: 0.7;">Smart Study Companion</div>
+          </div>
+        </div>
+        <div class="phone-float-card card-1">AI Generated</div>
+        <div class="phone-float-card card-2">Focus Timer</div>
+        <div class="phone-float-card card-3">Score: 94%</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wave-divider"></div>
+
+  <!-- Features Section -->
+  <section id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Capabilities</div>
+        <h2 class="section-title">Built to Perform</h2>
+        <p class="section-subtitle">Every feature designed with purpose.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 19.5h16M6 12.5h12M8 5.5h8"/>
+            </svg>
+          </div>
+          <h3>Smart Subjects</h3>
+          <p>Organize every topic with custom icons and live progress tracking.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2v20M2 12h20M8 8l-4 4 4 4M16 8l4 4-4 4"/>
+            </svg>
+          </div>
+          <h3>Active Recall</h3>
+          <p>Flashcards that support text, images, and mathematical formulas.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3"/>
+            </svg>
+          </div>
+          <h3>Exam Simulation</h3>
+          <p>Full mock tests under real exam conditions and time pressure.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11z"/>
+            </svg>
+          </div>
+          <h3>AI Study Buddy</h3>
+          <p>Generate flashcard decks with AI. Ask complex questions instantly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12a9 9 0 0110 9H3V12zm0-2V3h10a9 9 0 00-10 9zm18-.5V3h-4v8.5h4zm0 2h-4v8.5h4v-8.5z"/>
+            </svg>
+          </div>
+          <h3>Deep Insights</h3>
+          <p>Performance heatmaps and progress statistics that actually help.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.828 14.828a4 4 0 01-5.656 0M21.5 13a8.5 8.5 0 11-17 0 8.5 8.5 0 0117 0z"/>
+            </svg>
+          </div>
+          <h3>Offline First</h3>
+          <p>Complete functionality with zero internet. Your data never leaves your device.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wave-divider"></div>
+
+  <!-- Privacy Section -->
+  <section>
+    <div class="container">
+      <div class="privacy-section">
+        <div class="privacy-item">
+          <div class="privacy-item-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; fill: white;">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11z"/>
+            </svg>
+          </div>
+          <h4>Zero Cloud Storage</h4>
+          <p>Your data never leaves your device. Everything stays local and secure.</p>
+        </div>
+        <div class="privacy-item">
+          <div class="privacy-item-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; fill: white;">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11z"/>
+            </svg>
+          </div>
+          <h4>No Tracking</h4>
+          <p>No analytics, no cookies, no exceptions. Your privacy is a promise.</p>
+        </div>
+        <div class="privacy-item">
+          <div class="privacy-item-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; fill: white;">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11z"/>
+            </svg>
+          </div>
+          <h4>Full Data Export</h4>
+          <p>Export everything as JSON anytime. No vendor lock-in, ever.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wave-divider"></div>
+
+  <!-- Screenshots Section -->
+  <section id="screenshots">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Gallery</div>
+        <h2 class="section-title">A Look Inside</h2>
+        <p class="section-subtitle">Crafted for clarity and focus.</p>
+      </div>
+      <div class="screenshots-container">
+        <div class="carousel">
+          <div class="carousel-track" id="carouselTrack">
+            <!-- Screenshots will be loaded here -->
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-btn" id="carouselPrev">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <div class="carousel-dots" id="carouselDots"></div>
+            <button class="carousel-btn" id="carouselNext">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wave-divider"></div>
+
+  <!-- Themes Section -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Personalization</div>
+        <h2 class="section-title">Six Themes. One App.</h2>
+        <p class="section-subtitle">Built for every mood and environment.</p>
+      </div>
+      <div class="themes-grid">
+        <div class="theme-swatch">
+          <div class="swatch-circles">
+            <div class="swatch-circle" style="background: #F8F5FF;"></div>
+            <div class="swatch-circle" style="background: #6D28D9;"></div>
+          </div>
+          <div class="swatch-name">Light</div>
+        </div>
+        <div class="theme-swatch">
+          <div class="swatch-circles">
+            <div class="swatch-circle" style="background: #07070F;"></div>
+            <div class="swatch-circle" style="background: #7C3AED;"></div>
+          </div>
+          <div class="swatch-name">Dark</div>
+        </div>
+        <div class="theme-swatch">
+          <div class="swatch-circles">
+            <div class="swatch-circle" style="background: #000000;"></div>
+            <div class="swatch-circle" style="background: #A855F7;"></div>
+          </div>
+          <div class="swatch-name">OLED</div>
+        </div>
+        <div class="theme-swatch">
+          <div class="swatch-circles">
+            <div class="swatch-circle" style="background: #F5E6D3;"></div>
+            <div class="swatch-circle" style="background: #92400E;"></div>
+          </div>
+          <div class="swatch-name">Sepia</div>
+        </div>
+        <div class="theme-swatch">
+          <div class="swatch-circles">
+            <div class="swatch-circle" style="background: #0A1A0A;"></div>
+            <div class="swatch-circle" style="background: #00FF41;"></div>
+          </div>
+          <div class="swatch-name">Hacker</div>
+        </div>
+        <div class="theme-swatch">
+          <div class="swatch-circles">
+            <div class="swatch-circle" style="background: #0A1628;"></div>
+            <div class="swatch-circle" style="background: #0EA5E9;"></div>
+          </div>
+          <div class="swatch-name">Ocean</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wave-divider"></div>
+
+  <!-- Support Section -->
+  <section id="support">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Community</div>
+        <h2 class="section-title">Support the Project</h2>
+        <p class="section-subtitle">Revision Master is free and open source. If it helped you, consider giving back.</p>
+      </div>
+      <div class="support-grid">
+        <div class="support-card">
+          <h3>Buy Me a Coffee</h3>
+          <p>If this app helped you study better, your support keeps it alive and improving. Every contribution counts.</p>
+          <a href="https://buymeacoffee.com/mkr_infinity" target="_blank" class="btn btn-primary" style="display: block; text-align: center;">Support on Buy Me a Coffee</a>
+        </div>
+        <div class="support-card">
+          <h3>Other Ways to Help</h3>
+          <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" class="support-link">
+            <span>Star on GitHub</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+          <a href="https://github.com/mkr-infinity/Revision-Master/issues" target="_blank" class="support-link">
+            <span>Report an Issue</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+          <a href="https://github.com/mkr-infinity/Revision-Master/fork" target="_blank" class="support-link">
+            <span>Fork & Contribute</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <img src="../assets/logo.svg" alt="Logo" class="footer-logo">
+        <div class="footer-name">Revision Master</div>
+      </div>
+      <div class="footer-nav">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#support">Support</a>
+        <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank">GitHub</a>
+      </div>
+      <div class="footer-right">
+        <span class="license-badge">MIT License</span>
+        <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" style="color: var(--text-muted); display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Made for students. Built with passion. Driven by open source.</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const newTheme = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+
+    // Mobile Menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // Navbar Scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Scroll Progress
+    const scrollProgress = document.querySelector('.scroll-progress');
+    window.addEventListener('scroll', () => {
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      scrollProgress.style.transform = `scaleX(${scrollPercent / 100})`;
+    });
+
+    // Cursor Glow
+    const cursorGlow = document.querySelector('.cursor-glow');
+    document.addEventListener('mousemove', (e) => {
+      cursorGlow.style.left = (e.clientX - 200) + 'px';
+      cursorGlow.style.top = (e.clientY - 200) + 'px';
+    });
+
+    // Three.js Particles
+    let scene, camera, renderer, particles;
+    const particleCount = 200;
+
+    function initParticles() {
+      const canvas = document.getElementById('particleCanvas');
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 500;
+
+      renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0);
+
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 1000;
+        positions[i + 1] = (Math.random() - 0.5) * 1000;
+        positions[i + 2] = (Math.random() - 0.5) * 1000;
+
+        const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (Math.random() > 0.5) {
+          colors[i] = isDarkTheme ? 0.49 : 0.43;
+          colors[i + 1] = isDarkTheme ? 0.36 : 0.26;
+          colors[i + 2] = isDarkTheme ? 0.93 : 0.85;
+        } else {
+          colors[i] = isDarkTheme ? 0.02 : 0.05;
+          colors[i + 1] = isDarkTheme ? 0.72 : 0.56;
+          colors[i + 2] = isDarkTheme ? 0.84 : 0.71;
+        }
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 2,
+        vertexColors: true,
+        transparent: true,
+        sizeAttenuation: true,
+      });
+
+      particles = new THREE.Points(geometry, material);
+      scene.add(particles);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animate();
+    }
+
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (particles) {
+        particles.rotation.x += 0.0001;
+        particles.rotation.y += 0.0003;
+        particles.rotation.z += mouseX * 0.0001;
+
+        const positions = particles.geometry.attributes.position.array;
+        for (let i = 0; i < particleCount; i++) {
+          const i3 = i * 3;
+          positions[i3 + 1] -= 0.3;
+          if (positions[i3 + 1] < -500) {
+            positions[i3 + 1] = 500;
+          }
+        }
+        particles.geometry.attributes.position.needsUpdate = true;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    initParticles();
+
+    // Loading Screen
+    setTimeout(() => {
+      document.querySelector('.loading-screen').classList.add('fade');
+    }, 1200);
+
+    // Back to Top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Load Screenshots
+    async function loadScreenshots() {
+      const carouselTrack = document.getElementById('carouselTrack');
+      const carouselDots = document.getElementById('carouselDots');
+      const screenshotNames = ['home', 'flashcards', 'tests', 'formulas', 'analytics', 'progress', 'settings', 'onboarding', 'aikey', 'export-options', 'exporting', 'bin'];
+      
+      let validScreenshots = [];
+      
+      for (const name of screenshotNames) {
+        const img = new Image();
+        img.src = `../assets/screenshotv2/${name}.jpg`;
+        img.onload = () => {
+          const card = document.createElement('div');
+          card.className = 'screenshot-card';
+          card.innerHTML = `<img src="../assets/screenshotv2/${name}.jpg" alt="${name}">`;
+          carouselTrack.appendChild(card);
+          validScreenshots.push(card);
+        };
+      }
+
+      if (validScreenshots.length === 0) {
+        for (let i = 0; i < 6; i++) {
+          const card = document.createElement('div');
+          card.className = 'screenshot-card';
+          card.innerHTML = `<div style="width: 100%; height: 100%; background: var(--gradient); display: flex; align-items: center; justify-content: center; border-radius: 25px; color: white; font-size: 1.2rem; font-weight: 700;">Screenshot ${i + 1}</div>`;
+          carouselTrack.appendChild(card);
+          validScreenshots.push(card);
+        }
+      }
+
+      // Create dots
+      validScreenshots.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (idx === 0 ? ' active' : '');
+        dot.addEventListener('click', () => updateCarousel(idx));
+        carouselDots.appendChild(dot);
+      });
+
+      // Carousel Logic
+      let currentIndex = 0;
+
+      function updateCarousel(index) {
+        currentIndex = index;
+        validScreenshots.forEach((card, idx) => {
+          card.classList.remove('center');
+        });
+        if (validScreenshots[currentIndex]) {
+          validScreenshots[currentIndex].classList.add('center');
+        }
+
+        document.querySelectorAll('.dot').forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentIndex);
+        });
+      }
+
+      document.getElementById('carouselPrev').addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + validScreenshots.length) % validScreenshots.length;
+        updateCarousel(currentIndex);
+      });
+
+      document.getElementById('carouselNext').addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % validScreenshots.length;
+        updateCarousel(currentIndex);
+      });
+
+      updateCarousel(0);
+    }
+
+    loadScreenshots();
+
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Feature cards animate on scroll
+    gsap.utils.toArray('.feature-card').forEach((card, index) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 80%',
+        },
+        opacity: 0,
+        y: 30,
+        delay: index * 0.1,
+        duration: 0.6,
+      });
+    });
+
+    // Theme swatches animate
+    gsap.utils.toArray('.theme-swatch').forEach((swatch, index) => {
+      gsap.from(swatch, {
+        scrollTrigger: {
+          trigger: swatch,
+          start: 'top 85%',
+        },
+        opacity: 0,
+        scale: 0.8,
+        delay: index * 0.05,
+        duration: 0.6,
+      });
+    });
+
+    // Hero title stagger
+    gsap.from('.hero-title', {
+      opacity: 0,
+      y: 40,
+      duration: 0.8,
+      ease: 'power2.out',
+    });
+
+    // Phone parallax
+    const phoneFrame = document.querySelector('.phone-mockup');
+    if (phoneFrame) {
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) * 2 - 1;
+        const y = (e.clientY / window.innerHeight) * 2 - 1;
+        phoneFrame.style.transform = `perspective(1000px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+      });
+
+      document.addEventListener('mouseleave', () => {
+        phoneFrame.style.transform = 'perspective(1000px) rotateY(-10deg) rotateX(5deg)';
+      });
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Revision Master — The anime-themed study companion. Flashcards, mock tests, formula library, and AI-generated study material. Free, offline-ready Android app." />
@@ -10,75 +1782,490 @@
   <meta property="og:image" content="assets/logo.png" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
-  <title>Revision Master — Ace Every Exam</title>
-  <link rel="icon" type="image/png" href="assets/icon.png" />
-  <link rel="apple-touch-icon" href="assets/icon.png" />
+  <title>Revision Master — Ace Every Exam with Anime Power</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Mochiy+Pop+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="icon" href="assets/icon.png" />
+  <link rel="apple-touch-icon" href="assets/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0b0720">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-nav" id="site-nav">
-    <div class="nav-inner">
-      <a href="#" class="nav-logo" aria-label="Revision Master home">
-        <img src="assets/logo.svg" alt="Revision Master Logo" width="36" height="36" class="nav-logo-img" />
-        <span class="nav-logo-text">Revision Master</span>
-      </a>
-      <nav class="nav-actions">
-        <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-github" id="github-stars-btn" aria-label="Star on GitHub">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span class="btn-label">Star</span>
-          <span class="stars-badge" id="stars-count">...</span>
-        </a>
-        <a href="https://buymeacoffee.com/mkr_infinity" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-coffee" aria-label="Buy me a coffee">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-          <span class="btn-label">Support</span>
-        </a>
-        <button class="nav-btn nav-btn-theme" id="theme-toggle" aria-label="Toggle theme" title="Toggle dark / light theme">
-          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <img src="assets/logo.svg" alt="Revision Master Logo" class="brand-logo" />
+        <span class="brand-text">Revision Master</span>
+      </div>
+      <div class="navbar-menu" id="navbar-menu">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#screenshots" class="nav-link">Screenshots</a>
+        <a href="#download" class="nav-link">Download</a>
+        <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="nav-link nav-link-github">GitHub</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
         </button>
-        <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
-      </nav>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
-    <div class="nav-mobile-menu" id="nav-mobile-menu" aria-hidden="true">
-      <a href="#features" class="mobile-link">Features</a>
-      <a href="#themes" class="mobile-link">Themes</a>
-      <a href="#screenshots" class="mobile-link">Screenshots</a>
-      <a href="#download" class="mobile-link">Download</a>
-      <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="mobile-link mobile-link-github">GitHub Repo</a>
-      <a href="https://buymeacoffee.com/mkr_infinity" target="_blank" rel="noopener noreferrer" class="mobile-link mobile-link-coffee">Support the Project</a>
+  </nav>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="overlay-layer" data-depth="0.08" style="left:4%; top:6%;">
+      <img src="assets/mascot.svg" alt="mascot" />
     </div>
-  </header>
-  <section class="hero" id="hero">
-    <div class="hero-bg" aria-hidden="true"><div class="speed-lines"></div><div class="halftone-dots"></div><div class="hero-glow hero-glow-1"></div><div class="hero-glow hero-glow-2"></div><div class="hero-glow hero-glow-3"></div><div class="sparkle sparkle-1"></div><div class="sparkle sparkle-2"></div><div class="sparkle sparkle-3"></div><div class="sparkle sparkle-4"></div><div class="sparkle sparkle-5"></div></div>
-    <div class="hero-inner">
+    <div class="overlay-layer" data-depth="0.03" style="right:2%; top:14%; opacity:0.32;">
+      <img src="assets/hero-illustration.png" alt="decor" />
+    </div>
+    <div class="anime-sparkle" style="left:6%; top:12%;"></div>
+    <div class="anime-sparkle" style="right:8%; top:24%; width:220px; height:220px; background: radial-gradient(circle at 30% 30%, rgba(111,122,255,0.06), transparent 20%); opacity:0.9;"></div>
+    <div class="hero-content">
       <div class="hero-text">
-        <div class="hero-badge"><svg class="badge-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span>Anime Edition v2.0</span></div>
-        <h1 class="hero-title"><span class="title-line-1">Study Like</span><span class="title-line-2">a Hero.</span><span class="title-accent">Ace Every Exam.</span></h1>
-        <p class="hero-description">The anime-themed study companion built for serious students. Flashcards, formula library, timed mock tests, and AI-powered study material — all offline, all on your device.</p>
-        <div class="hero-tags"><span class="tag">No account needed</span><span class="tag">100% offline</span><span class="tag">AI-powered</span><span class="tag">Free</span></div>
+        <div class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="badge-icon">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+          </svg>
+          Anime Edition v2.0
+        </div>
+        <h1 class="hero-title"><span class="title-line-1">Study like</span><span class="title-line-2">a Hero.</span></h1>
+        <h2 class="hero-accent">Ace Every Exam.</h2>
+        <p class="hero-subtitle">The ultimate anime-themed study companion for serious learners. Flashcards, mock tests, formulas, and AI study buddy — completely offline.</p>
+        <div class="hero-tags">
+          <span class="tag">100% Offline</span>
+          <span class="tag">No Account</span>
+          <span class="tag">AI-Powered</span>
+          <span class="tag">Free Forever</span>
+        </div>
         <div class="hero-cta">
-          <a href="https://github.com/mkr-infinity/Revision-Master/releases/latest" target="_blank" rel="noopener noreferrer" class="cta-primary" id="download-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download APK</a>
-          <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="cta-secondary"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>View on GitHub</a>
+          <a href="https://github.com/mkr-infinity/Revision-Master/releases/latest" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download APK
+          </a>
+          <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            View on GitHub
+          </a>
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-showcase-card">
-          <img src="assets/hero-illustration.png" alt="Revision Master feature showcase with labeled phone mockup" class="hero-showcase-image" loading="eager" />
+        <div class="phone-mockup">
+          <div class="phone-frame">
+            <img src="assets/screenshotv2/home.jpg" alt="Revision Master App" class="phone-image" />
+          </div>
         </div>
       </div>
     </div>
-    <div class="scroll-hint" aria-hidden="true"><div class="scroll-arrow"></div></div>
   </section>
-  <div class="stats-bar"><div class="stats-inner"><div class="stat-item"><span class="stat-number">6</span><span class="stat-label">Anime Themes</span></div><div class="stat-divider" aria-hidden="true"></div><div class="stat-item"><span class="stat-number">100%</span><span class="stat-label">Offline</span></div><div class="stat-divider" aria-hidden="true"></div><div class="stat-item"><span class="stat-number">0</span><span class="stat-label">Trackers</span></div><div class="stat-divider" aria-hidden="true"></div><div class="stat-item"><span class="stat-number">Free</span><span class="stat-label">Always</span></div></div></div>
-  <section class="section features-section" id="features"><div class="section-inner"><div class="section-header"><div class="section-eyebrow">Powerful Features</div><h2 class="section-title">Everything you need to master any subject</h2><p class="section-subtitle">Built from the ground up for focused, effective studying — no bloat, no distractions.</p></div><div class="features-grid"><div class="feature-card feature-card-primary" data-reveal><div class="feature-icon-wrap feature-icon-purple"><img src="assets/features/flashcards.svg" alt="" aria-hidden="true" class="feature-icon-img" /></div><h3 class="feature-title">Smart Flashcards</h3><p class="feature-desc">Create decks with text, images, and formulas. Use active recall, smooth flip animations, media support, and spaced study sessions to lock in what you learn.</p><div class="feature-tags"><span>Images</span><span>Formulas</span><span>Active Recall</span></div></div><div class="feature-card" data-reveal><div class="feature-icon-wrap feature-icon-orange"><img src="assets/features/tests.svg" alt="" aria-hidden="true" class="feature-icon-img" /></div><h3 class="feature-title">Exam Simulation</h3><p class="feature-desc">Build timed mock tests with custom question sets and instant scoring. Review explanations after every answer and train for the real thing.</p><div class="feature-tags"><span>Timed</span><span>Scored</span><span>Explanations</span></div></div><div class="feature-card" data-reveal><div class="feature-icon-wrap feature-icon-cyan"><img src="assets/features/formulas.svg" alt="" aria-hidden="true" class="feature-icon-img" /></div><h3 class="feature-title">Formula Library</h3><p class="feature-desc">Store and organize every formula, equation, and definition. Search by subject, color-code content, and export clean PDFs for revision anywhere.</p><div class="feature-tags"><span>Search</span><span>PDF Export</span><span>Subject Organized</span></div></div><div class="feature-card" data-reveal><div class="feature-icon-wrap feature-icon-pink"><img src="assets/features/ai.svg" alt="" aria-hidden="true" class="feature-icon-img" /></div><h3 class="feature-title">AI Study Buddy</h3><p class="feature-desc">Generate flashcard decks instantly using MKR AI. Ask questions, get clear explanations, and auto-fill study material with your own API key.</p><div class="feature-tags"><span>Gemini Powered</span><span>Auto-Generate</span><span>Your Key</span></div></div><div class="feature-card" data-reveal><div class="feature-icon-wrap feature-icon-green"><img src="assets/features/analytics.svg" alt="" aria-hidden="true" class="feature-icon-img" /></div><h3 class="feature-title">Deep Analytics</h3><p class="feature-desc">Track streaks, daily activity, deck mastery, and test performance over time. See exactly where you're strong and where to focus next.</p><div class="feature-tags"><span>Heatmaps</span><span>Streaks</span><span>Progress</span></div></div><div class="feature-card" data-reveal><div class="feature-icon-wrap feature-icon-amber"><img src="assets/features/privacy.svg" alt="" aria-hidden="true" class="feature-icon-img" /></div><h3 class="feature-title">Local-First Privacy</h3><p class="feature-desc">Zero cloud storage. Your decks, tests, and progress stay on your device with no account or tracking. Export a full JSON backup anytime.</p><div class="feature-tags"><span>Offline</span><span>Private</span><span>Backup</span></div></div></div></div></section>
-  <section class="section tech-section" id="tech"><div class="section-inner"><div class="section-header"><div class="section-eyebrow">Built With</div><h2 class="section-title">Modern tech, zero compromise</h2><p class="section-subtitle">A lightweight, offline-first stack built for fast startup, smooth animations, and polished Android packaging.</p></div><div class="tech-grid"><div class="tech-pill" data-reveal><svg class="tech-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 10.11c1.03 0 1.87.84 1.87 1.89 0 1-.84 1.85-1.87 1.85-1.03 0-1.87-.85-1.87-1.85 0-1.05.84-1.89 1.87-1.89M7.37 20c.63.38 2.01-.2 3.6-1.7-.52-.59-1.03-1.23-1.51-1.9a22.7 22.7 0 01-2.4-.36c-.51 2.14-.32 3.61.31 3.96m.71-5.74l-.29-.51c-.11.29-.22.58-.29.86.27.06.57.11.88.16l-.3-.51m6.54-.76l.81-1.5-.81-1.5c-.3-.53-.62-1-.91-1.47C13.17 9 12.6 9 12 9c-.6 0-1.17 0-1.71.03-.29.47-.61.94-.91 1.47L8.57 12l.81 1.5c.3.53.62 1 .91 1.47.54.03 1.11.03 1.71.03.6 0 1.17 0 1.71-.03.29-.47.61-.94.91-1.47m-6.07.02c.15-.25.31-.51.44-.73-.27.07-.54.15-.81.24.12.16.24.33.37.49m5.79-7.14c-.63-.38-2.01.2-3.6 1.7.52.59 1.03 1.23 1.51 1.9.81.07 1.61.19 2.4.36.51-2.14.32-3.61-.31-3.96m-.71 5.74l.29.51c.11-.29.22-.58.29-.86-.27-.06-.57-.11-.88-.16l.3.51m1.45-7.05c.31.96.37 1.99.17 3.01.76.28 1.46.63 2.05 1.05 1.29-1.86 1.79-3.54 1.13-4.22-.64-.7-2.35-.39-4.4.67.18.32.34.65.5.99.21-.18.37-.35.55-.5m-8.4 7.5c-.18-.32-.34-.65-.5-.99-.21.18-.37.35-.55.5-1.29 1.86-1.79 3.54-1.13 4.22.64.7 2.35.39 4.4-.67-.18-.32-.34-.65-.5-.99-.21.18-.37.35-.55.5-.2.17-.4.33-.62.48-.31-.96-.37-1.99-.17-3.01-.76-.28-1.46-.63-2.05-1.05zM12 6.78c-.19.22-.39.45-.59.72h1.18c-.2-.27-.4-.5-.59-.72m0 10.44c.19-.22.39-.45.59-.72h-1.18c.2.27.4.5.59.72M16.62 4c-.66 0-1.5.2-2.47.61.2.34.41.69.57 1.04C15.67 5.33 16.5 5.2 17 5.6c.53.46.55 1.72.13 3.36.74.28 1.43.64 2.03 1.06C20.52 7.56 20.13 5 18.52 4.2A3.52 3.52 0 0016.62 4m-9.24 0c-.66 0-1.38.21-2.06.58C3.54 5.31 3.08 8.11 4.95 11.18c.61-.42 1.3-.77 2.04-1.05-.42-1.64-.4-2.9.13-3.96z"/></svg>Anime Stack</div></div></div></section>
-  <section class="section screenshots-section" id="screenshots"><div class="section-inner"><div class="section-header"><div class="section-eyebrow">App Screenshots</div><h2 class="section-title">See it in action</h2><p class="section-subtitle">Real screenshots from the app — every screen designed with the anime aesthetic.</p></div><div class="screenshots-slider" id="screenshots-slider"><div class="screenshots-track" id="screenshots-track"><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/01_home_dashboard.svg" alt="Home Dashboard" loading="lazy" /></div><p class="screenshot-label">Home Dashboard</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/02_flashcards_list.svg" alt="Flashcard Decks" loading="lazy" /></div><p class="screenshot-label">Flashcard Decks</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/03_flashcard_study.svg" alt="Flashcard Study Mode" loading="lazy" /></div><p class="screenshot-label">Study Mode</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/04_mock_test.svg" alt="Mock Test" loading="lazy" /></div><p class="screenshot-label">Mock Test</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/05_stats_analytics.svg" alt="Statistics &amp; Analytics" loading="lazy" /></div><p class="screenshot-label">Statistics</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/06_settings.svg" alt="Settings" loading="lazy" /></div><p class="screenshot-label">Settings</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/07_ai_chat.svg" alt="AI Study Buddy Chat" loading="lazy" /></div><p class="screenshot-label">AI Study Buddy</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/08_onboarding.svg" alt="Onboarding" loading="lazy" /></div><p class="screenshot-label">Onboarding</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/09_formula_library.svg" alt="Formula Library" loading="lazy" /></div><p class="screenshot-label">Formula Library</p></div><div class="screenshot-item"><div class="screenshot-frame"><img src="assets/screenshots/10_themes.svg" alt="Anime Themes" loading="lazy" /></div><p class="screenshot-label">Anime Themes</p></div></div><button class="slider-btn slider-prev" id="slider-prev" aria-label="Previous screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button><button class="slider-btn slider-next" id="slider-next" aria-label="Next screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button></div><div class="slider-dots" id="slider-dots" role="tablist" aria-label="Screenshot navigation"></div></div></section>
-  <section class="section download-section" id="download"><div class="section-inner"><div class="download-card"><div class="download-bg-deco"></div><div class="download-content"><div class="download-mascot"><img src="assets/mascot.svg" alt="Anime mascot" /></div><div class="download-copy"><h2 class="download-title">Ready to level up your study game?</h2><p class="download-desc">Download the APK and start revising with anime-powered flashcards, mock tests, formulas, and AI study support — completely offline.</p><div class="download-steps"><div class="dl-step"><span class="dl-num">1</span>Download the APK from GitHub Releases</div><div class="dl-step"><span class="dl-num">2</span>Install it on your Android device</div><div class="dl-step"><span class="dl-num">3</span>Study anywhere — even without internet</div></div><div class="download-actions"><a href="https://github.com/mkr-infinity/Revision-Master/releases/latest" target="_blank" rel="noopener noreferrer" class="cta-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download APK</a><a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="cta-secondary">View Source</a></div></div></div></div></div></section>
-  <section class="section support-section" id="support"><div class="section-inner"><div class="support-card"><h2 class="support-title">Support the Project</h2><p class="support-desc">If Revision Master helps you study better, consider supporting future updates and new anime-inspired features.</p><p class="support-sub">Your support keeps the project free for everyone.</p><div class="support-actions"><a href="https://buymeacoffee.com/mkr_infinity" target="_blank" rel="noopener noreferrer" class="coffee-btn"><svg class="coffee-svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Buy Me a Coffee</a><a href="http://mkr-infinity.github.io/support" target="_blank" rel="noopener noreferrer" class="support-link-btn">Other Ways to Support</a><a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="star-cta-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>Star on GitHub</a></div></div></div></section>
-  <footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><img src="assets/logo.svg" alt="Revision Master Logo" width="40" height="40" /><div><div class="footer-brand-name">Revision Master</div><div class="footer-brand-tagline">The Anime Study Companion</div></div></div><div class="footer-links"><div class="footer-col"><div class="footer-col-title">App</div><a href="#features" class="footer-link">Features</a><a href="#themes" class="footer-link">Themes</a><a href="#screenshots" class="footer-link">Screenshots</a><a href="#download" class="footer-link">Download</a></div><div class="footer-col"><div class="footer-col-title">Links</div><a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repo</a><a href="https://github.com/mkr-infinity/Revision-Master/releases" target="_blank" rel="noopener noreferrer" class="footer-link">Releases</a></div><div class="footer-col"><div class="footer-col-title">Support</div><a href="https://buymeacoffee.com/mkr_infinity" target="_blank" rel="noopener noreferrer" class="footer-link">Buy Me a Coffee</a><a href="https://github.com/mkr-infinity/Revision-Master/issues" target="_blank" rel="noopener noreferrer" class="footer-link">Report a Bug</a><a href="http://mkr-infinity.github.io/support" target="_blank" rel="noopener noreferrer" class="footer-link">Other Ways to Support</a></div></div></div><div class="footer-bottom"><p class="footer-copy">Created by <a href="https://github.com/mkr-infinity" target="_blank" rel="noopener noreferrer">mkr-infinity</a>.</p></div></footer>
+
+  <!-- Stats Bar -->
+  <section class="stats">
+    <div class="stats-container">
+      <div class="stat">
+        <div class="stat-number">6</div>
+        <div class="stat-label">Anime Themes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Offline Ready</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Ads & Trackers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 2em; height: 2em;">
+            <path d="M8 6a3 3 0 100 6 3 3 0 000-6z"></path>
+            <path d="M16 10a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path d="M8 18a4 4 0 018 0"></path>
+            <path d="M12 14v2m-3-3h1m2 0h1"></path>
+          </svg>
+        </div>
+        <div class="stat-label">Free Always</div>
+      </div>
+    </div>
+  </section>
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Powerful Features</h2>
+        <p>Everything you need to study smarter, not harder</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/features/flashcards.svg" alt="Smart Flashcards" />
+          </div>
+          <h3>Smart Flashcards</h3>
+          <p>Create beautiful decks with text, images, and formulas. Perfect spacing and active recall to lock in knowledge.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/features/tests.svg" alt="Mock Tests" />
+          </div>
+          <h3>Mock Tests</h3>
+          <p>Timed exams with instant scoring and detailed explanations. Train for the real thing with realistic conditions.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/features/formulas.svg" alt="Formula Library" />
+          </div>
+          <h3>Formula Library</h3>
+          <p>Organize formulas by subject. Search instantly, export to PDF, and carry your entire reference anywhere.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/features/ai.svg" alt="AI Study Buddy" />
+          </div>
+          <h3>AI Study Buddy</h3>
+          <p>Generate flashcard decks with AI. Ask complex questions and get clear explanations powered by Gemini.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/features/analytics.svg" alt="Deep Analytics" />
+          </div>
+          <h3>Deep Analytics</h3>
+          <p>Track progress with heatmaps, streaks, and detailed stats. Know exactly where to focus next.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/features/privacy.svg" alt="Privacy First" />
+          </div>
+          <h3>Privacy First</h3>
+          <p>Zero cloud storage. Your data stays on your device. No account needed. Export backups anytime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Screenshots Section -->
+  <section class="screenshots" id="screenshots">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>See It In Action</h2>
+        <p>Swipe through beautiful app screens with anime-inspired design</p>
+      </div>
+      
+      <div class="screenshots-carousel">
+        <div class="carousel-track" id="carousel-track">
+          <!-- Home -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/home.jpg" alt="Home Dashboard" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Home Dashboard</p>
+          </div>
+
+          <!-- Flashcards -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/flashcards.jpg" alt="Flashcards" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Flashcards</p>
+          </div>
+
+          <!-- Tests -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/tests.jpg" alt="Mock Tests" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Mock Tests</p>
+          </div>
+
+          <!-- Formulas -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/formulas.jpg" alt="Formula Library" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Formula Library</p>
+          </div>
+
+          <!-- Analytics -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/analytics.jpg" alt="Analytics" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Analytics</p>
+          </div>
+
+          <!-- Progress -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/progress.jpg" alt="Progress" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Progress Tracking</p>
+          </div>
+
+          <!-- Settings -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/settings.jpg" alt="Settings" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Settings</p>
+          </div>
+
+          <!-- Onboarding -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/onboarding.jpg" alt="Onboarding" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Onboarding</p>
+          </div>
+
+          <!-- AI Key -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/aikey.jpg" alt="AI Key Setup" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">AI Key Setup</p>
+          </div>
+
+          <!-- Export Options -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/export-options.jpg" alt="Export Options" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Export Options</p>
+          </div>
+
+          <!-- Exporting -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/exporting.jpg" alt="Exporting" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Export to PDF</p>
+          </div>
+
+          <!-- Bin -->
+          <div class="screenshot-card">
+            <div class="phone-mockup">
+              <div class="phone-body">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <img src="assets/screenshotv2/bin.jpg" alt="Recycle Bin" class="screen-img" />
+                </div>
+                <div class="phone-home-button"></div>
+              </div>
+            </div>
+            <p class="screenshot-name">Recycle Bin</p>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Previous screenshot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Next screenshot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="carousel-info">
+        <p>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="carousel-info-icon">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          Swipe or use arrow buttons to explore all screens
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- Download Section -->
+  <section class="download" id="download">
+    <div class="section-container">
+      <div class="download-card">
+        <h2>Ready to Level Up?</h2>
+        <p>Download Revision Master and start your anime-powered study journey today. Works offline on Android devices.</p>
+        <div class="download-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <p>Download APK from GitHub Releases</p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <p>Install on your Android device</p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <p>Study anywhere, anytime, offline</p>
+          </div>
+        </div>
+        <div class="download-cta">
+          <a href="https://github.com/mkr-infinity/Revision-Master/releases/latest" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Latest APK
+          </a>
+          <a href="https://github.com/mkr-infinity/Revision-Master/releases" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="9" x2="15" y2="9"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+            All Releases
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Support Section -->
+  <section class="support">
+    <div class="section-container">
+      <div class="support-card">
+        <h2>Support the Project</h2>
+        <p>If Revision Master helps you ace your exams, consider supporting future updates and new features!</p>
+        <div class="support-links">
+          <a href="https://buymeacoffee.com/mkr_infinity" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+              <path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+              <path d="M2 13h20v2H2z"/>
+              <path d="M3.5 21h13v1H3.5z"/>
+            </svg>
+            Buy Me a Coffee
+          </a>
+          <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            Star on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="assets/logo.svg" alt="Revision Master Logo" class="footer-logo" />
+        <div>
+          <div class="footer-name">Revision Master</div>
+          <div class="footer-tagline">The Anime Study Companion</div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Links</h4>
+          <a href="https://github.com/mkr-infinity/Revision-Master" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+          <a href="https://github.com/mkr-infinity/Revision-Master/releases" target="_blank" rel="noopener noreferrer">Releases</a>
+          <a href="https://github.com/mkr-infinity/Revision-Master/issues" target="_blank" rel="noopener noreferrer">Report Bug</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="https://buymeacoffee.com/mkr_infinity" target="_blank" rel="noopener noreferrer">Buy Me Coffee</a>
+          <a href="https://mkr-infinity.github.io/support" target="_blank" rel="noopener noreferrer">Other Ways</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Created by <a href="https://github.com/mkr-infinity" target="_blank" rel="noopener noreferrer">mkr-infinity</a> • Made with <svg viewBox="0 0 24 24" fill="currentColor" class="heart-icon"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> for students</p>
+      </div>
+    </div>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
