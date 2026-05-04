@@ -7,7 +7,7 @@
   </p>
 
   <div align="center">
-    <img src="https://img.shields.io/badge/version-2.0.0-ff3a5e?style=for-the-badge" alt="Version">
+    <img src="https://img.shields.io/badge/version-2.0.1-ff3a5e?style=for-the-badge" alt="Version">
     <img src="https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge" alt="License">
     <img src="https://img.shields.io/badge/React-19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
     <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
@@ -25,11 +25,6 @@
 
 <a href="https://github.com/mkr-infinity/Revision-Master/releases/download/v2.0.1/Revision-Master_v2.0.1.apk">
   <img src="https://img.shields.io/badge/⬇️%20Download%20APK-Revision%20Master-blue?style=for-the-badge&logo=android" />
-</a>
-
-
-<a href="https://github.com/mkr-infinity/Revision-Master/releases/latest">
-  <img src="https://img.shields.io/badge/🚀%20Latest%20Release-Get%20Now-success?style=for-the-badge&logo=github" />
 </a>
 
 ----
