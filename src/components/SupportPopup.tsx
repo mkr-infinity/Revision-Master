@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, X, Coffee, Sparkles, Star, Flame, FileDown, Trophy, Gem } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
 
-const SUPPORT_URL = "https://supportmkr.netlify.app/";
+const SUPPORT_URL = "https://buymeacoffee.com/mkr_infinity";
 
 type TriggerKey = "streak-2" | "exports-10" | "streak-30";
 
