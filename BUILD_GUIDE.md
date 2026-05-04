@@ -2,23 +2,26 @@
 
 This guide helps you:
 
-- 📱 Build APK locally
-- ⚡ Generate APK using GitHub Actions
+- 📱 Build APK locally (debug & release)
+- 🔐 Create and use a release keystore for signing
+- ⚡ Generate signed artifacts in CI (GitHub Actions)
 
 ---
 
 📦 Requirements
 
-Install:
+Install locally:
 
 - Node.js (v22 recommended)
-- Android Studio (with SDK)
-- Java JDK 21
+- Android Studio (SDK + platform-tools)
+- Java JDK 21 (or matching Gradle toolchain)
 
-Check:
+Quick checks:
 
+```bash
 node -v
 java -version
+```
 
 ---
 
@@ -26,131 +29,140 @@ java -version
 
 Install dependencies:
 
-npm install
+```bash
+npm ci
+```
 
----
+Add the Capacitor Android platform (first time only):
 
-🔐 Add API Key
-
-Create ".env" file:
-
-VITE_GEMINI_API_KEY=your_api_key_here
-
----
-
-🏗 Build React App
-
-npm run build -- --mode production
-
----
-
-📱 Add Android (First Time)
-
+```bash
 npx cap add android
-
----
-
-🔄 Sync Project
-
 npx cap sync android
+```
+
+Create a development env file for local API keys:
+
+```text
+# .env
+VITE_GEMINI_API_KEY=your_api_key_here
+```
 
 ---
 
-🎨 Generate Icons (Optional)
+🏗 Build the Web App (Vite)
 
-Put icon in:
+```bash
+npm run build -- --mode production
+```
 
-resources/icon.png
+Then sync the built web assets into the native project:
 
-Run:
+```bash
+npx cap sync android
+```
 
+---
+
+🎨 Generate Adaptive Icons (optional)
+
+Place a square `resources/icon.png` (1024×1024 recommended) then:
+
+```bash
 npm install @capacitor/assets --no-save
 npx capacitor-assets generate --android
+```
 
 ---
 
-🚀 Build APK (CLI)
+📱 Build Debug APK (local)
 
+```bash
 cd android
 chmod +x gradlew
 ./gradlew assembleDebug
+# Output: android/app/build/outputs/apk/debug/app-debug.apk
+```
 
-APK output:
+Use Android Studio for an IDE workflow:
 
-android/app/build/outputs/apk/debug/app-debug.apk
-
----
-
-🖥 Build via Android Studio
-
+```bash
 npx cap open android
-
-Then:
-
-- Build → Build APK
-- Or press ▶️ Run
+```
 
 ---
 
-⚡ Quick Run
+🔐 Create a Release Keystore (local)
 
-npx cap run android
+Generate a keystore for signing release builds (keep this secure):
 
----
+```bash
+keytool -genkeypair -v \
+  -keystore release-keystore.jks \
+  -alias revision_master_key \
+  -keyalg RSA -keysize 2048 -validity 10000
+```
 
-🔁 Update Changes
+Create `key.properties` in the `android/` folder (do NOT commit secrets):
 
-npm run build
-npx cap sync android
+```text
+storeFile=release-keystore.jks
+storePassword=your_store_password
+keyAlias=revision_master_key
+keyPassword=your_key_password
+```
 
----
-
-❗ Troubleshooting
-
-Java Error (invalid source release 21)
-
-Install Java 21:
-
-java -version
-
----
-
-App not updating
-
-npm run build
-npx cap sync
+Update `android/app/build.gradle` signingConfigs to reference `key.properties` (Android Gradle config).
 
 ---
 
-🧠 Build Flow
+📦 Build Signed Release APK / AAB (local)
 
-Code → Build → Sync → APK
+Build a release AAB (recommended for Play Store):
+
+```bash
+cd android
+./gradlew bundleRelease
+# Output: android/app/build/outputs/bundle/release/app-release.aab
+```
+
+Or build a signed release APK:
+
+```bash
+cd android
+./gradlew assembleRelease
+# Output: android/app/build/outputs/apk/release/app-release.apk
+```
+
+Use Android Studio → Build → Generate Signed Bundle / APK for a guided flow.
 
 ---
 
-⚡ Build APK using GitHub Actions
+🛡️ Signing & Play Store notes
 
-You can automatically generate APK using GitHub Actions.
+- Keep your `release-keystore.jks` and passwords secure — losing them prevents updates.
+- Prefer AAB for Play Store uploads.
+- Increment `versionCode` and `versionName` in `android/app/build.gradle` before releases.
 
-📌 Steps
+---
 
-1. Go to your repo → Settings → Secrets
-2. Add secret:
+⚡ CI: Build & Sign in GitHub Actions (example)
 
-GEMINI_API_KEY = your_api_key
+This example builds a signed release using a base64-encoded keystore stored in repo secrets. Create the following secrets in your repository settings:
 
-3. Create file:
+- `GEMINI_API_KEY` — your Vite API key (if needed)
+- `RELEASE_KEY_BASE64` — base64-encoded contents of `release-keystore.jks`
+- `RELEASE_STORE_PASSWORD` — keystore password
+- `RELEASE_KEY_ALIAS` — key alias (e.g. revision_master_key)
+- `RELEASE_KEY_PASSWORD` — key password
 
-.github/workflows/build.yml
+Example workflow (save as `.github/workflows/build.yml`):
 
-4. Paste this YAML 👇
-
-name: Build APK (Node 22 + Icons + Storage Fix)
+```yaml
+name: Build Signed AAB
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -158,80 +170,74 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node 22
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Create .env file
-        run: |
-          echo "VITE_GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
+      - name: Create .env
+        run: echo "VITE_GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
 
-      - name: Build React app
+      - name: Build web assets
         run: npm run build -- --mode production
 
-      - name: Add Android platform
-        run: npx cap add android
-
-      - name: Generate adaptive launcher icons
-        run: |
-          if [ -f "resources/icon.png" ] || [ -f "resources/icon-foreground.png" ]; then
-            npm install @capacitor/assets --no-save
-            npx capacitor-assets generate --android
-          else
-            echo "::warning::No icon files found in resources/ — using default Capacitor icon."
-          fi
+      - name: Add Android
+        run: npx cap add android || true
 
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Setup Java (JDK 21)
+      - name: Decode release keystore
+        env:
+          KEY_B64: ${{ secrets.RELEASE_KEY_BASE64 }}
+        run: |
+          echo "$KEY_B64" | base64 --decode > android/release-keystore.jks
+
+      - name: Write key.properties
+        run: |
+          cat > android/key.properties <<EOF
+storeFile=release-keystore.jks
+storePassword=${{ secrets.RELEASE_STORE_PASSWORD }}
+keyAlias=${{ secrets.RELEASE_KEY_ALIAS }}
+keyPassword=${{ secrets.RELEASE_KEY_PASSWORD }}
+EOF
+
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
-      - name: Build Debug APK
+      - name: Build Release AAB
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew bundleRelease
 
-      - name: Upload APK
+      - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: app-release-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+```
 
 ---
 
-📦 Output
+📦 CI Output
 
-- APK available in Actions → Artifacts
-- Download and install on your device
-
----
-
-📌 Notes
-
-- Uses Vite env ("VITE_*")
-- Debug APK only (not for Play Store)
-- localStorage patch included (best-effort fix)
+- You will find the signed artifacts under Actions → Artifacts after a successful run.
 
 ---
 
-🚀 Future Improvements
+❗ Security
 
-- Signed release APK
-- Play Store deployment
-- Secure API key (backend proxy)
-- Proper storage using Capacitor Preferences
+- Never commit keystore files or passwords. Use repository secrets for CI.
+- Consider using Google Play App Signing for additional protection.
 
 ---
 

@@ -47,6 +47,31 @@
 
 ---
 
+### 🛠 Build & Release (quick)
+
+- For full, detailed build and signing instructions, see the [BUILD_GUIDE.md](BUILD_GUIDE.md).
+
+Quick local commands:
+
+```bash
+# Install dependencies
+npm ci
+
+# Build web assets and sync to Android
+npm run build -- --mode production
+npx cap sync android
+
+# Build debug APK
+cd android && ./gradlew assembleDebug
+
+# Build signed release AAB (after creating key.properties)
+cd android && ./gradlew bundleRelease
+```
+
+If you want CI automation for signed builds, follow the GitHub Actions example in `BUILD_GUIDE.md` and store your keystore and passwords as repository secrets.
+
+---
+
 
 ## 🌟 Why Revision Master?
 
