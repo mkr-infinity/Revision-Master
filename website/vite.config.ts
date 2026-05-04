@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 export default defineConfig({
-  base: "/", // change to '/repo-name/' if deploying to GitHub Pages subpath
+  base: process.env.BASE_PATH || "/",
 
   plugins: [
     react(),

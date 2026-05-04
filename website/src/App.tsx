@@ -18,11 +18,15 @@ function Router() {
 }
 
 function App() {
+  // Normalize Vite's BASE_URL which can be '/' or '/repo/' or './' (vite preview/local)
+  const rawBase = import.meta.env.BASE_URL || '/';
+  const normalizedBase = rawBase === './' ? '/' : rawBase.replace(/\/$/, '');
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="revision-master-theme">
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <WouterRouter base={normalizedBase}>
             <Router />
           </WouterRouter>
           <Toaster />
