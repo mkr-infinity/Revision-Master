@@ -20,6 +20,7 @@
 #
 #  The workflow ONLY triggers when you push changes inside website/
 #  so other files in your repo never cause unnecessary deploys.
+#  Uses npm (not pnpm) because the website ships an npm package-lock.json.
 
 #  BASE PATH:
 #  By default this uses your repo name as the base path, which is
@@ -59,21 +60,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: website/package-lock.json
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: npm install
 
       - name: Build website
-        run: pnpm run build
+        run: npm run build
         env:
           NODE_ENV: production
           PORT: 3000
