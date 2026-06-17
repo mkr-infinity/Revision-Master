@@ -1,0 +1,75 @@
+<svg width="800" height="500" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Gradient -->
+  <rect width="800" height="500" rx="24" fill="url(#paint0_linear)"/>
+  
+  <!-- Phone Container -->
+  <g filter="url(#filter0_d)">
+    <rect x="280" y="40" width="240" height="420" rx="36" fill="#121212" stroke="#333" stroke-width="8"/>
+    <rect x="350" y="55" width="100" height="18" rx="9" fill="#222"/>
+    
+    <!-- Clipping Path for Screen -->
+    <defs>
+      <clipPath id="screenClip">
+        <rect x="295" y="85" width="210" height="360" rx="12"/>
+      </clipPath>
+    </defs>
+    
+    <!-- Sliding Content -->
+    <g clip-path="url(#screenClip)">
+      <g>
+        <!-- Screen 1: Dashboard -->
+        <g transform="translate(0, 0)">
+          <rect x="295" y="85" width="210" height="360" fill="#0F172A"/>
+          <rect x="310" y="105" width="80" height="12" rx="4" fill="#6366F1" fill-opacity="0.3"/>
+          <rect x="310" y="130" width="180" height="60" rx="8" fill="#1E293B"/>
+          <rect x="310" y="200" width="180" height="60" rx="8" fill="#1E293B"/>
+          <rect x="310" y="270" width="180" height="100" rx="8" fill="#6366F1" fill-opacity="0.1"/>
+          <animateTransform attributeName="transform" type="translate" values="0,0; -210,0; -210,0; -420,0; -420,0; 0,0" dur="9s" repeatCount="indefinite" />
+        </g>
+        
+        <!-- Screen 2: Flashcards -->
+        <g transform="translate(210, 0)">
+          <rect x="295" y="85" width="210" height="360" fill="#0F172A"/>
+          <rect x="315" y="140" width="170" height="220" rx="12" fill="white"/>
+          <rect x="335" y="240" width="130" height="8" rx="4" fill="#E2E8F0"/>
+          <rect x="355" y="260" width="90" height="8" rx="4" fill="#E2E8F0"/>
+          <animateTransform attributeName="transform" type="translate" values="210,0; 0,0; 0,0; -210,0; -210,0; 210,0" dur="9s" repeatCount="indefinite" />
+        </g>
+        
+        <!-- Screen 3: AI Chat -->
+        <g transform="translate(420, 0)">
+          <rect x="295" y="85" width="210" height="360" fill="#0F172A"/>
+          <rect x="360" y="110" width="130" height="40" rx="12" fill="#6366F1"/>
+          <rect x="310" y="160" width="150" height="80" rx="12" fill="#1E293B" stroke="#8B5CF6"/>
+          <rect x="310" y="380" width="180" height="30" rx="15" fill="#1E293B"/>
+          <animateTransform attributeName="transform" type="translate" values="420,0; 210,0; 210,0; 0,0; 0,0; 420,0" dur="9s" repeatCount="indefinite" />
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- Decorative Elements -->
+  <circle cx="100" cy="100" r="50" fill="#6366F1" fill-opacity="0.1">
+    <animate attributeName="cy" values="100;120;100" dur="4s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="700" cy="400" r="80" fill="#10B981" fill-opacity="0.1">
+    <animate attributeName="r" values="80;90;80" dur="5s" repeatCount="indefinite" />
+  </circle>
+
+  <defs>
+    <linearGradient id="paint0_linear" x1="0" y1="0" x2="800" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="filter0_d" x="260" y="30" width="280" height="460" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="10"/>
+      <feGaussianBlur stdDeviation="10"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+</svg>
