@@ -1,34 +1,3 @@
-# ═══════════════════════════════════════════════════════════════════
-#  Revision Master — GitHub Pages Deployment
-# ═══════════════════════════════════════════════════════════════════
-#
-#  SETUP INSTRUCTIONS
-#  ──────────────────
-#  Your GitHub repository structure must look like this:
-#
-#    repo-root/
-#    ├── .github/              ← copy this folder here (repo root)
-#    │   └── workflows/
-#    │       └── deploy.yml
-#    ├── website/              ← paste the entire website project here
-#    │   ├── artifacts/
-#    │   │   └── revision-master/
-#    │   ├── lib/
-#    │   ├── pnpm-workspace.yaml
-#    │   └── ...
-#    └── README.md
-#
-#  The workflow ONLY triggers when you push changes inside website/
-#  so other files in your repo never cause unnecessary deploys.
-#  Uses npm (not pnpm) because the website ships an npm package-lock.json.
-
-#  BASE PATH:
-#  By default this uses your repo name as the base path, which is
-#  correct for project pages (username.github.io/repo-name).
-#  If you're deploying to a custom domain or user root page, change:
-#    BASE_PATH: /
-# ═══════════════════════════════════════════════════════════════════
-
 name: Deploy Revision Master Website
 
 on:
@@ -64,20 +33,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: website/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build website
         run: npm run build
         env:
           NODE_ENV: production
-          PORT: 3000
           BASE_PATH: /${{ github.event.repository.name }}/
-          # ↑ For a custom domain or user/org root page, change to:
-          # BASE_PATH: /
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
