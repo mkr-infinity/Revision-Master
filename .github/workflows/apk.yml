@@ -1,4 +1,4 @@
-name: Build APK (Node 22 + Icons + Capacitor Storage)
+name: Generate APK using Capacitor
 
 on:
   push:
