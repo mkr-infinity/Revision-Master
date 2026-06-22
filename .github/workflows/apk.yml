@@ -1,9 +1,6 @@
 name: Generate APK using Capacitor
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
