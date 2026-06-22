@@ -55,7 +55,7 @@ Quick local commands:
 
 ```bash
 # Install dependencies
-npm ci
+npm install
 
 # Build web assets and sync to Android
 npm run build -- --mode production
@@ -215,4 +215,3 @@ To run the project locally for development:
     <img src="https://img.shields.io/badge/Other%20Ways%20to%20Support-Click%20Here-blue?style=for-the-badge"/>
   </a>
 </p>
-

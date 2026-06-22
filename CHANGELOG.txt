@@ -57,7 +57,7 @@ Updates / Distribution
 - Version comparison uses semver via the `compare-versions` package, so
   "v2.1.0" > "2.0.0" works correctly with or without the leading v.
 - New GitHub Actions workflow (.github/workflows/apk.yml) builds a debug
-  APK on every push to main: Node 22 + JDK 21 + npm ci + vite build +
+  APK on every push to main: Node 22 + JDK 21 + npm install + vite build +
   cap sync + gradlew assembleDebug, uploaded as a versioned artifact.
 
 UI / Theme

@@ -30,7 +30,7 @@ java -version
 Install dependencies:
 
 ```bash
-npm ci
+npm install
 ```
 
 Add the Capacitor Android platform (first time only):
@@ -178,7 +178,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Create .env
         run: echo "VITE_GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
