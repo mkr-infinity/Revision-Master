@@ -14,11 +14,19 @@ jobs:
       - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22.16.0'
           cache: npm
+      - name: Show versions
+        run: |
+          node -v
+          npm -v
 
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+      - name: Clean npm cache
+        run: npm cache clean --force
+          
+
+      - name: Install dependencies (retry once)
+        run: npm ci --no-audit --no-fund || npm ci --no-audit --no-fund
 
       - name: Create .env file
         run: |
