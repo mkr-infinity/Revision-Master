@@ -14,6 +14,8 @@ import SupportPopup from "./components/SupportPopup";
 import { MotionConfig } from "framer-motion";
 import appLogo from "./assets/logo.svg";
 
+const Login = React.lazy(() => import("./screens/Login"));
+const AuthCallback = React.lazy(() => import("./screens/AuthCallback"));
 const Onboarding = React.lazy(() => import("./screens/Onboarding"));
 const Home = React.lazy(() => import("./screens/Home"));
 const Flashcards = React.lazy(() => import("./screens/Flashcards"));
@@ -61,6 +63,48 @@ const AppRoutes = () => {
   const { state } = useAppContext();
   const location = useLocation();
 
+  const isAuthCallback = location.pathname.startsWith("/auth/callback");
+  const isLoginRoute = location.pathname.startsWith("/login");
+  const isAuthed = !!state.auth?.isAuthenticated;
+
+  // Not signed in → the login screen owns the app.
+  if (!isAuthed && !isLoginRoute && !isAuthCallback) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Already signed in → no reason to sit on the login screen.
+  if (isAuthed && isLoginRoute) {
+    return <Navigate to={state.user.onboardingCompleted ? "/" : "/onboarding/1"} replace />;
+  }
+
+  if (!isAuthed && isAuthCallback) {
+    return (
+      <div className="mobile-frame">
+        <div className="mobile-frame__device">
+          <Suspense fallback={<LoadingScreen />}>
+            <Routes>
+              <Route path="/auth/callback" element={<AuthCallback />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthed && isLoginRoute) {
+    return (
+      <div className="mobile-frame">
+        <div className="mobile-frame__device">
+          <Suspense fallback={<LoadingScreen />}>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </div>
+    );
+  }
+
   if (!state.user.onboardingCompleted && !location.pathname.startsWith("/onboarding")) {
     return <Navigate to="/onboarding/1" replace />;
   }
@@ -74,6 +118,7 @@ const AppRoutes = () => {
         <div className="mobile-frame__device">
           <Suspense fallback={<LoadingScreen />}>
             <Routes location={location}>
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/onboarding/:step" element={<Onboarding />} />
               <Route element={<Layout />}>
                 <Route path="/" element={<Home />} />

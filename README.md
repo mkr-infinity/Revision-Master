@@ -7,7 +7,7 @@
   </p>
 
   <div align="center">
-    <img src="https://img.shields.io/badge/version-2.0.2-ff3a5e?style=for-the-badge" alt="Version">
+    <img src="https://img.shields.io/badge/version-2.0.3-ff3a5e?style=for-the-badge" alt="Version">
     <img src="https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge" alt="License">
     <img src="https://img.shields.io/badge/React-19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
     <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
@@ -90,6 +90,25 @@ Your study habits and data are yours alone. Revision Master follows a **Local-Fi
 
 ---
 
+## What's New in v2.0.3 — Accounts & Sign-in
+
+<div align="center">
+  <img src="assets/screenshotv2/onboarding.jpg" width="220" alt="Onboarding">
+</div>
+
+- **Login screen** with Google and Apple sign-in, plus one-tap **Continue as guest**
+  (fully offline — the app stays local-first).
+- **Account section in Settings** showing who you're signed in as, with a
+  confirmed **Sign out** action. Study data is never deleted on sign out.
+- **`/auth/callback`** route for redirect-style OAuth responses.
+- **Demo mode:** with no OAuth client IDs configured, the buttons sign you in with
+  a local demo profile so you can try the whole flow. Add
+  `VITE_GOOGLE_CLIENT_ID` / `VITE_APPLE_CLIENT_ID` to go live — see
+  [AUTH_SETUP.md](./AUTH_SETUP.md).
+- No tokens are ever stored; only name, email, photo and sign-in time.
+
+---
+
 ## What's New in v2.0.2 — Stable Release
 
 
@@ -132,11 +151,11 @@ See the full [`CHANGELOG.txt`](./CHANGELOG.txt).
 📦 Revision Master
 ├── 📱 Mobile App (React + Capacitor + Vite)
 │   ├── src/
-│   │   ├── components/        # UI components (Layout, Chatbot, modals, providers)
+│   │   ├── components/        # UI components (Layout, Chatbot, modals, providers, BrandIcons, SakuraLayer)
 │   │   ├── context/           # AppContext (themes, user, decks, tests, AI settings)
-│   │   ├── screens/           # App screens (Home, Flashcards, MockTests, Stats, Settings, About, Onboarding, FormulaLibrary, RecycleBin, Changelog)
+│   │   ├── screens/           # App screens (Login, AuthCallback, Home, Flashcards, MockTests, Stats, Settings, About, Onboarding, FormulaLibrary, RecycleBin, Changelog)
 │   │   ├── types/             # TypeScript definitions
-│   │   ├── utils/             # AI client, PDF export, utilities
+│   │   ├── utils/             # AI client, social sign-in (auth.ts), PDF export, utilities
 │   │   ├── assets/            # Icons and feature SVGs
 │   │   ├── index.css          # Tailwind v4 + 6 anime-themed palettes + manga utilities
 │   │   ├── App.tsx            # Main App component
@@ -169,6 +188,7 @@ See the full [`CHANGELOG.txt`](./CHANGELOG.txt).
 │
 ├── 📖 Documentation
 │   ├── README.md              # Project overview
+│   ├── AUTH_SETUP.md          # Google & Apple sign-in setup
 │   ├── BUILD_GUIDE.md         # Web deployment guide
 │   ├── CAPACITOR_GUIDE.md     # Capacitor setup guide
 │   ├── CHANGELOG.txt          # Version history
@@ -185,6 +205,18 @@ See the full [`CHANGELOG.txt`](./CHANGELOG.txt).
 
 
 ## 📦 Getting Started
+
+### 🔐 Sign-in configuration (optional)
+
+Copy `.env.example` to `.env` and fill in your OAuth client IDs to enable real
+Google / Apple sign-in. Without them the login screen runs in demo mode.
+
+```bash
+cp .env.example .env
+```
+
+Full walkthrough (Google Cloud Console + Apple Developer portal):
+[**AUTH_SETUP.md**](./AUTH_SETUP.md).
 
 ### 🌐 Web Development
 To run the project locally for development:

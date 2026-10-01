@@ -169,7 +169,25 @@ export interface TestStats {
   lastUpdated: string | null;
 }
 
+/** Signed-in account (Google / Apple / guest). No tokens are ever stored. */
+export interface AuthAccount {
+  provider: "google" | "apple" | "guest" | "email";
+  providerId?: string;
+  email?: string;
+  name?: string;
+  picture?: string;
+  /** Set when the profile came from the offline demo fallback. */
+  demo?: boolean;
+  signedInAt: string;
+}
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  account: AuthAccount | null;
+}
+
 export interface AppState {
+  auth: AuthState;
   user: User;
   streak: Streak;
   decks: Deck[];
@@ -181,6 +199,8 @@ export interface AppState {
 
 interface AppContextType {
   state: AppState;
+  signIn: (account: Omit<AuthAccount, "signedInAt">) => void;
+  signOut: () => void;
   updateUser: (updates: Partial<User>) => void;
   updateStreak: () => void;
   resetOnboarding: () => void;
@@ -238,6 +258,10 @@ export const APP_LOGOS = [
 export const AVATARS = AVATARS_DATA;
 
 const defaultState: AppState = {
+  auth: {
+    isAuthenticated: false,
+    account: null,
+  },
   user: {
     name: "",
     age: "",
@@ -369,6 +393,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         return {
           ...defaultState,
           ...parsed,
+          auth: {
+            ...defaultState.auth,
+            ...(parsed.auth || {}),
+          },
           user: mergedUser,
           streak: { ...defaultState.streak, ...(parsed.streak || {}) },
           decks: parsed.decks || defaultState.decks,
@@ -488,6 +516,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     setState((prev) => ({
       ...prev,
       user: { ...prev.user, ...updates },
+    }));
+  }, []);
+
+  /**
+   * Complete a sign-in. Providers never hand us tokens we keep — only the
+   * profile fields below are persisted in local storage.
+   */
+  const signIn = useCallback((account: Omit<AuthAccount, "signedInAt">) => {
+    setState((prev) => ({
+      ...prev,
+      auth: {
+        isAuthenticated: true,
+        account: { ...account, signedInAt: new Date().toISOString() },
+      },
+      // First sign-in with a real provider pre-fills the study profile name.
+      user: {
+        ...prev.user,
+        name: prev.user.name?.trim() ? prev.user.name : account.name || "",
+        avatar: prev.user.avatar || account.picture || botAvatar,
+      },
+    }));
+  }, []);
+
+  /** Sign out. Study data stays on the device (see AUTH_SETUP.md). */
+  const signOut = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      auth: { isAuthenticated: false, account: null },
     }));
   }, []);
 
@@ -794,13 +850,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const importData = useCallback((data: any) => {
     try {
       if (data && data.user && data.streak) {
-        setState({
+        setState((prev) => ({
           ...defaultState,
           ...data,
+          auth: prev.auth, // importing study data never signs you out
           user: { ...defaultState.user, ...(data.user || {}) },
           streak: { ...defaultState.streak, ...(data.streak || {}) },
           decks: data.decks || [],
-        });
+        }));
         return true;
       }
       return false;
@@ -813,6 +870,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     <AppContext.Provider
       value={{
         state,
+        signIn,
+        signOut,
         updateUser,
         updateStreak,
         resetOnboarding,

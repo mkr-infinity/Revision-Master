@@ -34,10 +34,15 @@ import {
   Ban,
   ScrollText,
   RotateCcw,
+  LogOut,
+  ShieldCheck,
+  UserRound,
 } from "lucide-react";
 import { useAppContext, Theme, AVATARS, THEMES, normalizeTheme } from "../context/AppContext";
 import { usePdfExport } from "../components/PdfExportProvider";
 import { PROVIDERS, AiProvider } from "../utils/ai";
+import { providerLabel } from "../utils/auth";
+import { AppleMark, GoogleMark } from "../components/BrandIcons";
 import { Capacitor } from "@capacitor/core";
 
 const REPO_URL = "https://github.com/mkr-infinity/Revision-Master";
@@ -95,7 +100,8 @@ const buildIssueUrl = (kind: "bug" | "feature") => {
 const Settings = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { state, updateUser, resetStats, resetOnboarding, resetCards, importData } = useAppContext();
+  const { state, updateUser, resetStats, resetOnboarding, resetCards, importData, signOut } = useAppContext();
+  const authAccount = state.auth?.account ?? null;
   const { startExport } = usePdfExport();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const customBgInputRef = useRef<HTMLInputElement>(null);
@@ -140,7 +146,17 @@ const Settings = () => {
     }
   };
 
-  const [modalType, setModalType] = useState<"none" | "resetStats" | "restartOnboarding" | "editProfile" | "aiSettings" | "resetCards" | "updateSettings" | "exportOptions">("none");
+  const [modalType, setModalType] = useState<
+    | "none"
+    | "resetStats"
+    | "restartOnboarding"
+    | "editProfile"
+    | "aiSettings"
+    | "resetCards"
+    | "updateSettings"
+    | "exportOptions"
+    | "signOut"
+  >("none");
   const [editName, setEditName] = useState(state.user.name);
   const [editExam, setEditExam] = useState(state.user.examTarget);
   const [editAvatar, setEditAvatar] = useState(state.user.avatar);
@@ -252,6 +268,12 @@ const Settings = () => {
     resetStats();
     setModalType("none");
     alert("Stats reset successfully. Your cards are safe.");
+  };
+
+  const handleSignOut = () => {
+    signOut();
+    setModalType("none");
+    navigate("/login", { replace: true });
   };
 
   const handleResetCards = () => {
@@ -429,6 +451,60 @@ const Settings = () => {
               <Edit2 size={15} />
               <span>Edit Profile</span>
             </motion.button>
+          </div>
+        </div>
+
+        
+        {/* ── ACCOUNT / SIGN-IN ── */}
+        <div className="space-y-2">
+          <p className="text-[11px] font-bold tracking-widest text-tertiary-fg uppercase px-1">Account</p>
+          <div className="bg-elevated rounded-2xl border border-subtle overflow-hidden shadow-card">
+            <div className="p-4 flex items-center gap-3.5">
+              <div
+                className="size-11 rounded-2xl flex items-center justify-center shrink-0 border"
+                style={{
+                  background: "color-mix(in srgb, var(--color-primary) 10%, var(--bg-elevated))",
+                  borderColor: "color-mix(in srgb, var(--color-primary) 28%, var(--border-subtle))",
+                }}
+              >
+                {authAccount?.provider === "google" ? (
+                  <GoogleMark size={20} />
+                ) : authAccount?.provider === "apple" ? (
+                  <AppleMark size={20} className="text-primary-fg" />
+                ) : (
+                  <UserRound size={20} style={{ color: "var(--color-primary)" }} />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-[15px] text-primary-fg truncate leading-tight">
+                  {authAccount?.name || state.user.name || "Scholar"}
+                </p>
+                <p className="text-[12px] text-secondary-fg truncate mt-0.5">
+                  {authAccount?.email || "No email on file"}
+                </p>
+                <p className="text-[10.5px] font-semibold text-tertiary-fg mt-0.5 flex items-center gap-1.5">
+                  <ShieldCheck size={12} />
+                  {authAccount
+                    ? `Signed in with ${providerLabel(authAccount.provider)}${authAccount.demo ? " (demo)" : ""}`
+                    : "Signed in"}
+                </p>
+              </div>
+            </div>
+
+            <div className="px-4 pb-4">
+              <button
+                onClick={() => setModalType("signOut")}
+                className="w-full h-11 rounded-xl font-bold text-[14px] flex items-center justify-center gap-2 border transition-all active:scale-[0.99]"
+                style={{
+                  background: "color-mix(in srgb, #ff3b5c 8%, var(--bg-elevated))",
+                  borderColor: "color-mix(in srgb, #ff3b5c 32%, transparent)",
+                  color: "#ff3b5c",
+                }}
+              >
+                <LogOut size={16} />
+                Sign out
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1501,6 +1577,7 @@ const Settings = () => {
                 {modalType === "aiSettings" && "AI Settings"}
                 {modalType === "exportOptions" && "Export"}
                 {modalType === "updateSettings" && "Updates"}
+                {modalType === "signOut" && "Sign out"}
               </h3>
               <button 
                 onClick={() => setModalType("none")}
@@ -1590,6 +1667,35 @@ const Settings = () => {
                       className="flex-1 py-2.5 rounded-xl font-bold bg-red-500 text-white"
                     >
                       Restart
+                    </button>
+                  </div>
+                </div>
+              )}
+
+                            {modalType === "signOut" && (
+                <div className="space-y-4">
+                  <div className="size-12 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 mx-auto mb-4">
+                    <LogOut size={24} />
+                  </div>
+                  <p className="text-center text-slate-700 dark:text-slate-400">
+                    Sign out of Revision Master? Your decks, streaks and stats stay saved on this
+                    device — you can sign back in at any time.
+                  </p>
+                  <p className="text-center text-sm font-bold text-primary">
+                    Nothing is deleted. Only the session ends.
+                  </p>
+                  <div className="flex gap-3 mt-6">
+                    <button
+                      onClick={() => setModalType("none")}
+                      className="flex-1 py-2.5 rounded-xl font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSignOut}
+                      className="flex-1 py-2.5 rounded-xl font-bold bg-red-500 text-white"
+                    >
+                      Sign out
                     </button>
                   </div>
                 </div>

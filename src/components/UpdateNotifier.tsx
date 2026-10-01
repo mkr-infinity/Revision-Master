@@ -6,7 +6,7 @@ import { useAppContext } from '../context/AppContext';
 import { Browser } from '@capacitor/browser';
 import { compareVersions } from 'compare-versions';
 
-const CURRENT_VERSION = "2.0.2"; // Current app version
+const CURRENT_VERSION = "2.0.3"; // Current app version
 const GITHUB_REPO = "mkr-infinity/Revision-Master";
 const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
 // Public, always-current "latest release" page — used as the download redirect target.

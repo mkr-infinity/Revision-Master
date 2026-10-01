@@ -1,6 +1,27 @@
 Revision Master — Changelog
 ===========================
 
+v2.0.3 — Accounts & Sign-in
+---------------------------
+- New login screen (src/screens/Login.tsx) shown before onboarding:
+  Continue with Google, Continue with Apple and Continue as guest.
+- Google via Google Identity Services (OAuth 2.0 token client + userinfo),
+  Apple via Sign in with Apple JS in popup mode.
+- Demo mode: with no VITE_GOOGLE_CLIENT_ID / VITE_APPLE_CLIENT_ID configured,
+  the buttons issue a local demo profile so the flow stays clickable offline.
+- New /auth/callback route (src/screens/AuthCallback.tsx) for redirect-style
+  OAuth responses (#id_token=...).
+- AppContext: new state.auth { isAuthenticated, account } + signIn()/signOut().
+  Auth is stored inside revisionMasterState, so it persists, backs up and syncs
+  to Capacitor Preferences like the rest of the app. No tokens are ever stored.
+- New Settings → Account card showing provider, email and a confirmed Sign out.
+- Route gate in App.tsx: unauthenticated users are sent to /login, signed-in
+  users are bounced away from /login.
+- Native (Capacitor) builds show a clear notice: social sign-in needs OAuth
+  deep links (see AUTH_SETUP.md); guest mode works everywhere.
+- Shared SakuraLayer component, brand icon set (Google/Apple marks).
+- Docs: AUTH_SETUP.md walkthrough + .env.example.
+
 v2.0.2 — Stable Release
 ------------------------
 - Stable release incorporating all v2.0.1 patches.

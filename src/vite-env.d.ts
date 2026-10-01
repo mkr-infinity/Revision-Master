@@ -3,6 +3,12 @@
 
 interface ImportMetaEnv {
   readonly VITE_GEMINI_API_KEY?: string;
+  /** Google OAuth 2.0 Web client ID (Authorised JavaScript origin = your app URL). */
+  readonly VITE_GOOGLE_CLIENT_ID?: string;
+  /** Apple Services ID (Sign in with Apple JS, popup mode). */
+  readonly VITE_APPLE_CLIENT_ID?: string;
+  /** Apple Return URL, e.g. https://yourapp.com/auth/callback */
+  readonly VITE_APPLE_REDIRECT_URI?: string;
 }
 
 interface ImportMeta {
